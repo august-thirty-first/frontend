@@ -1,0 +1,11 @@
+---
+services:
+  next:
+    container_name: transcendence-front-end
+    image: transcendence/front-end
+    build: ./
+    restart: on-failure
+    ports:
+      - 4000:3000
+    volumes:
+      - ./:/root/next
