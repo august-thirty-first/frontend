@@ -8,4 +8,4 @@ services:
     ports:
       - 4000:3000
     volumes:
-      - ./:/root/next
+      - ./next:/root/next
