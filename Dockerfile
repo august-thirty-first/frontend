@@ -7,4 +7,4 @@ ADD ./run.sh	/scripts/run.sh
 
 WORKDIR /root/next
 
-ENTRYPOINT /scripts/run.sh start
+ENTRYPOINT /scripts/run.sh
