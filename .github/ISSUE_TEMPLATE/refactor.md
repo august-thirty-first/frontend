@@ -2,9 +2,8 @@
 name: refactor
 about: refactor template
 title: ''
-labels: "♻️ refactor"
+labels: '♻️ refactor'
 assignees: ''
-
 ---
 
 ## 리팩터링 하는 이유
