@@ -21,6 +21,11 @@ export default function SignUp() {
           }),
         },
       );
+      const data = await response.json();
+      if (data.status === true) {
+        alert('중복임');
+      }
+      // console.log(response.json());
     } catch (error) {
       console.log('error occure');
       console.log(error);
@@ -30,9 +35,9 @@ export default function SignUp() {
     <div>
       <WelcomeMessage />
       <form
-        action={`${process.env.BACKEND_URL}`}
+        action={`http://10.19.233.2:3000/api/auth/create`}
         method="POST"
-        encType="multipart/form-data"
+        // encType="multipart/form-data"
       >
         <div>
           <label htmlFor="nickname">닉네임</label>
@@ -40,6 +45,7 @@ export default function SignUp() {
           <input
             type="text"
             id="nickname"
+            name="nickname"
             value={nickName}
             onChange={event => {
               setNickName(event.target.value);
@@ -47,11 +53,11 @@ export default function SignUp() {
           ></input>
           <Btn title="중복검사" handler={onHandle} />
         </div>
-        <div>
+        {/* <div>
           <label htmlFor="avata">아바타 사진</label>
           <br />
-          <input type="file" id="avata"></input>
-        </div>
+          <input type="file" name="avata" id="avata"></input>
+        </div> */}
         <div>
           <input type="submit" value="제출"></input>
         </div>
