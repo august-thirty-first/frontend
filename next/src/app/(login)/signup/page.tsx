@@ -37,7 +37,7 @@ export default function SignUp() {
       <form
         action={`http://10.19.233.2:3000/api/auth/create`}
         method="POST"
-        // encType="multipart/form-data"
+        encType="multipart/form-data"
       >
         <div>
           <label htmlFor="nickname">닉네임</label>
@@ -53,11 +53,11 @@ export default function SignUp() {
           ></input>
           <Btn title="중복검사" handler={onHandle} />
         </div>
-        {/* <div>
-          <label htmlFor="avata">아바타 사진</label>
+        <div>
+          <label htmlFor="avata_path">아바타 사진</label>
           <br />
-          <input type="file" name="avata" id="avata"></input>
-        </div> */}
+          <input type="file" name="avata_path" id="avata_path"></input>
+        </div>
         <div>
           <input type="submit" value="제출"></input>
         </div>
