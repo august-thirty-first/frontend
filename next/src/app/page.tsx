@@ -1,5 +1,8 @@
 import Image from 'next/image';
+import { cookies } from 'next/headers';
 
+//TODO: 이 루트 페이지는 42로그인과 회원가입이 다 완료 되었을 때만 보여져야 하는 페이지이므로
+//쿠키를 보고 없으면 로그인 페이지로 넘기는 로직이 필요함
 export default function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
