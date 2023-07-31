@@ -10,7 +10,7 @@ export default function SignUp() {
     e.preventDefault();
     try {
       const response = await fetch(
-        'http://10.19.233.2:3000/api/auth/nickname',
+        'http://localhost:3000/api/auth/nickname',
         {
           method: 'POST',
           headers: {
@@ -35,7 +35,7 @@ export default function SignUp() {
     <div>
       <WelcomeMessage />
       <form
-        action={`http://10.19.233.2:3000/api/auth/create`}
+        action={`http://localhost:3000/api/auth/create`}
         method="POST"
         encType="multipart/form-data"
       >

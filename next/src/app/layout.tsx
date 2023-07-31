@@ -12,7 +12,7 @@ export default function RootLayout({
         {children}
         <RedirectBtn
           title="logout"
-          redirectUrl="http://10.19.233.2:3000/api/auth/logout"
+          redirectUrl="http://localhost:3000/api/auth/logout"
         />
       </body>
     </html>
