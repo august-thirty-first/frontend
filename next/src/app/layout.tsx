@@ -1,5 +1,10 @@
-import '@/style/globals.css';
-import RedirectBtn from '@/components/redirectBtn';
+// import '@/style/globals.css';
+
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'home',
+};
 
 export default function RootLayout({
   children,
@@ -8,13 +13,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>
-        {children}
-        <RedirectBtn
-          title="logout"
-          redirectUrl="http://localhost:3000/api/auth/logout"
-        />
-      </body>
+      <body>{children}</body>
     </html>
   );
 }
