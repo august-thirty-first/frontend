@@ -30,10 +30,10 @@ async function nicknameAPI(
     });
     result.status = response.status;
     if (response.ok) result.data = await response.json();
-    else result.error = await response.json();
+    else result.errorData = await response.json();
     return result;
   } catch (error: any) {
-    result.error = error;
+    result.error = error.message;
     return result;
   }
 }
