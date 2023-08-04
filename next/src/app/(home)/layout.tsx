@@ -1,9 +1,8 @@
 import childrenProps from '@/interfaces/childrenProps.interface';
-import Navigation from '@/components/navigation';
-import Friends from '@/components/friends';
-import Alarms from '@/components/alarms';
+import HomeSocketProvider from './createHomeSocketContext';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
+
 
 export default function HomeLayout({ children }: childrenProps) {
   const token = cookies().get('access_token');
@@ -11,10 +10,7 @@ export default function HomeLayout({ children }: childrenProps) {
 
   return (
     <div>
-      <Navigation />
-      {children}
-      <Friends />
-      <Alarms />
+      <HomeSocketProvider>{children}</HomeSocketProvider>
     </div>
   );
 }
