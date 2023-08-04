@@ -3,6 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import commonResponse from '@/lib/interface/commonResponse.interface';
+import Btn from './btn';
 
 async function logoutAPI(): Promise<commonResponse<void>> {
   const backend_url = 'http://localhost:3000/api';
@@ -28,12 +29,10 @@ export default function Logout() {
     if (isLoggingOut) return;
     setIsLoggingOut(true);
     const res = await logoutAPI();
-    if (res.error) {
-      alert(`Error during logout: ${res.error}`);
-      return;
-    }
-    router.replace('/');
+    if (res.error) alert(`Error during logout: ${res.error}`);
+    else router.replace('/');
+    setIsLoggingOut(false);
   };
 
-  return <button onClick={onClick}>logout</button>;
+  return <Btn handler={onClick} title="logout" />;
 }
