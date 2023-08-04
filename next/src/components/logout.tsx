@@ -29,7 +29,7 @@ export default function Logout() {
     setIsLoggingOut(true);
     const res = await logoutAPI();
     if (res.error) alert(`Error during logout: ${res.error}`);
-    if (res.status === 200) router.replace('/');
+    else router.replace('/');
     setIsLoggingOut(false);
   };
 
