@@ -13,6 +13,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <head>
+        <link rel="stylesheet" href="https://unpkg.com/mvp.css"></link>
+      </head>
       <body>{children}</body>
     </html>
   );
