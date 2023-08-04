@@ -8,6 +8,7 @@ import commonResponse from '@/lib/interface/commonResponse.interface';
 interface nicknameProps {
   nickname: string;
   setNickname: Dispatch<SetStateAction<string>>;
+  validate: () => boolean;
 }
 
 interface nicknameResponse {
@@ -38,20 +39,25 @@ async function nicknameAPI(
   }
 }
 
-const Nickname = ({ nickname, setNickname }: nicknameProps) => {
+const Nickname = ({ nickname, setNickname, validate }: nicknameProps) => {
   const router = useRouter();
+
   const onHandle = async (e: React.MouseEvent<HTMLElement>) => {
     e.preventDefault();
-    setNickname(cur => cur.trim());
+    if (!validate()) return;
     const res: commonResponse<nicknameResponse> = await nicknameAPI(nickname);
+    if (res.error) {
+      alert(`Error during nickname: ${res.error}`);
+      return;
+    }
     if (res.status === 200) {
       if (res.data?.status === true) alert('이미 존재하는 nickname 입니다.');
       else if (res.data?.status === false) alert('OK');
     } else if (res.status === 401) {
       alert('다시 로그인을 해주세요.');
       router.push('/login');
-    } else if (res.error) {
-      alert(`Error during nickname: ${res.error}`);
+    } else if (res.errorData) {
+      alert(`Error during nickname: ${res.errorData.message}`);
       return;
     }
   };

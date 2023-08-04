@@ -31,20 +31,27 @@ export default function SignUp() {
   const [file, setFile] = useState<File | null>(null);
   const router = useRouter();
 
+  const validate = (): boolean => {
+    let trim_nickname = nickname.trim();
+    setNickname(trim_nickname);
+    if (trim_nickname.length === 0) {
+      alert('닉네임에 빈 문자열을 입력하면 안됩니다.');
+      return false;
+    }
+    return true;
+  };
+
   const onSubmit = async (e: React.MouseEvent<HTMLElement>) => {
     e.preventDefault();
     if (isSending) return;
+    if (!validate()) return;
     setIsSending(true);
-    setNickname(cur => cur.trim());
     const formData = new FormData();
     formData.append('nickname', nickname);
     if (file) formData.append('avata_path', file);
     const res: commonResponse<void> = await signUpAPI(formData);
-    if (res.error) {
-      alert(`Error during nickname: ${res.error}`);
-      return;
-    }
-    if (res.status === 200) {
+    if (res.error) alert(`Error during nickname: ${res.error}`);
+    else if (res.status === 200) {
       alert('회원가입 성공');
       router.replace('/');
     } else if (res.status === 401) {
@@ -60,7 +67,11 @@ export default function SignUp() {
     <div>
       <WelcomeMessage />
       <form>
-        <Nickname nickname={nickname} setNickname={setNickname} />
+        <Nickname
+          nickname={nickname}
+          setNickname={setNickname}
+          validate={validate}
+        />
         <Avata file={file} setFile={setFile} />
         <div>
           <input

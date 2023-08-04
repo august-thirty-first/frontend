@@ -28,11 +28,9 @@ export default function Logout() {
     if (isLoggingOut) return;
     setIsLoggingOut(true);
     const res = await logoutAPI();
-    if (res.error) {
-      alert(`Error during logout: ${res.error}`);
-      return;
-    }
-    router.replace('/');
+    if (res.error) alert(`Error during logout: ${res.error}`);
+    if (res.status === 200) router.replace('/');
+    setIsLoggingOut(false);
   };
 
   return <button onClick={onClick}>logout</button>;
