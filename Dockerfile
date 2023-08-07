@@ -1,4 +1,4 @@
-FROM node:20.5.0-alpine3.18
+FROM node:20-buster
 
 VOLUME ["/root/next"]
 EXPOSE 3000
