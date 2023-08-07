@@ -11,9 +11,10 @@ const HomeSocketProvider = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     homeSocket.on('connect', () => {
       console.log('hello ');
-    })
-    homeSocket.on('connection', (msg) => {
-      console.log(msg);})
+    });
+    homeSocket.on('connection', msg => {
+      console.log(msg);
+    });
   }, []);
   return (
     <HomeSocketContext.Provider value={homeSocket}>
