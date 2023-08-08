@@ -1,8 +1,7 @@
 'use client';
 import { useRef, useContext, useEffect, useState } from 'react';
 import { HomeSocketContext } from '@/app/(home)/createHomeSocketContext';
-import EnterRoom from '@/components/(home)/(communication)/channel/enterRoom';
-import SendMessage from '@/components/(home)/(communication)/channel/sendMessage';
+import EnterRoom from '@/app/(home)/(communication)/channel/enterRoom';
 
 export default function Channel() {
   const socket = useContext(HomeSocketContext);
@@ -15,9 +14,5 @@ export default function Channel() {
     });
   }, []);
 
-  return (
-    <div>
-      <h1> {room} 입니다.</h1>
-    </div>
-  );
+  return <div></div>;
 }

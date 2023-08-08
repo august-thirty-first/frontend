@@ -1,15 +1,19 @@
 'use client';
 import { useContext, useState } from 'react';
 import { HomeSocketContext } from '@/app/(home)/createHomeSocketContext';
-import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import Btn from '@/components/btn';
 
 export default function EnterRoom() {
   const socket = useContext(HomeSocketContext);
   const [roomName, setRoomName] = useState('');
+  const router = useRouter();
 
   function handleOnSubmitRoom(event: any) {
     event.preventDefault();
+    console.log('roomName', roomName);
     socket.emit('enterRoom', roomName);
+    router.push(`/channel/chat?roomName=${roomName}`);
     setRoomName('');
   }
 
@@ -19,9 +23,7 @@ export default function EnterRoom() {
         value={roomName}
         onChange={event => setRoomName(event.target.value)}
       ></input>
-      <Link href={`/channel/chat?roomName=${roomName}`}>
-        <button type="submit">방 입장</button>
-      </Link>
+      <Btn type="submit" title="방 입장" />
     </form>
   );
 }

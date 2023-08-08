@@ -1,6 +1,6 @@
 import childrenProps from '@/interfaces/childrenProps.interface';
 import { Metadata } from 'next';
-import EnterRoom from '@/components/(home)/(communication)/channel/enterRoom';
+import EnterRoom from './enterRoom';
 
 export const metadata: Metadata = {
   title: 'channel',

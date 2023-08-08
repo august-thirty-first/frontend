@@ -1,32 +1,49 @@
 'use client';
-import SendMessage from '@/components/(home)/(communication)/channel/sendMessage';
 import { useContext, useEffect, useRef, useState } from 'react';
 import { HomeSocketContext } from '@/app/(home)/createHomeSocketContext';
-import { useRouter } from 'next/router';
+import { useSearchParams } from 'next/navigation';
+import SubmitForm from '@/components/submitForm';
 
 export default function Chat() {
   const socket = useContext(HomeSocketContext);
   const messageContainerRef = useRef<HTMLDivElement>(null);
   const [messages, setMessages] = useState<string[]>([]);
+  const searchParams = useSearchParams();
+  const roomName = searchParams.get('roomName');
+  const [inputMessage, setInputMessage] = useState<string>('');
 
-  const router = useRouter();
-  console.log(router);
+  useEffect(() => {
+    setMessages(prevMessage => []);
+  }, [roomName]);
 
   useEffect(() => {
     socket.on('message', msg => {
       setMessages(prevMessage => [...prevMessage, msg]);
-      console.log(messages);
+      console.log(`'message' : ${msg}`);
     });
-    // Scroll to the bottom of the message container when messages change
+  }, []);
+
+  useEffect(() => {
     if (messageContainerRef.current) {
       messageContainerRef.current.scrollTop =
         messageContainerRef.current.scrollHeight;
     }
   }, [messages]);
 
+  function handleOnSubmit(event: any) {
+    event.preventDefault();
+    setMessages(prevMessages => [...prevMessages, `You: ${inputMessage}`]);
+    socket.emit('message', { roomName, inputMessage });
+    setInputMessage('');
+  }
+
+  function handleOnChange(event: any) {
+    setInputMessage(event.target.value);
+  }
+
   return (
     <div>
-      <h2>chat</h2>
+      <h1>{roomName}</h1>
       <div
         ref={messageContainerRef}
         style={{ width: '100%', height: '200px', overflow: 'auto' }}
@@ -37,7 +54,12 @@ export default function Chat() {
           </div>
         ))}
       </div>
-      <SendMessage />
+      <SubmitForm
+        title="send"
+        handleOnSubmit={handleOnSubmit}
+        value={inputMessage}
+        handleOnChange={handleOnChange}
+      />
     </div>
   );
 }
