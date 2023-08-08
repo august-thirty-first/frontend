@@ -13,7 +13,10 @@ export default function SendMessage() {
 
   return (
     <form onSubmit={handleOnSubmit}>
-      <input value={value} onChange={event => setValue(event.target.value)} />
+      <input
+        value={message}
+        onChange={event => setMessage(event.target.value)}
+      />
       <button type="submit">send</button>
     </form>
   );

@@ -6,6 +6,7 @@ import SendMessage from '@/components/(home)/(communication)/channel/sendMessage
 
 export default function Channel() {
   const socket = useContext(HomeSocketContext);
+
   const [room, setRoom] = useState('');
 
   useEffect(() => {
@@ -16,8 +17,6 @@ export default function Channel() {
 
   return (
     <div>
-      <h1>Channel</h1>
-      <EnterRoom />
       <h1> {room} 입니다.</h1>
     </div>
   );

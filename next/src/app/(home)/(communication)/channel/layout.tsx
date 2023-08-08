@@ -1,5 +1,6 @@
 import childrenProps from '@/interfaces/childrenProps.interface';
 import { Metadata } from 'next';
+import EnterRoom from '@/components/(home)/(communication)/channel/enterRoom';
 
 export const metadata: Metadata = {
   title: 'channel',
@@ -7,5 +8,11 @@ export const metadata: Metadata = {
 };
 
 export default function ChannelLayout({ children }: childrenProps) {
-  return <div>{children}</div>;
+  return (
+    <div>
+      <h1>Channel</h1>
+      <EnterRoom />
+      {children}
+    </div>
+  );
 }

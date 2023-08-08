@@ -2,11 +2,15 @@
 import SendMessage from '@/components/(home)/(communication)/channel/sendMessage';
 import { useContext, useEffect, useRef, useState } from 'react';
 import { HomeSocketContext } from '@/app/(home)/createHomeSocketContext';
+import { useRouter } from 'next/router';
 
 export default function Chat() {
   const socket = useContext(HomeSocketContext);
   const messageContainerRef = useRef<HTMLDivElement>(null);
   const [messages, setMessages] = useState<string[]>([]);
+
+  const router = useRouter();
+  console.log(router);
 
   useEffect(() => {
     socket.on('message', msg => {

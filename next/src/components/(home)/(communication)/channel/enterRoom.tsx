@@ -1,5 +1,7 @@
+'use client';
 import { useContext, useState } from 'react';
 import { HomeSocketContext } from '@/app/(home)/createHomeSocketContext';
+import Link from 'next/link';
 
 export default function EnterRoom() {
   const socket = useContext(HomeSocketContext);
@@ -17,7 +19,9 @@ export default function EnterRoom() {
         value={roomName}
         onChange={event => setRoomName(event.target.value)}
       ></input>
-      <button type="submit">send</button>
+      <Link href={`/channel/chat?roomName=${roomName}`}>
+        <button type="submit">방 입장</button>
+      </Link>
     </form>
   );
 }
