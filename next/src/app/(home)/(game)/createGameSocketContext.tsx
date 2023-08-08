@@ -8,7 +8,6 @@ const gameSocket = io('http://localhost:3000/game', {
 
 const GameSocketContext = createContext(gameSocket);
 const GameSocketProvider = ({ children }: { children: React.ReactNode }) => {
-  console.log(gameSocket);
   return (
     <GameSocketContext.Provider value={gameSocket}>
       {children}
