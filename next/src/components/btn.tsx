@@ -2,16 +2,19 @@
 import { MouseEventHandler } from 'react';
 
 export default function Btn({
+  type,
   title,
   handler,
-  type,
+  disabled,
 }: {
+  type?: 'button' | 'submit' | 'reset' | undefined;
   title: React.ReactNode;
   handler?: MouseEventHandler;
-  type?: 'button' | 'submit' | 'reset' | undefined;
+  disabled?: boolean;
 }) {
   return (
-    <button onClick={handler} type={type}>
+    <button type={type} onClick={handler} disabled={disabled}>
+
       {title}
     </button>
   );
