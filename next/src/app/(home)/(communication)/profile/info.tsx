@@ -28,7 +28,7 @@ const Info = ({ profile }: InfoProps) => {
               className="h-36 w-auto"
               src={
                 profile.avata_path
-                  ? `http://localhost:3000/${profile.avata_path}`
+                  ? `http://nestjs:3000/${profile.avata_path}`
                   : defaultImg
               }
               alt="avatar"
