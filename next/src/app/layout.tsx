@@ -1,4 +1,4 @@
-// import '@/style/globals.css';
+import '@/style/globals.css';
 
 import { Metadata } from 'next';
 
