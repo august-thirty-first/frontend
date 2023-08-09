@@ -8,7 +8,6 @@ const homeSocket = io('http://localhost:3000/home', {
 
 const HomeSocketContext = createContext(homeSocket);
 const HomeSocketProvider = ({ children }: { children: React.ReactNode }) => {
-  console.log(homeSocket);
   return (
     <HomeSocketContext.Provider value={homeSocket}>
       {children}
