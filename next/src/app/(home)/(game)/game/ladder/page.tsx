@@ -1,11 +1,19 @@
 'use client';
 
 import Btn from '@/components/btn';
+import { useContext, useEffect } from 'react';
+import { GameSocketContext } from '../../createGameSocketContext';
 
 export default function LadderWaitingPage() {
+  const gameSocket = useContext(GameSocketContext);
+
   const cancelMatchHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
     console.log(event);
   };
+
+  useEffect(() => {
+    gameSocket.emit('joinQueue');
+  }, [gameSocket]);
 
   return (
     <div>
