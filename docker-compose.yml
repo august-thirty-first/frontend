@@ -10,3 +10,9 @@ services:
     volumes:
       - ./next:/root/next
       - /root/next/node_modules
+    networks:
+      - docker_gaepo
+
+networks:
+  docker_gaepo:
+    external: true
