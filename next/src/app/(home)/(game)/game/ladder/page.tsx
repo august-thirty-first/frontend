@@ -1,19 +1,19 @@
 'use client';
 
-import Btn from '@/components/btn';
 import { useContext, useEffect } from 'react';
 import { GameSocketContext } from '../../createGameSocketContext';
 import { useRouter } from 'next/navigation';
+import CancleMatchBtn from './cancleMatchBtn';
 
 export default function LadderWaitingPage() {
   const gameSocket = useContext(GameSocketContext);
   const router = useRouter();
 
-  const cancelMatchHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
-    console.log(event);
-  };
-
   useEffect(() => {
+    if (!gameSocket.connected) {
+      console.log('here');
+      gameSocket.connect();
+    }
     gameSocket.emit('joinQueue');
 
     gameSocket.on('joinGame', () => {
@@ -23,7 +23,7 @@ export default function LadderWaitingPage() {
 
   return (
     <div>
-      <p>친구를 기다리는 중입니다...</p>
+      <p>게임 상대를 기다리는 중입니다...</p>
       <div className="text-center">
         <div role="status">
           <svg
@@ -45,7 +45,7 @@ export default function LadderWaitingPage() {
           <span className="sr-only">Loading...</span>
         </div>
       </div>
-      <Btn title="매치 취소" type="button" handler={cancelMatchHandler} />
+      <CancleMatchBtn />
     </div>
   );
 }
