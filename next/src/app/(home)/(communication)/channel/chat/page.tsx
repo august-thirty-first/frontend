@@ -9,7 +9,7 @@ export default function Chat() {
   const messageContainerRef = useRef<HTMLDivElement>(null);
   const [messages, setMessages] = useState<string[]>([]);
   const searchParams = useSearchParams();
-  const roomName = searchParams.get('roomName');
+  const roomName = searchParams.get('roomId');
   const [inputMessage, setInputMessage] = useState<string>('');
 
   useEffect(() => {

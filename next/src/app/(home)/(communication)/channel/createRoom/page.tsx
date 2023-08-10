@@ -35,8 +35,12 @@ export default function CreateRoom() {
       const response = await fetch(`${backend_url}/chat`, {
         method: 'POST',
         credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+        },
         body: JSON.stringify(formData),
       });
+      //Todo: 1. 데이터 받아온 후 처리 해야함, 2. createRoomAPI 함수로 리팩토링
       result.status = response.status;
       if (!response.ok) result.errorData = await response.json();
       return result;

@@ -1,7 +1,7 @@
 import childrenProps from '@/interfaces/childrenProps.interface';
 import { Metadata } from 'next';
-import EnterRoom from './enterRoom';
 import RedirectBtn from '@/components/redirectBtn';
+import RoomList from '@/app/(home)/(communication)/channel/roomList';
 
 export const metadata: Metadata = {
   title: 'channel',
@@ -13,7 +13,7 @@ export default function ChannelLayout({ children }: childrenProps) {
     <div>
       <h1>Channel</h1>
       <div style={{ display: 'flex', gap: '200px' }}>
-        <EnterRoom />
+        <RoomList />
         <RedirectBtn title={'방 만들기'} redirectUrl={'/channel/createRoom'} />
         {children}
       </div>
