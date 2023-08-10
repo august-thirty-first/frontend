@@ -3,9 +3,11 @@
 import Btn from '@/components/btn';
 import { useContext, useEffect } from 'react';
 import { GameSocketContext } from '../../createGameSocketContext';
+import { useRouter } from 'next/navigation';
 
 export default function LadderWaitingPage() {
   const gameSocket = useContext(GameSocketContext);
+  const router = useRouter();
 
   const cancelMatchHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
     console.log(event);
@@ -13,7 +15,11 @@ export default function LadderWaitingPage() {
 
   useEffect(() => {
     gameSocket.emit('joinQueue');
-  }, [gameSocket]);
+
+    gameSocket.on('joinGame', () => {
+      router.push('/game/option');
+    });
+  }, [gameSocket, router]);
 
   return (
     <div>
