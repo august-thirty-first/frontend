@@ -2,19 +2,19 @@
 import { useContext, useEffect, useState } from 'react';
 import { HomeSocketContext } from '@/app/(home)/createHomeSocketContext';
 import { useRouter } from 'next/navigation';
+import { useFetch } from '@/lib/useFetch';
 
-async function showChatRoomAPI() {
-  const backend_url = 'http://localhost:3000/api';
-
-  const response = await fetch(`${backend_url}/chat`, {
-    method: 'get',
-    credentials: 'include',
-  });
-  return await response.json();
+interface RoomListResponse {
+  id: number;
+  room_name: string;
 }
 
 export default function RoomList() {
-  const [roomList, setRoomList] = useState([]);
+  const { isLoading, dataRef, fetchData } = useFetch<RoomListResponse[]>({
+    autoFetch: true,
+    method: 'get',
+    url: 'chat',
+  });
   const socket = useContext(HomeSocketContext);
   const router = useRouter();
 
@@ -25,24 +25,23 @@ export default function RoomList() {
     router.push(`/channel/chat?roomId=${event.target.value}`);
   }
 
-  useEffect(() => {
-    showChatRoomAPI().then(data => {
-      setRoomList(data);
-    });
-  }, []);
+  if (isLoading) {
+    return <p>Loading..</p>;
+  }
 
   return (
     <div>
-      {roomList.map((room: any, index) => (
-        <button
-          key={index}
-          type={'submit'}
-          onClick={handleOnClick}
-          value={room.id}
-        >
-          [{room.id}] {room.room_name}
-        </button>
-      ))}
+      {dataRef?.current &&
+        dataRef?.current.map((room: any, index) => (
+          <button
+            key={index}
+            type={'submit'}
+            onClick={handleOnClick}
+            value={room.id}
+          >
+            [{room.id}] {room.room_name}
+          </button>
+        ))}
     </div>
   );
 }
