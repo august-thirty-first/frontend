@@ -14,7 +14,7 @@ export default function ChannelLayout({ children }: childrenProps) {
       <h1>Channel</h1>
       <div style={{ display: 'flex', gap: '200px' }}>
         <RoomList />
-        <RedirectBtn title={'방 만들기'} redirectUrl={'/channel/createRoom'} />
+        <RedirectBtn title={'방 만들기'} redirectUrl={'/channel/create'} />
         {children}
       </div>
     </div>

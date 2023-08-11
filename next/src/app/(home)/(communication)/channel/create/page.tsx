@@ -1,20 +1,20 @@
 'use client';
 import Btn from '@/components/btn';
 import { useState } from 'react';
-import CheckBox from '@/components/(home)/(game)/game/checkBox';
-import commonResponse from '@/lib/interface/commonResponse.interface';
+import { useFetch } from '@/lib/useFetch';
 
 export default function CreateRoom() {
   const [roomName, setRoomName] = useState('');
   const [password, setPassword] = useState('');
   const [isPrivate, setIsPrivate] = useState(false);
-  const backend_url = 'http://localhost:3000/api';
 
-  /*
-  2. 패스워드가 있든 없든 checkbox가 체크됐으면 private
-  1. 패스워드가 없으면 public
-  3. 패스워드가 있으면 proctected
-   */
+  const { isLoading, dataRef, bodyRef, fetchData } = useFetch({
+    autoFetch: false,
+    method: 'post',
+    url: 'chat',
+    contentType: 'application/json',
+  });
+
   async function handleOnSubmit(event: any) {
     event.preventDefault();
     let status;
@@ -25,29 +25,14 @@ export default function CreateRoom() {
     } else {
       status = 'protected';
     }
+
     const formData = {
       room_name: roomName,
       password: password,
       status: status,
     };
-    const result: commonResponse<void> = {};
-    try {
-      const response = await fetch(`${backend_url}/chat`, {
-        method: 'POST',
-        credentials: 'include',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
-      //Todo: 1. 데이터 받아온 후 처리 해야함, 2. createRoomAPI 함수로 리팩토링
-      result.status = response.status;
-      if (!response.ok) result.errorData = await response.json();
-      return result;
-    } catch (error: any) {
-      result.error = error.message;
-      return result;
-    }
+    bodyRef.current = JSON.stringify(formData);
+    await fetchData();
   }
 
   return (
