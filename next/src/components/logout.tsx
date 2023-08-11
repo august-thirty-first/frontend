@@ -1,37 +1,22 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
-import commonResponse from '@/lib/interface/commonResponse.interface';
 import Btn from './btn';
 
-async function logoutAPI(): Promise<commonResponse<void>> {
-  const backend_url = 'http://localhost:3000/api';
-  let result: commonResponse<void> = {};
-  try {
-    const response = await fetch(`${backend_url}/auth/logout`, {
-      method: 'GET',
-      credentials: 'include',
-    });
-    result.status = response.status;
-    return result;
-  } catch (error: any) {
-    result.error = error.message;
-    return result;
-  }
-}
-
 export default function Logout() {
-  const [isLoggingOut, setIsLoggingOut] = useState<boolean>(false);
   const router = useRouter();
+  const backend_url = 'http://localhost:3000/api';
 
   const onClick = async () => {
-    if (isLoggingOut) return;
-    setIsLoggingOut(true);
-    const res = await logoutAPI();
-    if (res.error) alert(`Error during logout: ${res.error}`);
-    else router.replace('/');
-    setIsLoggingOut(false);
+    try {
+      await fetch(`${backend_url}/auth/logout`, {
+        method: 'GET',
+        credentials: 'include',
+      });
+      router.replace('/login');
+    } catch (error: any) {
+      alert(`Error during logout: ${error.message}`);
+    }
   };
 
   return <Btn handler={onClick} title="logout" />;

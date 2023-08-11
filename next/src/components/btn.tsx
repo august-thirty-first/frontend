@@ -14,6 +14,7 @@ export default function Btn({
 }) {
   return (
     <button type={type} onClick={handler} disabled={disabled}>
+
       {title}
     </button>
   );
