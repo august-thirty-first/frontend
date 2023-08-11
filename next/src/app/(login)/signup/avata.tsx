@@ -11,7 +11,7 @@ const Avata = ({ file, setFile }: avataProps) => {
   const onHandler = (event: ChangeEvent<HTMLInputElement>) => {
     const maxFileSize = 1024 * 1024 * 1;
     const files = event.target.files;
-    if (files) {
+    if (files && files[0]) {
       const cur_file = files[0];
       if (cur_file.size >= maxFileSize) {
         alert('파일 크기는 1MB까지만 가능합니다.');
