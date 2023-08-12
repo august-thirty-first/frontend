@@ -18,8 +18,10 @@ export default function GameOptionSubmitForm() {
   const { statusCodeRef, bodyRef, fetchData, dataRef } =
     useFetch<gameOptionResponse>({
       autoFetch: false,
-      url: `game/option`,
+      url: 'game/option',
       method: 'POST',
+      // contentType: 'application/json',
+      // contentType: 'multipart/form-data',
       body: FormData,
     });
 
@@ -30,9 +32,16 @@ export default function GameOptionSubmitForm() {
 
   const submitHandler = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const formData = new FormData(event.currentTarget); //이렇게 하면 FormData 타입에 json으로 담긴다
+    const formData = new FormData(event.currentTarget);
+
+    // let obj: any = {};
+    // formData.forEach((value, key) => {
+    //   obj[key] = value;
+    // });
+    // const json = JSON.stringify(obj);
+    // bodyRef.current = json;
+
     bodyRef.current = formData;
-    console.log(bodyRef.current); //잘 찍힌다
     await fetchData();
 
     if (statusCodeRef?.current === 201) {
