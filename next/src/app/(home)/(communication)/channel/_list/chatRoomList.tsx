@@ -3,14 +3,10 @@ import { useContext, useEffect, useState } from 'react';
 import { HomeSocketContext } from '@/app/(home)/createHomeSocketContext';
 import { useRouter } from 'next/navigation';
 import { useFetch } from '@/lib/useFetch';
+import ChatRoom from '@/interfaces/chatRoom.interface';
 
-interface RoomListResponse {
-  id: number;
-  room_name: string;
-}
-
-export default function RoomList() {
-  const { isLoading, dataRef, fetchData } = useFetch<RoomListResponse[]>({
+export default function ChatRoomList() {
+  const { isLoading, dataRef, fetchData } = useFetch<ChatRoom[]>({
     autoFetch: true,
     method: 'get',
     url: 'chat',
