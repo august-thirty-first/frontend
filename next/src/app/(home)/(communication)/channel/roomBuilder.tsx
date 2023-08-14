@@ -3,15 +3,29 @@ import Btn from '@/components/btn';
 import { useFetch } from '@/lib/useFetch';
 import { useState } from 'react';
 import Modal from '@/components/modal/Modal';
+import ChatRoom from '@/interfaces/chatRoom.interface';
+import { useRouter } from 'next/navigation';
 
-export default function RoomCreate() {
+export default function RoomBuilder({
+  title,
+  method,
+  url,
+}: {
+  title: string;
+  method: string;
+  url: string;
+}) {
+  const router = useRouter();
   const [showModal, setShowModal] = useState(false);
-  const { isLoading, bodyRef, statusCodeRef, fetchData } = useFetch<void>({
-    autoFetch: false,
-    method: 'POST',
-    url: `chat`,
-    contentType: 'application/json',
-  });
+  const [inputPassword, setInputPassword] = useState('');
+  const [disablePassword, setDisablePassword] = useState(false);
+  const { isLoading, bodyRef, statusCodeRef, dataRef, fetchData } =
+    useFetch<ChatRoom>({
+      autoFetch: false,
+      method: method,
+      url: url,
+      contentType: 'application/json',
+    });
 
   function toggleModal() {
     console.log(showModal);
@@ -30,10 +44,10 @@ export default function RoomCreate() {
     let status;
     if (isPrivate) {
       status = 'private';
-    } else if (!password) {
-      status = 'public';
-    } else {
+    } else if (password) {
       status = 'protected';
+    } else {
+      status = 'public';
     }
 
     bodyRef.current = JSON.stringify({
@@ -46,17 +60,21 @@ export default function RoomCreate() {
 
     if (isLoading) return <Btn title={'방 생성중...'} />;
 
-    // Todo: 기존에 방에 참여하고 있었던 사용자에 대한 처리 필요
+    /*
+    Todo: 기존에 방에 참여하고 있었던 사용자에 대한 처리 필요
+    Todo: 성공과 실패 잠깐 띄웠다가 사라지게 하는 박스로 만들면 좋을것같음
+    Todo: 성공했으면 반환된 채팅방에 redirect
+     */
     if (statusCodeRef?.current === 200) {
-      alert('방 생성 완료');
+      alert('성공!');
     } else {
-      alert('방 생성 실패');
+      alert('실패!');
     }
   }
 
   return (
     <div>
-      <Btn title={'방 생성'} handler={toggleModal} />
+      <Btn title={title} handler={toggleModal} />
       {showModal && (
         <Modal closeModal={toggleModal}>
           <form onSubmit={createRoom}>
@@ -64,10 +82,22 @@ export default function RoomCreate() {
             <input name={'room_name'} />
 
             <label htmlFor="password">비밀번호</label>
-            <input name={'password'} />
+            <input
+              name={'password'}
+              value={inputPassword}
+              onChange={event => setInputPassword(event.target.value)}
+              disabled={disablePassword}
+            />
 
             <label htmlFor="is_private">비밀방</label>
-            <input type={'checkbox'} name={'is_private'} />
+            <input
+              type={'checkbox'}
+              name={'is_private'}
+              onClick={() => {
+                setDisablePassword(!disablePassword);
+                setInputPassword('');
+              }}
+            />
             <Btn title={'전송'} type={'submit'} />
           </form>
         </Modal>

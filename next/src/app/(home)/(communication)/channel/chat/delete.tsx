@@ -1,3 +1,4 @@
+'use client';
 import { useFetch } from '@/lib/useFetch';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Btn from '@/components/btn';

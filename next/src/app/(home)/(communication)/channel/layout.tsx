@@ -1,8 +1,7 @@
 import childrenProps from '@/interfaces/childrenProps.interface';
 import { Metadata } from 'next';
-import RedirectBtn from '@/components/redirectBtn';
 import ChatRoomList from '@/app/(home)/(communication)/channel/_list/chatRoomList';
-import RoomCreate from '@/app/(home)/(communication)/channel/roomCreate';
+import RoomBuilder from '@/app/(home)/(communication)/channel/roomBuilder';
 
 export const metadata: Metadata = {
   title: 'channel',
@@ -15,7 +14,7 @@ export default function ChannelLayout({ children }: childrenProps) {
       <h1>Channel</h1>
       <div style={{ display: 'flex', gap: '200px' }}>
         <ChatRoomList />
-        <RoomCreate />
+        <RoomBuilder title={'방 생성'} method={'POST'} url={'chat'} />
         {children}
       </div>
     </div>
