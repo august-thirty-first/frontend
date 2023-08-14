@@ -4,7 +4,9 @@ import { useSearchParams } from 'next/navigation';
 import { useContext, useEffect, useRef, useState } from 'react';
 import { HomeSocketContext } from '@/app/(home)/createHomeSocketContext';
 
-export default function ChatBox({ roomId }: { roomId: string }) {
+export default function ChatBox() {
+  const searchParams = useSearchParams();
+  const roomId = searchParams.get('roomId');
   const socket = useContext(HomeSocketContext);
   const messageContainerRef = useRef<HTMLDivElement>(null);
   const [messages, setMessages] = useState<string[]>([]);
