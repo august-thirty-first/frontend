@@ -1,3 +1,4 @@
+'use client';
 import SubmitForm from '@/components/submitForm';
 import { useSearchParams } from 'next/navigation';
 import { useContext, useEffect, useRef, useState } from 'react';
