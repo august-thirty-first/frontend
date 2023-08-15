@@ -1,65 +1,22 @@
 'use client';
-import { useContext, useEffect, useRef, useState } from 'react';
+import { useContext } from 'react';
 import { HomeSocketContext } from '@/app/(home)/createHomeSocketContext';
+import ChatBox from '@/app/(home)/(communication)/channel/chat/chatBox';
+import RoomDelete from '@/app/(home)/(communication)/channel/chat/delete';
+import RoomBuilder from '@/app/(home)/(communication)/channel/roomBuilder';
 import { useSearchParams } from 'next/navigation';
-import SubmitForm from '@/components/submitForm';
 
 export default function Chat() {
-  const socket = useContext(HomeSocketContext);
-  const messageContainerRef = useRef<HTMLDivElement>(null);
-  const [messages, setMessages] = useState<string[]>([]);
   const searchParams = useSearchParams();
-  const roomName = searchParams.get('roomName');
-  const [inputMessage, setInputMessage] = useState<string>('');
-
-  useEffect(() => {
-    setMessages(prevMessage => []);
-  }, [roomName]);
-
-  useEffect(() => {
-    socket.on('message', msg => {
-      setMessages(prevMessage => [...prevMessage, msg]);
-      console.log(`'message' : ${msg}`);
-    });
-  }, []);
-
-  useEffect(() => {
-    if (messageContainerRef.current) {
-      messageContainerRef.current.scrollTop =
-        messageContainerRef.current.scrollHeight;
-    }
-  }, [messages]);
-
-  function handleOnSubmit(event: any) {
-    event.preventDefault();
-    setMessages(prevMessages => [...prevMessages, `You: ${inputMessage}`]);
-    socket.emit('message', { roomName, inputMessage });
-    setInputMessage('');
-  }
-
-  function handleOnChange(event: any) {
-    setInputMessage(event.target.value);
-  }
+  const roomId = searchParams.get('roomId');
+  const socket = useContext(HomeSocketContext);
 
   return (
     <div>
-      <h1>{roomName}</h1>
-      <div
-        ref={messageContainerRef}
-        style={{ width: '100%', height: '200px', overflow: 'auto' }}
-      >
-        {messages.map((message, index) => (
-          <div key={index}>
-            <span>{message}</span>
-          </div>
-        ))}
-      </div>
-      <SubmitForm
-        title="send"
-        handleOnSubmit={handleOnSubmit}
-        value={inputMessage}
-        handleOnChange={handleOnChange}
-      />
+      <ChatBox />
+      {/*Todo: 유저의 권한에 대해 확인하고 RoomDelete, RoomUpdate 두 컴포넌트를 보이게 하는 코드 필요*/}
+      <RoomDelete />
+      <RoomBuilder title={'방 수정'} method={'PATCH'} url={`chat/${roomId}`} />
     </div>
   );
 }
