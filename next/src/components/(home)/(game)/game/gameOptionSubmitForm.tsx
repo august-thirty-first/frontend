@@ -3,11 +3,13 @@
 import Btn from '@/components/btn';
 import DifficultySelection from './difficultySelection';
 import TypeSelection from './typeSelection';
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { GameSocketContext } from '@/app/(home)/(game)/createGameSocketContext';
+import { useRouter } from 'next/navigation';
 
 export default function GameOptionSubmitForm() {
   const socket = useContext(GameSocketContext);
+  const router = useRouter();
 
   const [isTypeSelected, setIsTypeSelected] = useState<boolean>(false);
   const [isDifficultySelected, setIsDifficultySelected] =
@@ -34,6 +36,12 @@ export default function GameOptionSubmitForm() {
   const difficultyValidateHandler = (isSelected: boolean): void => {
     setIsDifficultySelected(isSelected);
   };
+
+  useEffect(() => {
+    socket.on('gameStart', () => {
+      router.push('/game');
+    });
+  }, [socket, router]);
 
   return (
     <div>
