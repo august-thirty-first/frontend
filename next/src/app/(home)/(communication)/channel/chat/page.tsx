@@ -13,8 +13,8 @@ export default function Chat() {
 
   return (
     <div>
-      {<ChatBox />}
-      {/*유저의 권한에 대해 확인하고 RoomDelete, RoomUpdate 두 컴포넌트를 보이게 하는 코드 필요*/}
+      <ChatBox />
+      {/*Todo: 유저의 권한에 대해 확인하고 RoomDelete, RoomUpdate 두 컴포넌트를 보이게 하는 코드 필요*/}
       <RoomDelete />
       <RoomBuilder title={'방 수정'} method={'PATCH'} url={`chat/${roomId}`} />
     </div>
