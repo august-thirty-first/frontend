@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import CheckBox from './checkBox';
 
-enum MapType {
+export enum MapType {
   Default,
   Crazy,
 }

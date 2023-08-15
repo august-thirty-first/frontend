@@ -3,7 +3,7 @@
 import React from 'react';
 import CheckBox from './checkBox';
 
-enum Difficulty {
+export enum Difficulty {
   Easy,
   Hard,
 }
