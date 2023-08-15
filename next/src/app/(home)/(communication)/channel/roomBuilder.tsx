@@ -32,7 +32,7 @@ export default function RoomBuilder({
     setShowModal(!showModal);
   }
 
-  async function createRoom(event: React.FormEvent<HTMLFormElement>) {
+  async function buildRoom(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
     const formData = new FormData(event.currentTarget);
@@ -65,7 +65,7 @@ export default function RoomBuilder({
     Todo: 성공과 실패 잠깐 띄웠다가 사라지게 하는 박스로 만들면 좋을것같음
     Todo: 성공했으면 반환된 채팅방에 redirect
      */
-    if (statusCodeRef?.current === 200) {
+    if (statusCodeRef?.current === 200 || statusCodeRef?.current === 200) {
       alert('성공!');
     } else {
       alert('실패!');
@@ -77,10 +77,11 @@ export default function RoomBuilder({
       <Btn title={title} handler={toggleModal} />
       {showModal && (
         <Modal closeModal={toggleModal}>
-          <form onSubmit={createRoom}>
+          <form onSubmit={buildRoom}>
             <label htmlFor="room_name">방 이름</label>
             <input name={'room_name'} />
 
+            {/* Todo: 패스워드는 공백이 들어갈 수 없습니다. */}
             <label htmlFor="password">비밀번호</label>
             <input
               name={'password'}
