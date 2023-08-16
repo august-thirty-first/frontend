@@ -2,11 +2,14 @@
 
 import { RefObject, useContext, useEffect, useRef } from 'react';
 import { GameSocketContext } from '../createGameSocketContext';
+import RenderInfo from './renderInfo';
 
 const GameScreen: React.FC = () => {
   const socket = useContext(GameSocketContext);
   const canvasRef: RefObject<HTMLCanvasElement> =
     useRef<HTMLCanvasElement>(null);
+
+  // let renderInfo = new RenderInfo(); // 생성을 어디서 해야 할까?
 
   useEffect(() => {
     const { innerWidth, innerHeight } = window;
@@ -14,45 +17,26 @@ const GameScreen: React.FC = () => {
 
     const canvas = canvasRef.current;
     const ctx = canvas?.getContext('2d');
-
     //set canvas
     if (canvas) {
       canvas.width = innerWidth;
       canvas.height = innerHeight;
     }
 
+    //TODO: 키 이벤트 감지하고, 내 정보 바꿔서 그리고, socket event에 보내기
+    // window.addEventListener('keydown', event => {
+    //   console.log('key pressed');
+    // });
+
     if (ctx) {
-      // animate(ctx);
+      //TODO: socket.on("updateRenderData")로 받아서 정보 업데이트. 15ms에 한 번씩 온다
+      // renderInfo.update();
 
-      //fill background
-      ctx.fillStyle = 'rgb(31, 31, 36)';
-      ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-
-      //ball
-      ctx.beginPath();
-      ctx.fillStyle = 'rgb(102, 103, 171)';
-      ctx.arc(ctx.canvas.width / 2, ctx.canvas.height / 2, 10, 0, 10);
-      ctx.fill();
-
-      //player left (bar)
-      ctx.fillStyle = 'rgb(102, 103, 171)';
-      ctx.fillRect(
-        (ctx.canvas.width / 64) * 2,
-        ctx.canvas.height / 4,
-        ctx.canvas.width / 64,
-        ctx.canvas.height / 2,
-      );
-
-      //player right (bar)
-      ctx.fillStyle = 'rgb(102, 103, 171)';
-      ctx.fillRect(
-        (ctx.canvas.width / 64) * (64 - 2 /*앞에 숫자*/ - 1) /*너비*/,
-        ctx.canvas.height / 4,
-        ctx.canvas.width / 64,
-        ctx.canvas.height / 2,
-      );
+      //TODO: animate()를 대신하여, 변경사항이 있을 때마다 그려준다. (저장된 renderInfo 사용, canvas fill 호출)
+      const renderInfo = new RenderInfo();
+      renderInfo.draw(ctx);
     }
-  }, []);
+  });
 
   return <canvas ref={canvasRef} />;
 };
