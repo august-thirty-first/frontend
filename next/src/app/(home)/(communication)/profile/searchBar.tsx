@@ -2,13 +2,22 @@
 
 import { useFetch } from '@/lib/useFetch';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import useSWR from 'swr';
 
-export interface searchProfileResponse {
-  nickname: string;
-  avata_path: string;
+export enum searchUserRequestStatus {
+  Allow = 'allow',
+  SendRequest = 'send',
+  RecvRequest = 'recv',
 }
 
-interface searchBarProps {
+export interface searchProfileResponse {
+  id: number;
+  nickname: string;
+  avata_path: string;
+  friend_status: searchUserRequestStatus;
+}
+
+export interface searchBarProps {
   myNickname: string | undefined;
   setProfile: Dispatch<SetStateAction<searchProfileResponse | undefined>>;
 }
@@ -21,6 +30,7 @@ const SearchBar = ({ myNickname, setProfile }: searchBarProps) => {
       url: `profile/user?nickname=${nickname}`,
       method: 'GET',
     });
+  const { data } = useSWR('/searchBar', fetchData);
 
   const validate = (): boolean => {
     let trim_nickname = nickname.trim();
@@ -43,9 +53,8 @@ const SearchBar = ({ myNickname, setProfile }: searchBarProps) => {
   };
 
   useEffect(() => {
-    onSubmit();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    if (data) setProfile(data);
+  }, [data, setProfile]);
 
   return (
     <form
