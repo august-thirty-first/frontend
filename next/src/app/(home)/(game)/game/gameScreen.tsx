@@ -6,23 +6,55 @@ import { GameSocketContext } from '../createGameSocketContext';
 const GameScreen: React.FC = () => {
   const socket = useContext(GameSocketContext);
   const canvasRef: RefObject<HTMLCanvasElement> =
-    useRef<HTMLCanvasElement>(null); //useRef 훅 호출 (호출하면서 타입이 결정된다?)
+    useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
-    //window, canvas 요소가 렌더링(마운트)된 시점을 보장함
     const { innerWidth, innerHeight } = window;
     socket.emit('renderReady', { innerWidth, innerHeight });
 
     const canvas = canvasRef.current;
     const ctx = canvas?.getContext('2d');
+
+    //set canvas
     if (canvas) {
-      canvas.width = innerWidth; //처음 윈도우화면을 가져오고, 고정된다.
+      canvas.width = innerWidth;
       canvas.height = innerHeight;
     }
-    ctx?.fillRect(0, 0, ctx?.canvas.width, ctx?.canvas.height);
+
+    if (ctx) {
+      // animate(ctx);
+
+      //fill background
+      ctx.fillStyle = 'rgb(31, 31, 36)';
+      ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+
+      //ball
+      ctx.beginPath();
+      ctx.fillStyle = 'rgb(102, 103, 171)';
+      ctx.arc(ctx.canvas.width / 2, ctx.canvas.height / 2, 10, 0, 10);
+      ctx.fill();
+
+      //player left (bar)
+      ctx.fillStyle = 'rgb(102, 103, 171)';
+      ctx.fillRect(
+        (ctx.canvas.width / 64) * 2,
+        ctx.canvas.height / 4,
+        ctx.canvas.width / 64,
+        ctx.canvas.height / 2,
+      );
+
+      //player right (bar)
+      ctx.fillStyle = 'rgb(102, 103, 171)';
+      ctx.fillRect(
+        (ctx.canvas.width / 64) * (64 - 2 /*앞에 숫자*/ - 1) /*너비*/,
+        ctx.canvas.height / 4,
+        ctx.canvas.width / 64,
+        ctx.canvas.height / 2,
+      );
+    }
   }, []);
 
-  return <canvas ref={canvasRef} />; //이 안의 내용을 설정해주고 반환하는 셈
+  return <canvas ref={canvasRef} />;
 };
 
 export default GameScreen;
