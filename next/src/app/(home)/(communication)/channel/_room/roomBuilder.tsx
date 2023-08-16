@@ -28,7 +28,6 @@ export default function RoomBuilder({
     });
 
   function toggleModal() {
-    console.log(showModal);
     setShowModal(!showModal);
   }
 
