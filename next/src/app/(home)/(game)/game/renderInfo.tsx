@@ -1,62 +1,11 @@
-import { Socket } from 'socket.io-client';
+import Ball from './classes/ball';
+import { GameMap } from './classes/gameMap';
+import GamePlayer from './classes/gamePlayer';
 
-enum MapType {
-  DEFAULT,
-  NEW,
-}
-
-enum MapDifficulty {
-  EASY,
-  HARD,
-}
-
-enum PlayerSide {
-  LEFT,
-  RIGHT,
-}
-
-enum UserStatus {
-  ONLINE,
-  OFFLINE,
-}
-
-interface GameMap {
-  type: MapType;
-  difficulty: MapDifficulty;
-}
-
-interface Position {
-  x: number;
-  y: number;
-}
-
-interface Ball {
-  position: Position;
-  color: string;
-}
-
-interface Bar {
-  position: Position;
-  side: PlayerSide;
-  color: string;
-}
-
-interface GamePlayer {
-  bar: Bar;
-  socket: Socket;
-  nickname: string;
-  status: UserStatus;
-  score: number;
-  side: PlayerSide;
-}
-
-interface Props {
-  gameMap: GameMap;
-  ball: Ball;
-  gamePlayers: GamePlayer[];
-}
 export default class RenderInfo {
-  constructor() {} // private props: Props,
+  public gameMap: GameMap = new GameMap();
+  public ball: Ball = new Ball();
+  public gamePlayers: GamePlayer[] = new Array<GamePlayer>();
 
   draw(ctx: CanvasRenderingContext2D) {
     //배경
@@ -97,7 +46,5 @@ export default class RenderInfo {
     );
   }
 
-  update(props: Props) {
-    // this.props = props;
-  }
+  update() {}
 }
