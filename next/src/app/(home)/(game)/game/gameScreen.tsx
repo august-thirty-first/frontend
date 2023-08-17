@@ -4,7 +4,6 @@ import { RefObject, useContext, useEffect, useRef, useState } from 'react';
 import { GameSocketContext } from '../createGameSocketContext';
 import RenderInfo from './renderInfo';
 import GamePlayer from './classes/gamePlayer';
-import { render } from 'react-dom';
 
 //사용자의 환경에 따라 보내준다. 지금은 임시로 고정값으로 설정.
 const CLIENT_WIDTH = 1000;
@@ -14,8 +13,6 @@ const GameScreen: React.FC = () => {
   const socket = useContext(GameSocketContext);
   const canvasRef: RefObject<HTMLCanvasElement> =
     useRef<HTMLCanvasElement>(null);
-
-  let renderInfo = new RenderInfo(); //빈 객체로 초기화
 
   //처음에 한 번만 보내준다
   socket.emit(
@@ -27,6 +24,7 @@ const GameScreen: React.FC = () => {
   );
 
   useEffect(() => {
+    let renderInfo = new RenderInfo(); //빈 객체로 초기화
     const canvas = canvasRef.current;
     const ctx = canvas?.getContext('2d');
 
