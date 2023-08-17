@@ -3,9 +3,9 @@ import { GameMap } from './classes/gameMap';
 import GamePlayer from './classes/gamePlayer';
 
 export default class RenderInfo {
-  public gameMap: GameMap = new GameMap();
-  public ball: Ball = new Ball();
   public gamePlayers: GamePlayer[] = new Array<GamePlayer>();
+  public ball: Ball = new Ball();
+  public gameMap: GameMap = new GameMap();
 
   draw(ctx: CanvasRenderingContext2D) {
     //배경
@@ -46,5 +46,9 @@ export default class RenderInfo {
     );
   }
 
-  update() {}
+  update(gameMap: GameMap, ball: Ball, gamePlayers: GamePlayer[]) {
+    this.gameMap = gameMap;
+    this.ball = ball;
+    this.gamePlayers = gamePlayers;
+  }
 }

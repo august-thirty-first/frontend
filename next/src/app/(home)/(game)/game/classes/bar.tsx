@@ -1,4 +1,4 @@
-import Position from './position';
+import Coordinate from './coordinate';
 
 export enum PlayerSide {
   LEFT,
@@ -6,9 +6,10 @@ export enum PlayerSide {
 }
 
 export default class Bar {
-  constructor(
-    public position: Position,
-    public side: PlayerSide,
-    public color: string,
-  ) {}
+  public side: PlayerSide = 0;
+  public color: string = '';
+  public position: Coordinate = new Coordinate();
+  public velocity: Coordinate = new Coordinate();
+  public width: number = 0;
+  public length: number = 0;
 }
