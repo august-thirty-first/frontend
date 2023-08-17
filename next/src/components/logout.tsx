@@ -16,7 +16,7 @@ export default function Logout() {
         method: 'GET',
         credentials: 'include',
       });
-      if (socket.active) socket.disconnect();
+      if (socket.connected) socket.disconnect();
       router.replace('/login');
     } catch (error: any) {
       alert(`Error during logout: ${error.message}`);
