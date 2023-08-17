@@ -3,6 +3,8 @@
 import { RefObject, useContext, useEffect, useRef, useState } from 'react';
 import { GameSocketContext } from '../createGameSocketContext';
 import RenderInfo from './renderInfo';
+import GamePlayer from './classes/gamePlayer';
+import { render } from 'react-dom';
 
 //사용자의 환경에 따라 보내준다. 지금은 임시로 고정값으로 설정.
 const CLIENT_WIDTH = 1000;
@@ -15,6 +17,15 @@ const GameScreen: React.FC = () => {
 
   let renderInfo = new RenderInfo(); //빈 객체로 초기화
 
+  //처음에 한 번만 보내준다
+  socket.emit(
+    'renderReady',
+    JSON.stringify({
+      clientWidth: CLIENT_WIDTH,
+      clientHeight: CLIENT_HEIGHT,
+    }),
+  );
+
   useEffect(() => {
     const canvas = canvasRef.current;
     const ctx = canvas?.getContext('2d');
@@ -24,31 +35,65 @@ const GameScreen: React.FC = () => {
       canvas.height = CLIENT_HEIGHT;
     }
 
-    socket.emit(
-      'renderReady',
-      JSON.stringify({
-        clientWidth: canvas?.width,
-        clientHeight: canvas?.height,
-      }),
-    );
-
-    //TODO: 정보 업데이트. 15ms에 한 번씩 온다
+    //정보 업데이트. 15ms에 한 번씩 온다
     socket.on('updateRenderInfo', data => {
       const json = JSON.parse(data);
       renderInfo.update(json.gameMap, json.ball, json.gamePlayers);
     });
 
-    //TODO: 키 이벤트 감지하고, 내 정보 바꿔서 그리고, socket event에 보내기
-    window.addEventListener('keydown', () => {
-      console.log('key pressed');
+    //키 이벤트 감지하고, 내 정보 바꿔서 그리고, socket event에 보내기
+    const keys = {
+      w: {
+        pressed: false,
+      },
+      s: {
+        pressed: false,
+      },
+    };
+    window.addEventListener('keydown', event => {
+      if (!renderInfo.gamePlayers[socket.id]) return;
+      switch (event.code) {
+        case 'KeyW':
+          keys.w.pressed = true;
+          break;
+
+        case 'KeyS':
+          keys.s.pressed = true;
+          break;
+      }
     });
 
-    //TODO: animate()를 대신하여, 변경사항이 있을 때마다 그려준다. (저장된 renderInfo 사용, canvas fill 호출)
-    // 첫 업데이트 이후에 그려져야 함? 아녀도 초기화되어있어서 괜찮음
+    window.addEventListener('keyup', event => {
+      if (!renderInfo.gamePlayers[socket.id]) return;
+      switch (event.code) {
+        case 'KeyW':
+          keys.w.pressed = false;
+          break;
+
+        case 'KeyS':
+          keys.s.pressed = false;
+          break;
+      }
+    });
+
+    setInterval(() => {
+      if (keys.w.pressed) {
+        renderInfo.gamePlayers[socket.id].bar.position.y -=
+          renderInfo.gamePlayers[socket.id].bar.velocity.y;
+        socket.emit('keyDown', 'keyW');
+      }
+      if (keys.s.pressed) {
+        renderInfo.gamePlayers[socket.id].bar.position.y +=
+          renderInfo.gamePlayers[socket.id].bar.velocity.y;
+        socket.emit('keyDown', 'keyS');
+      }
+    }, 15);
+
+    //재귀함수. 반복해서 그려준다.
     if (ctx) {
       renderInfo.animate(ctx);
     }
-  }, [renderInfo, socket]);
+  }, [socket]);
 
   return <canvas ref={canvasRef} />;
 };
