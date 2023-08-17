@@ -6,7 +6,7 @@ import { useFetch } from '@/lib/useFetch';
 import ChatRoom from '@/interfaces/chatRoom.interface';
 import RoomList from '@/app/(home)/(communication)/channel/_room/roomList';
 
-export default function ChatRoomList() {
+export default function AllRoomList() {
   return (
     <div>
       <h2> 전체 채팅방 목록 </h2>
