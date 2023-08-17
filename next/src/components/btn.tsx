@@ -13,8 +13,12 @@ export default function Btn({
   disabled?: boolean;
 }) {
   return (
-    <button type={type} onClick={handler} disabled={disabled}>
-
+    <button
+      className="lg:px-6 lg:py-3 px-3 py-1 bg-blue-500"
+      type={type}
+      onClick={handler}
+      disabled={disabled}
+    >
       {title}
     </button>
   );
