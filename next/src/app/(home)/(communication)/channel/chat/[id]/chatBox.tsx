@@ -1,12 +1,12 @@
 'use client';
 import SubmitForm from '@/components/submitForm';
-import { useSearchParams } from 'next/navigation';
+import { useParams } from 'next/navigation';
 import { useContext, useEffect, useRef, useState } from 'react';
 import { HomeSocketContext } from '@/app/(home)/createHomeSocketContext';
 
 export default function ChatBox() {
-  const searchParams = useSearchParams();
-  const roomId = searchParams.get('roomId');
+  const params = useParams();
+  const roomId = params.id;
   const socket = useContext(HomeSocketContext);
   const messageContainerRef = useRef<HTMLDivElement>(null);
   const [messages, setMessages] = useState<string[]>([]);
