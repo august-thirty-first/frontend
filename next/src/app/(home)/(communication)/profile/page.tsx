@@ -4,6 +4,7 @@ import { useFetch } from '@/lib/useFetch';
 import SearchBar, { searchProfileResponse } from './searchBar';
 import Info from './info';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 import Btn from '@/components/btn';
 import { useState } from 'react';
 import FriendBtn from './_friend/friendBtn';
@@ -21,6 +22,7 @@ const ProfilePage = () => {
       url: 'profile/me',
       method: 'GET',
     });
+  const nickname_params = useSearchParams().get('nickname');
   const [profile, setProfile] = useState<searchProfileResponse>();
   const isMyProfile = profile?.nickname === dataRef?.current?.nickname;
 
@@ -29,7 +31,7 @@ const ProfilePage = () => {
   return (
     <div>
       <SearchBar
-        myNickname={dataRef?.current?.nickname}
+        myNickname={nickname_params || dataRef?.current?.nickname}
         setProfile={setProfile}
       />
       <div>
