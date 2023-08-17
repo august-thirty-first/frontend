@@ -3,7 +3,7 @@ import { GameMap } from './classes/gameMap';
 import GamePlayer from './classes/gamePlayer';
 
 export default class RenderInfo {
-  public gamePlayers: GamePlayer[] = new Array<GamePlayer>();
+  public gamePlayers: { [socketId: string]: GamePlayer } = {};
   public ball: Ball = new Ball();
   public gameMap: GameMap = new GameMap();
 
@@ -48,7 +48,11 @@ export default class RenderInfo {
     requestAnimationFrame(animateCallback);
   }
 
-  update(gameMap: GameMap, ball: Ball, gamePlayers: GamePlayer[]) {
+  update(
+    gameMap: GameMap,
+    ball: Ball,
+    gamePlayers: { [socketId: string]: GamePlayer },
+  ) {
     this.gameMap = gameMap;
     this.ball = ball;
     this.gamePlayers = gamePlayers;
