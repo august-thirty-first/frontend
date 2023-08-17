@@ -4,13 +4,13 @@ import { HomeSocketContext } from '@/app/(home)/createHomeSocketContext';
 import { useRouter } from 'next/navigation';
 import { useFetch } from '@/lib/useFetch';
 import ChatRoom from '@/interfaces/chatRoom.interface';
-import GetRoomList from '@/app/(home)/(communication)/channel/_room/getRoomList';
+import RoomList from '@/app/(home)/(communication)/channel/_room/roomList';
 
 export default function ChatRoomList() {
   return (
     <div>
       <h2> 전체 채팅방 목록 </h2>
-      <GetRoomList url={'chat'} />
+      <RoomList listAPI={'chat'} joinAPI={'chat/participant'} />
     </div>
   );
 }
