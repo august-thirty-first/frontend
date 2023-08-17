@@ -41,7 +41,9 @@ const ProfilePage = () => {
             <Btn title="수정" />
           </Link>
         )}
-        {!isMyProfile && profile && <FriendBtn profile={profile} />}
+        {!isMyProfile && profile && (
+          <FriendBtn id={profile.id} status={profile.friend_status} />
+        )}
       </div>
     </div>
   );

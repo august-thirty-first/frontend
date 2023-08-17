@@ -1,36 +1,36 @@
 import { mutate } from 'swr';
 import FriendActionBtn from './friendActionBtn';
-import { searchProfileResponse, searchUserRequestStatus } from '../searchBar';
+import { searchUserRequestStatus } from '../searchBar';
 
 interface FriendBtnProps {
-  profile: searchProfileResponse;
+  id: number;
+  status: searchUserRequestStatus | null;
 }
 
-const FriendBtn = ({ profile }: FriendBtnProps) => {
-  const friend_status = profile.friend_status;
-
+const FriendBtn = ({ id, status }: FriendBtnProps) => {
   const refreshBtn = async () => {
     mutate('/friend');
+    mutate('/alarms');
     mutate('/searchBar');
   };
 
   return (
     <div>
-      {friend_status === null && (
+      {status === null && (
         <FriendActionBtn
           title="친구 요청"
-          userId={profile.id}
+          userId={id}
           refreshBtn={refreshBtn}
           url="friend/request"
           method="POST"
           successStatusCode={201}
         />
       )}
-      {friend_status === searchUserRequestStatus.RecvRequest && (
+      {status === searchUserRequestStatus.RecvRequest && (
         <>
           <FriendActionBtn
             title="친구 수락"
-            userId={profile.id}
+            userId={id}
             refreshBtn={refreshBtn}
             url="friend/approve"
             method="PATCH"
@@ -38,7 +38,7 @@ const FriendBtn = ({ profile }: FriendBtnProps) => {
           />
           <FriendActionBtn
             title="친구 거절"
-            userId={profile.id}
+            userId={id}
             refreshBtn={refreshBtn}
             url="friend/reject"
             method="PATCH"
@@ -46,20 +46,20 @@ const FriendBtn = ({ profile }: FriendBtnProps) => {
           />
         </>
       )}
-      {friend_status === searchUserRequestStatus.SendRequest && (
+      {status === searchUserRequestStatus.SendRequest && (
         <FriendActionBtn
           title="친구 요청 취소"
-          userId={profile.id}
+          userId={id}
           refreshBtn={refreshBtn}
           url="friend/cancel"
           method="PATCH"
           successStatusCode={204}
         />
       )}
-      {friend_status === searchUserRequestStatus.Allow && (
+      {status === searchUserRequestStatus.Allow && (
         <FriendActionBtn
           title="친구 삭제"
-          userId={profile.id}
+          userId={id}
           refreshBtn={refreshBtn}
           url="friend/delete"
           method="DELETE"
