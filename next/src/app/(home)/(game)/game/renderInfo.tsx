@@ -7,41 +7,45 @@ export default class RenderInfo {
   public ball: Ball = new Ball();
   public gameMap: GameMap = new GameMap();
 
-  draw(ctx: CanvasRenderingContext2D) {
-    //배경
-    ctx.fillStyle = 'rgb(31, 31, 36)';
-    ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+  animate(ctx: CanvasRenderingContext2D) {
+    const animateCallback: FrameRequestCallback = timestamp => {
+      //배경
+      ctx.fillStyle = 'rgb(31, 31, 36)';
+      ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 
-    //금
-    ctx.fillStyle = 'rgb(102, 103, 171)';
-    ctx.fillRect(
-      ctx.canvas.width / 2 - ctx.canvas.width / 128 / 2,
-      0,
-      ctx.canvas.width / 128,
-      ctx.canvas.height,
-    );
-
-    //ball
-    ctx.beginPath();
-    ctx.fillStyle = this.ball.color;
-    ctx.arc(
-      this.ball.position.x,
-      this.ball.position.y,
-      this.ball.radius + 100,
-      0,
-      10,
-    );
-    ctx.fill();
-
-    for (const id in this.gamePlayers) {
-      ctx.fillStyle = this.gamePlayers[id].bar.color;
+      //금
+      ctx.fillStyle = 'rgb(102, 103, 171)';
       ctx.fillRect(
-        this.gamePlayers[id].bar.position.x,
-        this.gamePlayers[id].bar.position.y,
-        this.gamePlayers[id].bar.width,
-        this.gamePlayers[id].bar.length,
+        ctx.canvas.width / 2 - ctx.canvas.width / 128 / 2,
+        0,
+        ctx.canvas.width / 128,
+        ctx.canvas.height,
       );
-    }
+
+      //ball
+      ctx.beginPath();
+      ctx.fillStyle = this.ball.color;
+      ctx.arc(
+        this.ball.position.x,
+        this.ball.position.y,
+        this.ball.radius,
+        0,
+        10,
+      );
+      ctx.fill();
+
+      for (const id in this.gamePlayers) {
+        ctx.fillStyle = this.gamePlayers[id].bar.color;
+        ctx.fillRect(
+          this.gamePlayers[id].bar.position.x,
+          this.gamePlayers[id].bar.position.y,
+          this.gamePlayers[id].bar.width,
+          this.gamePlayers[id].bar.length,
+        );
+      }
+      requestAnimationFrame(animateCallback);
+    };
+    requestAnimationFrame(animateCallback);
   }
 
   update(gameMap: GameMap, ball: Ball, gamePlayers: GamePlayer[]) {

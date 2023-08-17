@@ -36,7 +36,6 @@ const GameScreen: React.FC = () => {
     socket.on('updateRenderInfo', data => {
       const json = JSON.parse(data);
       renderInfo.update(json.gameMap, json.ball, json.gamePlayers);
-      console.log(renderInfo);
     });
 
     //TODO: 키 이벤트 감지하고, 내 정보 바꿔서 그리고, socket event에 보내기
@@ -44,11 +43,12 @@ const GameScreen: React.FC = () => {
       console.log('key pressed');
     });
 
+    //TODO: animate()를 대신하여, 변경사항이 있을 때마다 그려준다. (저장된 renderInfo 사용, canvas fill 호출)
+    // 첫 업데이트 이후에 그려져야 함? 아녀도 초기화되어있어서 괜찮음
     if (ctx) {
-      //TODO: animate()를 대신하여, 변경사항이 있을 때마다 그려준다. (저장된 renderInfo 사용, canvas fill 호출)
-      renderInfo.draw(ctx);
+      renderInfo.animate(ctx);
     }
-  });
+  }, [renderInfo, socket]);
 
   return <canvas ref={canvasRef} />;
 };
