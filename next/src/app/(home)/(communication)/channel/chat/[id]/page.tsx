@@ -1,4 +1,4 @@
-ㅗ'use client';
+'use client';
 import { useContext, useEffect, useState } from 'react';
 import { HomeSocketContext } from '@/app/(home)/createHomeSocketContext';
 import ChatBox from '@/app/(home)/(communication)/channel/chat/[id]/chatBox';
