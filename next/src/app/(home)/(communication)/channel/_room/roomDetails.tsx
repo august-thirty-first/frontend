@@ -27,15 +27,14 @@ export default function RoomDetails({
     bodyRef.current = JSON.stringify({
       chat_room_id: room.id,
       password: requirePassword ? password : '',
-      authority: 'nomral',
     });
 
     await fetchData();
     // Todo: 실패 상황일 때 팝업
-    if (statusCodeRef?.current == 200 || statusCodeRef?.current === 201) {
-      router.push(`/channel/chat/${room.id}`);
-    } else {
+    if (statusCodeRef?.current !== undefined && statusCodeRef?.current >= 400) {
       router.push('/channel');
+    } else {
+      router.push(`/channel/chat/${room.id}`);
     }
   }
 

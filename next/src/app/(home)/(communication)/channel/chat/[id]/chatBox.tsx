@@ -33,7 +33,10 @@ export default function ChatBox() {
   function handleOnSubmit(event: any) {
     event.preventDefault();
     setMessages(prevMessages => [...prevMessages, `You: ${inputMessage}`]);
-    socket.emit('message', { roomId: roomId, inputMessage });
+    socket.emit(
+      'message',
+      JSON.stringify({ roomId: roomId, inputMessage: inputMessage }),
+    );
     setInputMessage('');
   }
 
