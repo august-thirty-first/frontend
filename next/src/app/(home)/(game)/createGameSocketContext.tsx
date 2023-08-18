@@ -9,7 +9,7 @@ const gameSocket = isClient
     })
   : io();
 
-const GameSocketContext = createContext(gameSocket);
+export const GameSocketContext = createContext(gameSocket);
 const GameSocketProvider = ({ children }: { children: React.ReactNode }) => {
   return (
     <GameSocketContext.Provider value={gameSocket}>

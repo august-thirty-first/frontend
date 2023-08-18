@@ -23,7 +23,6 @@ export default function Navigation() {
         </h1>
       </div>
       <nav className="flex justify-around mt-3 lg:mt-5 mb-3">
-        <NavLink href="/game">레더큐 참여</NavLink>
         <NavLink href="/channel">채팅 채널 보기</NavLink>
         <NavLink href="/profile">프로필 보기</NavLink>
         <Logout />
