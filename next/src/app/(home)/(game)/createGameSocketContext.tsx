@@ -2,9 +2,12 @@
 import io from 'socket.io-client';
 import { createContext } from 'react';
 
-const gameSocket = io('http://localhost:3000/game', {
-  transports: ['websocket'],
-});
+const isClient = typeof window !== 'undefined';
+const gameSocket = isClient
+  ? io('http://localhost:3000/game', {
+      transports: ['websocket'],
+    })
+  : io();
 
 const GameSocketContext = createContext(gameSocket);
 const GameSocketProvider = ({ children }: { children: React.ReactNode }) => {
