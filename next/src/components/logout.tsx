@@ -12,6 +12,7 @@ export default function Logout() {
 
   const onClick = async () => {
     try {
+      alert('로그아웃 되었습니다.');
       await fetch(`${backend_url}/auth/logout`, {
         method: 'GET',
         credentials: 'include',
@@ -23,9 +24,9 @@ export default function Logout() {
     }
   };
 
-  socket.on('disconnect', () => {
-    alert('서버와의 연결이 끊어졌습니다. 다시 로그인해주세요.');
-    onClick();
+  socket.on('disconnect', async () => {
+    const isClient = typeof window !== 'undefined';
+    if (isClient) await onClick();
   });
 
   return <Btn handler={onClick} title="logout" />;

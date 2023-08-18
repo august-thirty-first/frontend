@@ -1,3 +1,6 @@
+'use client';
+
+import { HomeSocketContext } from '@/app/(home)/createHomeSocketContext';
 import { useRouter } from 'next/navigation';
 import {
   useEffect,
@@ -5,6 +8,7 @@ import {
   useRef,
   MutableRefObject,
   useState,
+  useContext,
 } from 'react';
 
 interface fetchResponse<T> {
@@ -33,6 +37,7 @@ export function useFetch<T>({
   body,
   contentType,
 }: useFetchProps): fetchResponse<T> {
+  const socket = useContext(HomeSocketContext);
   const [isLoading, setIsLoading] = useState<boolean>(autoFetch ? true : false);
   const statusCodeRef = useRef<number>();
   const urlRef = useRef<string>(url);
@@ -74,6 +79,7 @@ export function useFetch<T>({
       if (errorDataRef.current) {
         const errorMsg = errorDataRef.current.message;
         if (response.status === 401 && errorMsg === 'UNAUTHORIZED') {
+          if (socket.connected) socket.disconnect();
           alert('다시 로그인을 해주세요.');
           router.push('/login');
         } else alert(errorMsg);
@@ -85,7 +91,7 @@ export function useFetch<T>({
     } finally {
       setIsLoading(false);
     }
-  }, [urlRef, contentType, method, bodyRef, router]);
+  }, [urlRef, contentType, method, bodyRef, router, socket]);
 
   useEffect(() => {
     if (autoFetch) fetchData();
