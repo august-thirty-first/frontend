@@ -64,7 +64,7 @@ export default function RoomBuilder({
     Todo: 성공과 실패 잠깐 띄웠다가 사라지게 하는 박스로 만들면 좋을것같음
     Todo: 성공했으면 반환된 채팅방에 redirect
      */
-    if (statusCodeRef?.current === 200 || statusCodeRef?.current === 200) {
+    if (statusCodeRef?.current === 200 || statusCodeRef?.current === 201) {
       alert('성공!');
     } else {
       alert('실패!');
