@@ -1,7 +1,7 @@
 import ChatRoom from '@/interfaces/chatRoom.interface';
 import User from '@/interfaces/user.interface';
 
-enum ParticipantAuthority {
+export enum ParticipantAuthority {
   BOSS = 'boss',
   ADMIN = 'admin',
   NORMAL = 'normal',
