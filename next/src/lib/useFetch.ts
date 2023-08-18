@@ -1,3 +1,6 @@
+'use client';
+
+import { HomeSocketContext } from '@/app/(home)/createHomeSocketContext';
 import { useRouter } from 'next/navigation';
 import {
   useEffect,
@@ -5,17 +8,18 @@ import {
   useRef,
   MutableRefObject,
   useState,
+  useContext,
 } from 'react';
 
 interface fetchResponse<T> {
   isLoading: boolean;
-  urlRef: MutableRefObject<string | undefined>;
+  urlRef: MutableRefObject<string>;
   bodyRef: MutableRefObject<any | undefined>;
   statusCodeRef?: MutableRefObject<number | undefined>;
   dataRef?: MutableRefObject<T | undefined>;
   errorDataRef?: MutableRefObject<any | undefined>;
   errorRef?: MutableRefObject<string | undefined>;
-  fetchData: (requestBodyOverride?: any) => Promise<void>;
+  fetchData: (requestBodyOverride?: any) => Promise<T | undefined>;
 }
 
 interface useFetchProps {
@@ -33,6 +37,7 @@ export function useFetch<T>({
   body,
   contentType,
 }: useFetchProps): fetchResponse<T> {
+  const socket = useContext(HomeSocketContext);
   const [isLoading, setIsLoading] = useState<boolean>(autoFetch ? true : false);
   const statusCodeRef = useRef<number>();
   const urlRef = useRef<string>(url);
@@ -43,7 +48,7 @@ export function useFetch<T>({
   const backend_url = 'http://localhost:3000/api/';
   const router = useRouter();
 
-  const fetchData = useCallback(async () => {
+  const fetchData = useCallback(async (): Promise<T | undefined> => {
     try {
       setIsLoading(true);
       const options: RequestInit = {
@@ -53,7 +58,10 @@ export function useFetch<T>({
       if (bodyRef) options.body = bodyRef.current;
       if (contentType) options.headers = { 'Content-Type': contentType };
 
-      const response: Response = await fetch(`${backend_url}${url}`, options);
+      const response: Response = await fetch(
+        `${backend_url}${urlRef.current}`,
+        options,
+      );
       statusCodeRef.current = response.status;
       const responseType: string | null = response.headers.get('content-type');
       const contentLength: string | null =
@@ -71,17 +79,19 @@ export function useFetch<T>({
       if (errorDataRef.current) {
         const errorMsg = errorDataRef.current.message;
         if (response.status === 401 && errorMsg === 'UNAUTHORIZED') {
+          if (socket.connected) socket.disconnect();
           alert('다시 로그인을 해주세요.');
           router.push('/login');
         } else alert(errorMsg);
       }
+      return dataRef.current;
     } catch (error: any) {
       error.current = error.message;
       alert(error.message);
     } finally {
       setIsLoading(false);
     }
-  }, [url, contentType, method, bodyRef, router]);
+  }, [urlRef, contentType, method, bodyRef, router, socket]);
 
   useEffect(() => {
     if (autoFetch) fetchData();

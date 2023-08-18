@@ -2,9 +2,12 @@
 import io from 'socket.io-client';
 import { createContext, useEffect } from 'react';
 
-const homeSocket = io('http://localhost:3000/home', {
-  transports: ['websocket'],
-});
+const isClient = typeof window !== 'undefined';
+const homeSocket = isClient
+  ? io('http://localhost:3000/home', {
+      transports: ['websocket'],
+    })
+  : io();
 
 export const HomeSocketContext = createContext(homeSocket);
 const HomeSocketProvider = ({ children }: { children: React.ReactNode }) => {
