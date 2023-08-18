@@ -26,7 +26,7 @@ export default function Chat() {
     router.push('/channel');
     return;
   }
-  socket.emit('enterRoom', roomId);
+  socket.emit('enterRoom', JSON.stringify({ roomId: roomId }));
 
   return (
     dataRef?.current && (
