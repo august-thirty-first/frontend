@@ -1,3 +1,10 @@
+import GameScreen from "./gameScreen";
+
 export default function GamePage() {
-  return <h1>Game</h1>;
-}
+  return (
+    <div>
+      <GameScreen />
+    </div>
+  )
+  
+};
