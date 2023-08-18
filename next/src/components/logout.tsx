@@ -23,9 +23,12 @@ export default function Logout() {
     }
   };
 
-  socket.on('disconnect', () => {
-    alert('서버와의 연결이 끊어졌습니다. 다시 로그인해주세요.');
-    onClick();
+  socket.on('disconnect', async () => {
+    const isClient = typeof window !== 'undefined';
+    if (isClient) {
+      alert('서버와의 연결이 끊어졌습니다.');
+      await onClick();
+    }
   });
 
   return <Btn handler={onClick} title="logout" />;
