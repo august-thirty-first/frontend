@@ -1,20 +1,20 @@
 'use client';
+import SubmitForm from '@/components/submitForm';
+import { useParams } from 'next/navigation';
 import { useContext, useEffect, useRef, useState } from 'react';
 import { HomeSocketContext } from '@/app/(home)/createHomeSocketContext';
-import { useSearchParams } from 'next/navigation';
-import SubmitForm from '@/components/submitForm';
 
-export default function Chat() {
+export default function ChatBox() {
+  const params = useParams();
+  const roomId = params.id;
   const socket = useContext(HomeSocketContext);
   const messageContainerRef = useRef<HTMLDivElement>(null);
   const [messages, setMessages] = useState<string[]>([]);
-  const searchParams = useSearchParams();
-  const roomName = searchParams.get('roomName');
   const [inputMessage, setInputMessage] = useState<string>('');
 
   useEffect(() => {
     setMessages(prevMessage => []);
-  }, [roomName]);
+  }, [roomId]);
 
   useEffect(() => {
     socket.on('message', msg => {
@@ -33,7 +33,10 @@ export default function Chat() {
   function handleOnSubmit(event: any) {
     event.preventDefault();
     setMessages(prevMessages => [...prevMessages, `You: ${inputMessage}`]);
-    socket.emit('message', { roomName, inputMessage });
+    socket.emit(
+      'message',
+      JSON.stringify({ roomId: roomId, inputMessage: inputMessage }),
+    );
     setInputMessage('');
   }
 
@@ -43,7 +46,7 @@ export default function Chat() {
 
   return (
     <div>
-      <h1>{roomName}</h1>
+      <h1>{roomId}</h1>
       <div
         ref={messageContainerRef}
         style={{ width: '100%', height: '200px', overflow: 'auto' }}
