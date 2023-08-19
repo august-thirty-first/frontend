@@ -1,5 +1,6 @@
 'use client';
 
+import { useShowModal } from '@/app/ShowModalContext';
 import { useFetch } from '@/lib/useFetch';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import useSWR from 'swr';
@@ -30,13 +31,14 @@ const SearchBar = ({ myNickname, setProfile }: searchBarProps) => {
       url: `profile/user?nickname=${nickname}`,
       method: 'GET',
     });
+  const alertModal = useShowModal();
   const { data } = useSWR('/searchBar', fetchData);
 
   const validate = (): boolean => {
     let trim_nickname = nickname.trim();
     setNickname(trim_nickname);
     if (trim_nickname.length === 0) {
-      alert('닉네임에 빈 문자열을 입력하면 안됩니다.');
+      alertModal('닉네임에 빈 문자열을 입력하면 안됩니다.');
       return false;
     }
     return true;
@@ -48,7 +50,7 @@ const SearchBar = ({ myNickname, setProfile }: searchBarProps) => {
     await fetchData();
     if (statusCodeRef?.current === 200) {
       if (dataRef?.current) setProfile(dataRef.current);
-      else alert('찾을 수 없는 사용자입니다.');
+      else alertModal('찾을 수 없는 사용자입니다.');
     }
   };
 

@@ -1,3 +1,4 @@
+import { useShowModal } from '@/app/ShowModalContext';
 import Btn from '@/components/btn';
 import { useFetch } from '@/lib/useFetch';
 import { useEffect } from 'react';
@@ -26,6 +27,7 @@ const FriendActionBtn = ({
     body: JSON.stringify({ userId }),
     contentType: 'application/json',
   });
+  const alertModal = useShowModal();
 
   useEffect(() => {
     bodyRef.current = JSON.stringify({ userId });
@@ -34,7 +36,7 @@ const FriendActionBtn = ({
   const onClick = async (e: React.MouseEvent<HTMLElement>) => {
     e.preventDefault();
     await fetchData();
-    if (statusCodeRef?.current === successStatusCode) alert('요청 성공');
+    if (statusCodeRef?.current === successStatusCode) alertModal('요청 성공');
     refreshBtn();
   };
 

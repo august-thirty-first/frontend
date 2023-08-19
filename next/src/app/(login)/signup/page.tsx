@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import Nickname from './nickname';
 import Avata from './avata';
 import { useFetch } from '@/lib/useFetch';
+import { useShowModal } from '@/app/ShowModalContext';
 
 export default function SignUp() {
   const { isLoading, statusCodeRef, bodyRef, fetchData } = useFetch<void>({
@@ -17,12 +18,13 @@ export default function SignUp() {
   const [nickname, setNickname] = useState<string>('');
   const [file, setFile] = useState<File | null>(null);
   const router = useRouter();
+  const alertModal = useShowModal();
 
   const validate = (): boolean => {
     let trim_nickname = nickname.trim();
     setNickname(trim_nickname);
     if (trim_nickname.length === 0) {
-      alert('닉네임에 빈 문자열을 입력하면 안됩니다.');
+      alertModal('닉네임에 빈 문자열을 입력하면 안됩니다.');
       return false;
     }
     return true;
@@ -38,7 +40,7 @@ export default function SignUp() {
     bodyRef.current = formData;
     await fetchData();
     if (statusCodeRef?.current === 200) {
-      alert('회원가입 성공');
+      alertModal('회원가입 성공');
       router.replace('/');
     }
   };
