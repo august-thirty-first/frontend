@@ -39,8 +39,7 @@ const OtpModal = ({ closeModal }: otpModalProps) => {
     return true;
   };
 
-  const onSubmit = async (e: React.MouseEvent<HTMLElement>) => {
-    e.preventDefault();
+  const onSubmit = async () => {
     if (!validate()) return;
     otpSetupAPI.bodyRef.current = JSON.stringify({
       token,
@@ -80,10 +79,14 @@ const OtpModal = ({ closeModal }: otpModalProps) => {
                 </p>
               </div>
               <input
+                onKeyDownCapture={e => {
+                  if (e.key === 'Enter') onSubmit();
+                }}
                 type="text"
                 name="token"
                 value={token}
                 onChange={e => setToken(e.target.value)}
+                autoFocus={true}
               />
               <Btn title="제출" handler={onSubmit} />
             </div>
