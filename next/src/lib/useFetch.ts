@@ -95,7 +95,8 @@ export function useFetch<T>({
 
   useEffect(() => {
     if (autoFetch) fetchData();
-  }, [fetchData, autoFetch]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return {
     isLoading,
