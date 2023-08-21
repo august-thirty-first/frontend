@@ -67,6 +67,7 @@ const SearchBar = ({ myNickname, setProfile }: searchBarProps) => {
         type="text"
         value={nickname}
         onChange={e => setNickname(e.target.value)}
+        autoFocus={true}
       />
       <input type="submit" value="검색" />
     </form>

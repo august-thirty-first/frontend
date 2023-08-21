@@ -24,8 +24,7 @@ const EditNickname = ({ nickname, setNickname, validate }: nicknameProps) => {
       contentType: 'application/json',
     });
 
-  const onHandle = async (e: React.MouseEvent<HTMLElement>) => {
-    e.preventDefault();
+  const onHandle = async () => {
     if (!validate()) return;
     bodyRef.current = JSON.stringify({ nickname });
     await fetchData();
@@ -41,6 +40,9 @@ const EditNickname = ({ nickname, setNickname, validate }: nicknameProps) => {
       <label htmlFor="nickname">닉네임</label>
       <br />
       <input
+        onKeyDownCapture={e => {
+          if (e.key === 'Enter') onHandle();
+        }}
         type="text"
         id="nickname"
         name="nickname"
@@ -49,7 +51,8 @@ const EditNickname = ({ nickname, setNickname, validate }: nicknameProps) => {
         onChange={event => {
           setNickname(event.target.value);
         }}
-      ></input>
+        autoFocus={true}
+      />
       <Btn title="중복검사" handler={onHandle} />
     </div>
   );

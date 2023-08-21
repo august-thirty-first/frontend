@@ -27,7 +27,7 @@ export default function Alarms() {
   return (
     <div className="max-w-2xl border-4">
       알람 목록
-      <ul role="list" className="divide-y divide-gray-200 dark:divide-gray-700">
+      <ul role="list" className="divide-y divide-gray-200">
         {data &&
           data.map(friend => (
             <li className="py-3 sm:py-4" key={friend.nickname}>
@@ -46,11 +46,11 @@ export default function Alarms() {
                   />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-gray-900 truncate dark:text-white">
+                  <p className="text-sm font-medium text-gray-900 truncate">
                     {friend.nickname}
                   </p>
                 </div>
-                <div className="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
+                <div className="inline-flex items-center text-base font-semibold text-gray-900">
                   <FriendBtn id={friend.id} status={friend.status} />
                 </div>
               </div>
