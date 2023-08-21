@@ -1,6 +1,7 @@
 'use client';
 
 import { HomeSocketContext } from '@/app/(home)/createHomeSocketContext';
+import { useShowModal } from '@/app/ShowModalContext';
 import { useRouter } from 'next/navigation';
 import {
   useEffect,
@@ -47,6 +48,7 @@ export function useFetch<T>({
   const dataRef = useRef<T>();
   const backend_url = 'http://localhost:3000/api/';
   const router = useRouter();
+  const alertModal = useShowModal();
 
   const fetchData = useCallback(async (): Promise<T | undefined> => {
     try {
@@ -80,22 +82,23 @@ export function useFetch<T>({
         const errorMsg = errorDataRef.current.message;
         if (response.status === 401 && errorMsg === 'UNAUTHORIZED') {
           if (socket.connected) socket.disconnect();
-          alert('다시 로그인을 해주세요.');
+          alertModal('다시 로그인을 해주세요.');
           router.push('/login');
-        } else alert(errorMsg);
+        } else alertModal(errorMsg);
       }
       return dataRef.current;
     } catch (error: any) {
       error.current = error.message;
-      alert(error.message);
+      alertModal(error.message);
     } finally {
       setIsLoading(false);
     }
-  }, [urlRef, contentType, method, bodyRef, router, socket]);
+  }, [urlRef, contentType, method, bodyRef, router, socket, alertModal]);
 
   useEffect(() => {
     if (autoFetch) fetchData();
-  }, [fetchData, autoFetch]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return {
     isLoading,

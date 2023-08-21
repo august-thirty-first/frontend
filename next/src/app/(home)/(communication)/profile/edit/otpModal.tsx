@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Image from 'next/image';
 import Btn from '@/components/btn';
 import { useFetch } from '@/lib/useFetch';
+import { useShowModal } from '@/app/ShowModalContext';
 
 interface otpGetResponse {
   qrImage: string;
@@ -28,12 +29,13 @@ const OtpModal = ({ closeModal }: otpModalProps) => {
     url: 'profile/otp',
     method: 'GET',
   });
+  const alertModal = useShowModal();
 
   const validate = (): boolean => {
     const trim_token = token.trim();
     setToken(trim_token);
     if (trim_token.length === 0) {
-      alert('token을 입력해주세요.');
+      alertModal('token을 입력해주세요.');
       return false;
     }
     return true;
@@ -47,7 +49,7 @@ const OtpModal = ({ closeModal }: otpModalProps) => {
     });
     await otpSetupAPI.fetchData();
     if (otpSetupAPI.statusCodeRef?.current === 204) {
-      alert('OTP 설정 완료');
+      alertModal('OTP 설정 완료');
       closeModal();
     }
   };

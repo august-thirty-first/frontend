@@ -1,6 +1,7 @@
 'use client';
 
 import { HomeSocketContext } from '@/app/(home)/createHomeSocketContext';
+import { useFetch } from '@/lib/useFetch';
 import { useRouter } from 'next/navigation';
 import { useContext } from 'react';
 import Btn from './btn';
@@ -8,31 +9,17 @@ import Btn from './btn';
 export default function Logout() {
   const socket = useContext(HomeSocketContext);
   const router = useRouter();
-  const backend_url = 'http://localhost:3000/api';
+  const { fetchData } = useFetch<void>({
+    autoFetch: false,
+    url: 'auth/logout',
+    method: 'GET',
+  });
 
   const onClick = async () => {
-    try {
-      await fetch(`${backend_url}/auth/logout`, {
-        method: 'GET',
-        credentials: 'include',
-      });
-      if (socket.connected) socket.disconnect();
-      router.replace('/login');
-    } catch (error: any) {
-      alert(`Error during logout: ${error.message}`);
-    }
+    await fetchData();
+    if (socket.connected) socket.disconnect();
+    router.replace('/login');
   };
-
-  socket.on('multipleConnect', () => {
-    alert('다중 로그인 상태입니다.');
-    router.push('/login');
-    socket.disconnect();
-  });
-
-  socket.on('expired', () => {
-    alert('서버와의 연결이 끊어졌습니다. 다시 로그인해주세요.');
-    onClick();
-  });
 
   return <Btn handler={onClick} title="logout" />;
 }

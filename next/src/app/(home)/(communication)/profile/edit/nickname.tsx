@@ -3,6 +3,7 @@
 import Btn from '@/components/btn';
 import { Dispatch, SetStateAction } from 'react';
 import { useFetch } from '@/lib/useFetch';
+import { useShowModal } from '@/app/ShowModalContext';
 
 interface nicknameProps {
   nickname: string;
@@ -23,6 +24,7 @@ const EditNickname = ({ nickname, setNickname, validate }: nicknameProps) => {
       body: JSON.stringify({ nickname }),
       contentType: 'application/json',
     });
+  const alertModal = useShowModal();
 
   const onHandle = async () => {
     if (!validate()) return;
@@ -30,8 +32,8 @@ const EditNickname = ({ nickname, setNickname, validate }: nicknameProps) => {
     await fetchData();
     if (statusCodeRef?.current === 200 && dataRef?.current) {
       if (dataRef?.current.status === true)
-        alert('이미 존재하는 nickname 입니다.');
-      else alert('OK');
+        alertModal('이미 존재하는 nickname 입니다.');
+      else alertModal('OK');
     }
   };
 
