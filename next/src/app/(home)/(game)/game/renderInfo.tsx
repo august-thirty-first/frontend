@@ -16,12 +16,12 @@ export default class RenderInfo {
       ctx.fillStyle = BLACK;
       ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 
-      if (this.gameMap.type === MapType.Crazy) {
+      if (this.gameMap.type == MapType.Crazy) {
         ctx.fillStyle = this.ball.color;
         for (let y = 0; y < ctx.canvas.height; y += this.ball.radius * 2) {
           for (let x = 0; x < ctx.canvas.width; x += this.ball.radius * 2) {
             ctx.beginPath();
-            ctx.arc(x, y, this.ball.radius, 0, Math.PI * 2);
+            ctx.arc(x, y, this.ball.radius * (4 / 5), 0, Math.PI * 2);
             ctx.fill();
           }
         }
