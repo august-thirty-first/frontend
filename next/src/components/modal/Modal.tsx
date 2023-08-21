@@ -9,9 +9,14 @@ import {
 interface ModalProps {
   children: React.ReactNode;
   closeModal: Dispatch<SetStateAction<boolean>>;
+  zIndex?: number;
 }
 
-export default function Modal({ children, closeModal }: ModalProps) {
+export default function Modal({
+  children,
+  closeModal,
+  zIndex = 10,
+}: ModalProps) {
   const overlay = useRef(null);
   const wrapper = useRef(null);
 
@@ -32,6 +37,7 @@ export default function Modal({ children, closeModal }: ModalProps) {
     <div
       ref={overlay}
       className="fixed z-10 left-0 right-0 top-0 bottom-0 mx-auto bg-black/60"
+      style={{ zIndex: zIndex }}
       onClick={onClick}
     >
       <div
