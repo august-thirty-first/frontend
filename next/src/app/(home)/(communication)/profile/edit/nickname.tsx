@@ -3,6 +3,7 @@
 import Btn from '@/components/btn';
 import { Dispatch, SetStateAction } from 'react';
 import { useFetch } from '@/lib/useFetch';
+import { useShowModal } from '@/app/ShowModalContext';
 
 interface nicknameProps {
   nickname: string;
@@ -23,16 +24,16 @@ const EditNickname = ({ nickname, setNickname, validate }: nicknameProps) => {
       body: JSON.stringify({ nickname }),
       contentType: 'application/json',
     });
+  const alertModal = useShowModal();
 
-  const onHandle = async (e: React.MouseEvent<HTMLElement>) => {
-    e.preventDefault();
+  const onHandle = async () => {
     if (!validate()) return;
     bodyRef.current = JSON.stringify({ nickname });
     await fetchData();
     if (statusCodeRef?.current === 200 && dataRef?.current) {
       if (dataRef?.current.status === true)
-        alert('이미 존재하는 nickname 입니다.');
-      else alert('OK');
+        alertModal('이미 존재하는 nickname 입니다.');
+      else alertModal('OK');
     }
   };
 
@@ -41,6 +42,9 @@ const EditNickname = ({ nickname, setNickname, validate }: nicknameProps) => {
       <label htmlFor="nickname">닉네임</label>
       <br />
       <input
+        onKeyDownCapture={e => {
+          if (e.key === 'Enter') onHandle();
+        }}
         type="text"
         id="nickname"
         name="nickname"
@@ -49,7 +53,8 @@ const EditNickname = ({ nickname, setNickname, validate }: nicknameProps) => {
         onChange={event => {
           setNickname(event.target.value);
         }}
-      ></input>
+        autoFocus={true}
+      />
       <Btn title="중복검사" handler={onHandle} />
     </div>
   );

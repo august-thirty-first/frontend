@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Image from 'next/image';
 import Btn from '@/components/btn';
 import { useFetch } from '@/lib/useFetch';
+import { useShowModal } from '@/app/ShowModalContext';
 
 interface otpGetResponse {
   qrImage: string;
@@ -28,19 +29,19 @@ const OtpModal = ({ closeModal }: otpModalProps) => {
     url: 'profile/otp',
     method: 'GET',
   });
+  const alertModal = useShowModal();
 
   const validate = (): boolean => {
     const trim_token = token.trim();
     setToken(trim_token);
     if (trim_token.length === 0) {
-      alert('token을 입력해주세요.');
+      alertModal('token을 입력해주세요.');
       return false;
     }
     return true;
   };
 
-  const onSubmit = async (e: React.MouseEvent<HTMLElement>) => {
-    e.preventDefault();
+  const onSubmit = async () => {
     if (!validate()) return;
     otpSetupAPI.bodyRef.current = JSON.stringify({
       token,
@@ -48,7 +49,7 @@ const OtpModal = ({ closeModal }: otpModalProps) => {
     });
     await otpSetupAPI.fetchData();
     if (otpSetupAPI.statusCodeRef?.current === 204) {
-      alert('OTP 설정 완료');
+      alertModal('OTP 설정 완료');
       closeModal();
     }
   };
@@ -80,10 +81,14 @@ const OtpModal = ({ closeModal }: otpModalProps) => {
                 </p>
               </div>
               <input
+                onKeyDownCapture={e => {
+                  if (e.key === 'Enter') onSubmit();
+                }}
                 type="text"
                 name="token"
                 value={token}
                 onChange={e => setToken(e.target.value)}
+                autoFocus={true}
               />
               <Btn title="제출" handler={onSubmit} />
             </div>
