@@ -1,9 +1,8 @@
 'use client';
 
-import { RefObject, useContext, useEffect, useRef, useState } from 'react';
+import { RefObject, useContext, useEffect, useRef } from 'react';
 import { GameSocketContext } from '../createGameSocketContext';
 import RenderInfo from './renderInfo';
-import GamePlayer from './classes/gamePlayer';
 
 //사용자의 환경에 따라 보내준다. 지금은 임시로 고정값으로 설정.
 const CLIENT_WIDTH = 1000;
