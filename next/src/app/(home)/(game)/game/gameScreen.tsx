@@ -5,6 +5,9 @@ import { GameSocketContext } from '../createGameSocketContext';
 import RenderInfo from './renderInfo';
 import GamePlayer from './classes/gamePlayer';
 import Modal from '@/components/modal/Modal';
+import ModalContent from '@/components/modal/ModalContent';
+import Btn from '@/components/btn';
+import ModalHeader from '@/components/modal/ModalHeader';
 
 //사용자의 환경에 따라 보내준다. 지금은 임시로 고정값으로 설정.
 const CLIENT_WIDTH = 1000;
@@ -13,7 +16,7 @@ const CLIENT_HEIGHT = 500;
 const GameScreen: React.FC = () => {
   const socket = useContext(GameSocketContext);
   let renderInfo = new RenderInfo(); //빈 객체로 초기화
-  const [showModal, setShowModal] = useState<boolean>(false);
+  const [showModal, setShowModal] = useState<boolean>(true /*임시*/);
   const canvasRef: RefObject<HTMLCanvasElement> =
     useRef<HTMLCanvasElement>(null);
 
@@ -21,6 +24,17 @@ const GameScreen: React.FC = () => {
     setShowModal(false);
     //do something
   };
+
+  let message = 'YOU WIN!'; /*임시*/
+  socket.on('gameOver', gameHistory => {
+    const json = JSON.parse(gameHistory);
+    if (renderInfo.gamePlayers[socket.id].nickName == json.winnerNickname) {
+      message = 'YOU WIN!';
+    } else {
+      message = 'YOU LOSE..';
+    }
+    setShowModal(true);
+  });
 
   //처음에 한 번만 보내준다
   socket.emit(
@@ -30,13 +44,6 @@ const GameScreen: React.FC = () => {
       clientHeight: CLIENT_HEIGHT,
     }),
   );
-
-  socket.on('gameOver', gameHistory => {
-    const json = JSON.parse(gameHistory);
-    if (renderInfo.gamePlayers[socket.id].nickName == json.winnerNickname) {
-      //모달 바디에 들어갈 텍스트를 설정해준다.
-    }
-  });
 
   //정보 업데이트. 15ms에 한 번씩 온다
   socket.on('updateRenderInfo', data => {
@@ -112,7 +119,13 @@ const GameScreen: React.FC = () => {
       <canvas ref={canvasRef} />
       {showModal && (
         <Modal closeModal={setShowModal}>
-          {<div>contents of the modal</div>}
+          <ModalHeader title="GAME OVER" />
+          <ModalContent>
+            <p>{message}</p>
+            <div>
+              <Btn title="홈으로" />
+            </div>
+          </ModalContent>
         </Modal>
       )}
     </div>
