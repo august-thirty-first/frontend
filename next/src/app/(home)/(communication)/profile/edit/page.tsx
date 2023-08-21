@@ -7,6 +7,7 @@ import Avata from '@/app/(login)/signup/avata';
 import EditNickname from './nickname';
 import { useFetch } from '@/lib/useFetch';
 import Btn from '@/components/btn';
+import { useShowModal } from '@/app/ShowModalContext';
 
 const Edit = () => {
   const { isLoading, statusCodeRef, bodyRef, fetchData } = useFetch<void>({
@@ -18,12 +19,13 @@ const Edit = () => {
   const [nickname, setNickname] = useState<string>('');
   const [file, setFile] = useState<File | null>(null);
   const router = useRouter();
+  const alertModal = useShowModal();
 
   const validate = (): boolean => {
     let trim_nickname = nickname.trim();
     setNickname(trim_nickname);
     if (trim_nickname.length === 0 && !file) {
-      alert('변경하실 닉네임 또는 사진을 넣어주세요.');
+      alertModal('변경하실 닉네임 또는 사진을 넣어주세요.');
       return false;
     }
     return true;
@@ -39,7 +41,7 @@ const Edit = () => {
     bodyRef.current = formData;
     await fetchData();
     if (statusCodeRef?.current === 204) {
-      alert('수정 완료');
+      alertModal('수정 완료.');
       router.replace('/profile');
     }
   };
