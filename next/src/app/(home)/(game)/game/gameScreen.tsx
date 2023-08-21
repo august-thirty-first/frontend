@@ -8,6 +8,7 @@ import Modal from '@/components/modal/Modal';
 import ModalContent from '@/components/modal/ModalContent';
 import Btn from '@/components/btn';
 import ModalHeader from '@/components/modal/ModalHeader';
+import { useRouter } from 'next/navigation';
 
 //사용자의 환경에 따라 보내준다. 지금은 임시로 고정값으로 설정.
 const CLIENT_WIDTH = 1000;
@@ -19,6 +20,7 @@ const GameScreen: React.FC = () => {
   const [showModal, setShowModal] = useState<boolean>(true /*임시*/);
   const canvasRef: RefObject<HTMLCanvasElement> =
     useRef<HTMLCanvasElement>(null);
+  const router = useRouter();
 
   const modalCloseFunction = () => {
     setShowModal(false);
@@ -114,6 +116,11 @@ const GameScreen: React.FC = () => {
     }
   }, [socket]);
 
+  const onClickHandler = () => {
+    if (socket.connected) socket.disconnect();
+    router.push('/profile');
+  };
+
   return (
     <div>
       <canvas ref={canvasRef} />
@@ -123,7 +130,7 @@ const GameScreen: React.FC = () => {
           <ModalContent>
             <p>{message}</p>
             <div>
-              <Btn title="홈으로" />
+              <Btn type="button" title="홈으로" handler={onClickHandler} />
             </div>
           </ModalContent>
         </Modal>
