@@ -3,6 +3,7 @@ import { useRouter } from 'next/navigation';
 import { useFetch } from '@/lib/useFetch';
 import ChatParticipant from '@/interfaces/chatParticipant.interface';
 import Btn from '@/components/btn';
+import { useMyParticipantInfo } from '@/app/(home)/(communication)/channel/MyParticipantInfoContext';
 
 export default function RoomDetails({
   room,
@@ -12,6 +13,7 @@ export default function RoomDetails({
   joinAPI: string;
 }) {
   const router = useRouter();
+  const [, setMyParcitipantInfo] = useMyParticipantInfo();
   const { isLoading, statusCodeRef, dataRef, bodyRef, fetchData } =
     useFetch<ChatParticipant>({
       autoFetch: false,
@@ -34,6 +36,7 @@ export default function RoomDetails({
     if (statusCodeRef?.current !== undefined && statusCodeRef?.current >= 400) {
       router.push('/channel');
     } else {
+      setMyParcitipantInfo(dataRef?.current);
       router.push(`/channel/chat/${room.id}`);
     }
   }
