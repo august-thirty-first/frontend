@@ -1,10 +1,16 @@
-import GameScreen from "./gameScreen";
+import GameScreen from './gameScreen';
 
 export default function GamePage() {
   return (
-    <div>
+    <div
+      style={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: '100vh',
+      }}
+    >
       <GameScreen />
     </div>
-  )
-  
-};
+  );
+}

@@ -1,5 +1,6 @@
 'use client';
 
+import { useShowModal } from '@/app/ShowModalContext';
 import { ChangeEvent, Dispatch, SetStateAction } from 'react';
 
 interface avataProps {
@@ -8,13 +9,14 @@ interface avataProps {
 }
 
 const Avata = ({ file, setFile }: avataProps) => {
+  const alertModal = useShowModal();
   const onHandler = (event: ChangeEvent<HTMLInputElement>) => {
     const maxFileSize = 1024 * 1024 * 1;
     const files = event.target.files;
     if (files && files[0]) {
       const cur_file = files[0];
       if (cur_file.size >= maxFileSize) {
-        alert('파일 크기는 1MB까지만 가능합니다.');
+        alertModal('파일 크기는 1MB까지만 가능합니다.');
         event.target.value = '';
         setFile(null);
       } else setFile(files[0]);
