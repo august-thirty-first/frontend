@@ -16,18 +16,18 @@ const CLIENT_HEIGHT = 500;
 const GameScreen: React.FC = () => {
   let renderInfo = new RenderInfo(); //빈 객체로 초기화
   const socket = useContext(GameSocketContext);
-  const [showModal, setShowModal] = useState<boolean>(true /*임시*/);
+  const [showModal, setShowModal] = useState<boolean>(false);
   const canvasRef: RefObject<HTMLCanvasElement> =
     useRef<HTMLCanvasElement>(null);
   const router = useRouter();
 
-  let message = 'YOU WIN!'; /*임시*/
+  let message;
   socket.on('gameOver', gameHistory => {
     const json = JSON.parse(gameHistory);
     if (renderInfo.gamePlayers[socket.id].nickName == json.winnerNickname) {
-      message = 'YOU WIN!';
+      message = '이겼다!';
     } else {
-      message = 'YOU LOSE..';
+      message = '졌다..';
     }
     setShowModal(true);
   });
@@ -129,7 +129,7 @@ const GameScreen: React.FC = () => {
       <canvas ref={canvasRef} />
       {showModal && (
         <Modal closeModal={modalCloseFunction}>
-          <ModalHeader title="GAME OVER" />
+          <ModalHeader title="게임오버" />
           <ModalContent>
             <p>{message}</p>
             <div>
