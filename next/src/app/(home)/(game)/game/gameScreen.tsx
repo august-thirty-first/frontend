@@ -14,16 +14,15 @@ const CLIENT_WIDTH = 1000;
 const CLIENT_HEIGHT = 500;
 
 const GameScreen: React.FC = () => {
-  let renderInfo = new RenderInfo(); //빈 객체로 초기화
   const socket = useContext(GameSocketContext);
-  const [showModal, setShowModal] = useState<boolean>(false);
   const canvasRef: RefObject<HTMLCanvasElement> =
     useRef<HTMLCanvasElement>(null);
   const router = useRouter();
 
-  const [message, setMessage] = useState<string>('');
+  let renderInfo = new RenderInfo();
 
-  console.log('rendering');
+  const [showModal, setShowModal] = useState<boolean>(false);
+  const [message, setMessage] = useState<string>('');
 
   //처음에 한 번만 실행된다
   useEffect(() => {
@@ -37,6 +36,7 @@ const GameScreen: React.FC = () => {
       canvas.height = CLIENT_HEIGHT;
     }
 
+    //undateRenderInfo 이벤트를 받을 준비가 되었음을 알린다.
     socket.emit(
       'renderReady',
       JSON.stringify({
@@ -45,18 +45,18 @@ const GameScreen: React.FC = () => {
       }),
     );
 
-    //정보 업데이트. 15ms에 한 번씩 온다
+    //정보 업데이트. 백에서 15ms에 한 번씩 온다
     const updateRenderInfoListener = (data: any) => {
       const json = JSON.parse(data);
       renderInfo.update(json.gameMap, json.ball, json.gamePlayers);
     };
     socket.on('updateRenderInfo', updateRenderInfoListener);
 
+    //게임이 끝나면 모달창을 띄운다
     const gameOverListener = (gameHistory: any) => {
       const json = JSON.parse(gameHistory);
-      setMessage('이겼다!');
-
       //TODO: null값이 들어온다 (createHistory 안되는 듯)
+      setMessage('이겼다!');
       // if (renderInfo.gamePlayers[socket.id].nickName == json.winnerNickname) {
       //   setMessage('이겼다!');
       // } else {
@@ -66,13 +66,14 @@ const GameScreen: React.FC = () => {
     };
     socket.on('gameOver', gameOverListener);
 
+    //중간에 상대방 소켓이 끊어졌을 때 같은 모달창을 띄운다
     const gameOverInPlayingListener = () => {
-      setMessage('버텨서 이겼다!');
+      // setMessage('버텨서 이겼다!');
       setShowModal(true);
     };
     socket.on('gameOverInPlaying', gameOverInPlayingListener);
 
-    //키 이벤트 등록하고, socket event에 보내기
+    //키이벤트에 따라 값이 변경된다
     const keys = {
       w: {
         pressed: false,
@@ -108,6 +109,7 @@ const GameScreen: React.FC = () => {
       }
     });
 
+    //15ms에 한 번씩 서버에 현재 눌렸는지 값을 보내준다
     setInterval(() => {
       if (keys.w.pressed) {
         renderInfo.gamePlayers[socket.id].bar.position.y -=
@@ -120,7 +122,8 @@ const GameScreen: React.FC = () => {
         socket.emit('keyDown', 'keyS');
       }
     }, 15);
-    //재귀함수. 반복해서 그려준다.
+
+    //재귀함수. 프레임수에 따라 반복해서 화면을 그려준다.
     if (ctx) {
       renderInfo.animate(ctx);
     }
