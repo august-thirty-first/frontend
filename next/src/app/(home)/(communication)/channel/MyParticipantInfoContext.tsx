@@ -28,9 +28,5 @@ export default function MyParticipantInfoProvider({
 }
 
 export function useMyParticipantInfo() {
-  const value = useContext(MyParticipantInfoContext);
-  if (value === undefined) {
-    throw new Error('채팅방이 선택되지 않았습니다.');
-  }
-  return value;
+  return useContext(MyParticipantInfoContext);
 }
