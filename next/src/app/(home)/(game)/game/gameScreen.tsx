@@ -21,16 +21,9 @@ const GameScreen: React.FC = () => {
     useRef<HTMLCanvasElement>(null);
   const router = useRouter();
 
-  let message;
-  socket.on('gameOver', gameHistory => {
-    const json = JSON.parse(gameHistory);
-    if (renderInfo.gamePlayers[socket.id].nickName == json.winnerNickname) {
-      message = '이겼다!';
-    } else {
-      message = '졌다..';
-    }
-    setShowModal(true);
-  });
+  const [message, setMessage] = useState<string>('');
+
+  console.log('rendering');
 
   //처음에 한 번만 실행된다
   useEffect(() => {
@@ -53,11 +46,31 @@ const GameScreen: React.FC = () => {
     );
 
     //정보 업데이트. 15ms에 한 번씩 온다
-    const listener = (data: any) => {
+    const updateRenderInfoListener = (data: any) => {
       const json = JSON.parse(data);
       renderInfo.update(json.gameMap, json.ball, json.gamePlayers);
     };
-    socket.on('updateRenderInfo', listener);
+    socket.on('updateRenderInfo', updateRenderInfoListener);
+
+    const gameOverListener = (gameHistory: any) => {
+      const json = JSON.parse(gameHistory);
+      setMessage('이겼다!');
+
+      //TODO: null값이 들어온다 (createHistory 안되는 듯)
+      // if (renderInfo.gamePlayers[socket.id].nickName == json.winnerNickname) {
+      //   setMessage('이겼다!');
+      // } else {
+      //   setMessage('졌다..');
+      // }
+      setShowModal(true);
+    };
+    socket.on('gameOver', gameOverListener);
+
+    const gameOverInPlayingListener = () => {
+      setMessage('버텨서 이겼다!');
+      setShowModal(true);
+    };
+    socket.on('gameOverInPlaying', gameOverInPlayingListener);
 
     //키 이벤트 등록하고, socket event에 보내기
     const keys = {
@@ -70,7 +83,6 @@ const GameScreen: React.FC = () => {
     };
 
     window.addEventListener('keydown', event => {
-      console.log('event listener is called');
       if (!renderInfo.gamePlayers[socket.id]) return;
       switch (event.code) {
         case 'KeyW':
@@ -115,7 +127,9 @@ const GameScreen: React.FC = () => {
 
     //마지막 언마운트에만 실행된다.
     return () => {
-      socket.off('updateRenderInfo', listener);
+      socket.off('updateRenderInfo', updateRenderInfoListener);
+      socket.off('gameOver', gameOverListener);
+      socket.off('gameOverInPlaying', gameOverInPlayingListener);
     };
   }, []);
 
