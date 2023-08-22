@@ -21,11 +21,6 @@ const GameScreen: React.FC = () => {
     useRef<HTMLCanvasElement>(null);
   const router = useRouter();
 
-  const modalCloseFunction = () => {
-    setShowModal(false);
-    //do something
-  };
-
   let message = 'YOU WIN!'; /*임시*/
   socket.on('gameOver', gameHistory => {
     const json = JSON.parse(gameHistory);
@@ -124,7 +119,7 @@ const GameScreen: React.FC = () => {
     };
   }, []);
 
-  const onClickHandler = () => {
+  const modalCloseFunction = () => {
     if (socket.connected) socket.disconnect();
     router.push('/profile');
   };
@@ -133,12 +128,12 @@ const GameScreen: React.FC = () => {
     <div>
       <canvas ref={canvasRef} />
       {showModal && (
-        <Modal closeModal={setShowModal}>
+        <Modal closeModal={modalCloseFunction}>
           <ModalHeader title="GAME OVER" />
           <ModalContent>
             <p>{message}</p>
             <div>
-              <Btn type="button" title="홈으로" handler={onClickHandler} />
+              <Btn type="button" title="홈으로" handler={modalCloseFunction} />
             </div>
           </ModalContent>
         </Modal>
