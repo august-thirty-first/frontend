@@ -55,20 +55,19 @@ const GameScreen: React.FC = () => {
     //게임이 끝나면 모달창을 띄운다
     const gameOverListener = (gameHistory: any) => {
       const json = JSON.parse(gameHistory);
-      //TODO: null값이 들어온다 (createHistory 안되는 듯)
-      setMessage('이겼다!');
-      // if (renderInfo.gamePlayers[socket.id].nickName == json.winnerNickname) {
-      //   setMessage('이겼다!');
-      // } else {
-      //   setMessage('졌다..');
-      // }
+      if (renderInfo.gamePlayers[socket.id].nickName == json.winnerNickname) {
+        //혼자 테스트할 경우 항상 '이겼다'
+        setMessage('이겼다!');
+      } else {
+        setMessage('졌다..');
+      }
       setShowModal(true);
     };
     socket.on('gameOver', gameOverListener);
 
     //중간에 상대방 소켓이 끊어졌을 때 같은 모달창을 띄운다
     const gameOverInPlayingListener = () => {
-      // setMessage('버텨서 이겼다!');
+      setMessage('버텨서 이겼다!');
       setShowModal(true);
     };
     socket.on('gameOverInPlaying', gameOverInPlayingListener);
