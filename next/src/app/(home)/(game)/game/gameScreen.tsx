@@ -1,13 +1,9 @@
 'use client';
 
-import { RefObject, useContext, useEffect, useRef, useState } from 'react';
+import { RefObject, useContext, useEffect, useRef } from 'react';
 import { GameSocketContext } from '../createGameSocketContext';
 import RenderInfo from './renderInfo';
-import Modal from '@/components/modal/Modal';
-import ModalContent from '@/components/modal/ModalContent';
-import Btn from '@/components/btn';
-import ModalHeader from '@/components/modal/ModalHeader';
-import { useRouter } from 'next/navigation';
+import { useModal } from '../modalProvider';
 
 //사용자의 환경에 따라 보내준다. 지금은 임시로 고정값으로 설정.
 const CLIENT_WIDTH = 1000;
@@ -15,14 +11,11 @@ const CLIENT_HEIGHT = 500;
 
 const GameScreen: React.FC = () => {
   const socket = useContext(GameSocketContext);
+  const { openModal } = useModal();
   const canvasRef: RefObject<HTMLCanvasElement> =
     useRef<HTMLCanvasElement>(null);
-  const router = useRouter();
 
   let renderInfo = new RenderInfo();
-
-  const [showModal, setShowModal] = useState<boolean>(false);
-  const [message, setMessage] = useState<string>('');
 
   //처음에 한 번만 실행된다
   useEffect(() => {
@@ -57,18 +50,16 @@ const GameScreen: React.FC = () => {
       const json = JSON.parse(gameHistory);
       if (renderInfo.gamePlayers[socket.id].nickName == json.winnerNickname) {
         //혼자 테스트할 경우 항상 '이겼다'
-        setMessage('이겼다!');
+        openModal('이겼다!');
       } else {
-        setMessage('졌다..');
+        openModal('졌다..');
       }
-      setShowModal(true);
     };
     socket.on('gameOver', gameOverListener);
 
     //중간에 상대방 소켓이 끊어졌을 때 같은 모달창을 띄운다
     const gameOverInPlayingListener = () => {
-      setMessage('버텨서 이겼다!');
-      setShowModal(true);
+      openModal('버텨서 이겼다!');
     };
     socket.on('gameOverInPlaying', gameOverInPlayingListener);
 
@@ -135,25 +126,9 @@ const GameScreen: React.FC = () => {
     };
   }, []);
 
-  const modalCloseFunction = () => {
-    if (socket.connected) socket.disconnect();
-    router.push('/profile');
-  };
-
   return (
     <div>
       <canvas ref={canvasRef} />
-      {showModal && (
-        <Modal closeModal={modalCloseFunction}>
-          <ModalHeader title="게임오버" />
-          <ModalContent>
-            <p>{message}</p>
-            <div>
-              <Btn type="button" title="홈으로" handler={modalCloseFunction} />
-            </div>
-          </ModalContent>
-        </Modal>
-      )}
     </div>
   );
 };
