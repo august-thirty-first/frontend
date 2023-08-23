@@ -8,6 +8,8 @@ import { useSearchParams } from 'next/navigation';
 import Btn from '@/components/btn';
 import { useState } from 'react';
 import FriendBtn from './_friend/friendBtn';
+import Achievements from './achievements';
+import MatchHistory from './matchHistory';
 
 interface myInfoResponse {
   nickname: string;
@@ -44,6 +46,10 @@ const ProfilePage = () => {
         {!isMyProfile && profile && (
           <FriendBtn id={profile.id} status={profile.friend_status} />
         )}
+        <hr />
+        <MatchHistory />
+        <hr />
+        <Achievements achievements={profile?.achievements} />
       </div>
     </div>
   );
