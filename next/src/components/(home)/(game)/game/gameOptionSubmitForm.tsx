@@ -40,16 +40,22 @@ export default function GameOptionSubmitForm() {
   };
 
   useEffect(() => {
-    socket.on('gameStart', () => {
+    const gameStartListener = () => {
       router.push('/game');
-    });
-  }, [socket, router]);
+    };
+    socket.on('gameStart', gameStartListener);
 
-  //중간에 상대방 소켓이 끊어졌을 때 모달창을 띄운다
-  const gameOverInOptionPageListener = () => {
-    openModal('상대방이 떠났습니다..');
-  };
-  socket.on('gameOverInOptionPage', gameOverInOptionPageListener);
+    //중간에 상대방 소켓이 끊어졌을 때 모달창을 띄운다
+    const gameOverInOptionPageListener = () => {
+      openModal('상대방이 떠났습니다..');
+    };
+    socket.on('gameOverInOptionPage', gameOverInOptionPageListener);
+
+    return () => {
+      socket.off('gameStart', gameStartListener);
+      socket.off('gameOverInOptionPage', gameOverInOptionPageListener);
+    };
+  }, []);
 
   return (
     <div>
