@@ -5,6 +5,11 @@ import { useFetch } from '@/lib/useFetch';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import useSWR from 'swr';
 
+export interface GetAchievementDto {
+  title: string;
+  description: string;
+}
+
 export enum searchUserRequestStatus {
   Allow = 'allow',
   SendRequest = 'send',
@@ -16,6 +21,7 @@ export interface searchProfileResponse {
   nickname: string;
   avata_path: string;
   friend_status: searchUserRequestStatus;
+  achievements: GetAchievementDto[];
 }
 
 export interface searchBarProps {
