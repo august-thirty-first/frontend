@@ -11,6 +11,7 @@ import ChatParticipant, {
 } from '@/interfaces/chatParticipant.interface';
 import RoomLeave from '@/app/(home)/(communication)/channel/chat/[id]/leave';
 import { useMyParticipantInfo } from '@/app/(home)/(communication)/channel/MyParticipantInfoContext';
+import ChatParticipantList from '@/app/(home)/(communication)/channel/chat/[id]/_participant/chatParticipant';
 
 export default function Chat() {
   const router = useRouter();
@@ -36,6 +37,7 @@ export default function Chat() {
   return (
     dataRef?.current && (
       <div>
+        <ChatParticipantList participants={dataRef.current} />
         <ChatBox />
         {/*Todo: 유저의 권한에 대해 확인하고 RoomDelete, RoomUpdate 두 컴포넌트를 보이게 하는 코드 필요*/}
         <RoomLeave />
