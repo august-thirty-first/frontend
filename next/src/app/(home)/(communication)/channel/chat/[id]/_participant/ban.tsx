@@ -1,4 +1,4 @@
-import { useParams, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { useFetch } from '@/lib/useFetch';
 import ChatParticipant from '@/interfaces/chatParticipant.interface';
 import Btn from '@/components/btn';
@@ -6,9 +6,14 @@ import { useContext, useEffect } from 'react';
 import { HomeSocketContext } from '@/app/(home)/createHomeSocketContext';
 import useToast from '@/components/toastContext';
 
-export default function Ban({ participant }: { participant: ChatParticipant }) {
+export default function Ban({
+  participant,
+  roomId,
+}: {
+  participant: ChatParticipant;
+  roomId: number;
+}) {
   const targetUserId = participant.user.id;
-  const roomId = useParams().id;
   const router = useRouter();
   const socket = useContext(HomeSocketContext);
   const toast = useToast();

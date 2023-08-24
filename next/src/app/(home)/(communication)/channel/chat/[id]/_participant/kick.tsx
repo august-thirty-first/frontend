@@ -1,7 +1,5 @@
 import ChatParticipant from '@/interfaces/chatParticipant.interface';
-import { useParams, useRouter } from 'next/navigation';
-import { useShowModal } from '@/app/ShowModalContext';
-import { useFetch } from '@/lib/useFetch';
+import { useRouter } from 'next/navigation';
 import Btn from '@/components/btn';
 import { HomeSocketContext } from '@/app/(home)/createHomeSocketContext';
 import { useContext, useEffect } from 'react';
@@ -9,11 +7,12 @@ import useToast from '@/components/toastContext';
 
 export default function Kick({
   participant,
+  roomId,
 }: {
   participant: ChatParticipant;
+  roomId: number;
 }) {
   const targetUserId = participant.user.id;
-  const roomId = useParams().id;
   const router = useRouter();
   const socket = useContext(HomeSocketContext);
   const toast = useToast();

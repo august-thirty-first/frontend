@@ -4,13 +4,15 @@ import ChatParticipant, {
 import Ban from '@/app/(home)/(communication)/channel/chat/[id]/_participant/ban';
 import Kick from '@/app/(home)/(communication)/channel/chat/[id]/_participant/kick';
 import Mute from '@/app/(home)/(communication)/channel/chat/[id]/_participant/mute';
-import SwitchAuthroity from '@/app/(home)/(communication)/channel/chat/[id]/_participant/authroity';
+import SwitchAuthority from '@/app/(home)/(communication)/channel/chat/[id]/_participant/authority';
 import { useMyParticipantInfo } from '@/app/(home)/(communication)/channel/MyParticipantInfoContext';
 
 export default function ParticipantDetails({
   participant,
+  roomId,
 }: {
   participant: ChatParticipant;
+  roomId: number;
 }) {
   const [myParticipantInfo] = useMyParticipantInfo();
 
@@ -19,10 +21,10 @@ export default function ParticipantDetails({
       {(myParticipantInfo?.authority === ParticipantAuthority.BOSS ||
         myParticipantInfo?.authority === ParticipantAuthority.ADMIN) && (
         <>
-          <Ban participant={participant} />
-          <Kick participant={participant} />
-          <Mute participant={participant} />
-          <SwitchAuthroity participant={participant} />
+          <Ban roomId={roomId} participant={participant} />
+          <Kick roomId={roomId} participant={participant} />
+          <Mute roomId={roomId} participant={participant} />
+          <SwitchAuthority roomId={roomId} participant={participant} />
         </>
       )}
     </>

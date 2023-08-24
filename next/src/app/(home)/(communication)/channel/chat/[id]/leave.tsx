@@ -1,14 +1,11 @@
-import { useParams, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { useFetch } from '@/lib/useFetch';
 import Btn from '@/components/btn';
 import { useContext } from 'react';
 import { HomeSocketContext } from '@/app/(home)/createHomeSocketContext';
 import { useMyParticipantInfo } from '@/app/(home)/(communication)/channel/MyParticipantInfoContext';
-import { ParticipantAuthority } from '@/interfaces/chatParticipant.interface';
 
-export default function RoomLeave() {
-  const params = useParams();
-  const roomId = params.id;
+export default function RoomLeave({ roomId }: { roomId: number }) {
   const router = useRouter();
   const socket = useContext(HomeSocketContext);
   const [myParticipantInfo] = useMyParticipantInfo();
