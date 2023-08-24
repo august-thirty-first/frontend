@@ -20,20 +20,18 @@ const Info = ({ profile }: InfoProps) => {
             disabled={true}
             value={profile.nickname}
           />
-          <div>
-            <label>Image</label>
-            <Image
-              width="200"
-              height="200"
-              className="h-36 w-auto"
-              src={
-                profile.avata_path
-                  ? `http://nestjs:3000/${profile.avata_path}`
-                  : defaultImg
-              }
-              alt="avatar"
-            />
-          </div>
+          <label>Image</label>
+          <Image
+            width="200"
+            height="200"
+            className="h-36 w-auto"
+            src={
+              profile.avata_path
+                ? `http://nestjs:3000/${profile.avata_path}`
+                : defaultImg
+            }
+            alt="avatar"
+          />
         </>
       )}
     </>
