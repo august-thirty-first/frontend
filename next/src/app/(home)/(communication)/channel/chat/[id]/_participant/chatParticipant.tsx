@@ -5,8 +5,10 @@ import ParticipantDetails from '@/app/(home)/(communication)/channel/chat/[id]/_
 
 export default function ChatParticipantList({
   participants,
+  roomId,
 }: {
   participants: ChatParticipant[];
+  roomId: number;
 }) {
   const [showDetails, setShowDetails] = useState<ChatParticipant | null>(null);
 
@@ -26,7 +28,7 @@ export default function ChatParticipantList({
               }}
             />
             {showDetails === participant && (
-              <ParticipantDetails participant={participant} />
+              <ParticipantDetails roomId={roomId} participant={participant} />
             )}
           </div>
         ))}

@@ -1,4 +1,4 @@
-import { useParams, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { useFetch } from '@/lib/useFetch';
 import ChatParticipant, {
   ParticipantAuthority,
@@ -8,13 +8,14 @@ import { useShowModal } from '@/app/ShowModalContext';
 import { useContext } from 'react';
 import { HomeSocketContext } from '@/app/(home)/createHomeSocketContext';
 
-export default function SwitchAuthroity({
+export default function SwitchAuthority({
   participant,
+  roomId,
 }: {
   participant: ChatParticipant;
+  roomId: number;
 }) {
   const targetUserId = participant.user.id;
-  const roomId = useParams().id;
   const authority = participant.authority;
   const isNormal = authority === ParticipantAuthority.NORMAL;
   const router = useRouter();
