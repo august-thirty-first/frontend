@@ -3,16 +3,19 @@
 import { RefObject, useContext, useEffect, useRef } from 'react';
 import { GameSocketContext } from '../createGameSocketContext';
 import RenderInfo from './renderInfo';
+import { useModal } from '../modalProvider';
 
 //사용자의 환경에 따라 보내준다. 지금은 임시로 고정값으로 설정.
 const CLIENT_WIDTH = 1000;
 const CLIENT_HEIGHT = 500;
 
 const GameScreen: React.FC = () => {
-  let renderInfo = new RenderInfo(); //빈 객체로 초기화
   const socket = useContext(GameSocketContext);
+  const { openModal } = useModal();
   const canvasRef: RefObject<HTMLCanvasElement> =
     useRef<HTMLCanvasElement>(null);
+
+  let renderInfo = new RenderInfo();
 
   //처음에 한 번만 실행된다
   useEffect(() => {
@@ -26,6 +29,7 @@ const GameScreen: React.FC = () => {
       canvas.height = CLIENT_HEIGHT;
     }
 
+    //undateRenderInfo 이벤트를 받을 준비가 되었음을 알린다.
     socket.emit(
       'renderReady',
       JSON.stringify({
@@ -34,14 +38,32 @@ const GameScreen: React.FC = () => {
       }),
     );
 
-    //정보 업데이트. 15ms에 한 번씩 온다
-    const listener = (data: any) => {
+    //정보 업데이트. 백에서 15ms에 한 번씩 온다
+    const updateRenderInfoListener = (data: any) => {
       const json = JSON.parse(data);
       renderInfo.update(json.gameMap, json.ball, json.gamePlayers);
     };
-    socket.on('updateRenderInfo', listener);
+    socket.on('updateRenderInfo', updateRenderInfoListener);
 
-    //키 이벤트 등록하고, socket event에 보내기
+    //게임이 끝나면 모달창을 띄운다
+    const gameOverListener = (gameHistory: any) => {
+      const json = JSON.parse(gameHistory);
+      if (renderInfo.gamePlayers[socket.id].nickName == json.winnerNickname) {
+        //혼자 테스트할 경우 항상 '이겼다'
+        openModal('이겼다!');
+      } else {
+        openModal('졌다..');
+      }
+    };
+    socket.on('gameOver', gameOverListener);
+
+    //중간에 상대방 소켓이 끊어졌을 때 같은 모달창을 띄운다
+    const gameOverInPlayingListener = () => {
+      openModal('버텨서 이겼다!');
+    };
+    socket.on('gameOverInPlaying', gameOverInPlayingListener);
+
+    //키이벤트에 따라 값이 변경된다
     const keys = {
       w: {
         pressed: false,
@@ -52,7 +74,6 @@ const GameScreen: React.FC = () => {
     };
 
     window.addEventListener('keydown', event => {
-      console.log('event listener is called');
       if (!renderInfo.gamePlayers[socket.id]) return;
       switch (event.code) {
         case 'KeyW':
@@ -78,6 +99,7 @@ const GameScreen: React.FC = () => {
       }
     });
 
+    //15ms에 한 번씩 서버에 현재 눌렸는지 값을 보내준다
     setInterval(() => {
       if (keys.w.pressed) {
         renderInfo.gamePlayers[socket.id].bar.position.y -=
@@ -90,18 +112,25 @@ const GameScreen: React.FC = () => {
         socket.emit('keyDown', 'keyS');
       }
     }, 15);
-    //재귀함수. 반복해서 그려준다.
+
+    //재귀함수. 프레임수에 따라 반복해서 화면을 그려준다.
     if (ctx) {
       renderInfo.animate(ctx);
     }
 
     //마지막 언마운트에만 실행된다.
     return () => {
-      socket.off('updateRenderInfo', listener);
+      socket.off('updateRenderInfo', updateRenderInfoListener);
+      socket.off('gameOver', gameOverListener);
+      socket.off('gameOverInPlaying', gameOverInPlayingListener);
     };
   }, []);
 
-  return <canvas ref={canvasRef} />;
+  return (
+    <div>
+      <canvas ref={canvasRef} />
+    </div>
+  );
 };
 
 export default GameScreen;
