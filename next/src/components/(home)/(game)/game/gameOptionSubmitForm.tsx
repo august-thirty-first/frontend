@@ -51,9 +51,32 @@ export default function GameOptionSubmitForm() {
     };
     socket.on('gameOverInOptionPage', gameOverInOptionPageListener);
 
+    //소켓 유효성 체크
+    socket.emit('validateSocket');
+
+    //유효한 소켓일 때 join Queue -> join Game
+    const joinGameListener = () => {
+      router.push('/game/option');
+    };
+    const validateSuccessListener = () => {
+      socket.emit('joinQueue');
+      socket.on('joinGame', joinGameListener);
+    };
+    socket.on('validateSuccess', validateSuccessListener);
+
+    //유효하지 않은 소켓일 때 /profile로 이동
+    const validateFailListener = () => {
+      console.log('validate Fail listener is called');
+      socket.disconnect();
+    };
+    socket.on('validateFail', validateFailListener);
+
     return () => {
       socket.off('gameStart', gameStartListener);
       socket.off('gameOverInOptionPage', gameOverInOptionPageListener);
+      socket.off('joinGame', joinGameListener);
+      socket.off('validateSuccess', validateSuccessListener);
+      socket.off('validateFail', validateFailListener);
     };
   }, []);
 
