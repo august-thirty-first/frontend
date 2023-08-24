@@ -4,6 +4,7 @@ import { createContext, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useFetch } from '@/lib/useFetch';
 import { useShowModal } from '../ShowModalContext';
+import useToast from '@/components/toastContext';
 
 const isClient = typeof window !== 'undefined';
 const homeSocket = isClient
@@ -16,6 +17,7 @@ export const HomeSocketContext = createContext(homeSocket);
 const HomeSocketProvider = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
   const alertModal = useShowModal();
+  const toast = useToast();
   const { fetchData } = useFetch<void>({
     autoFetch: false,
     url: 'auth/logout',
@@ -39,11 +41,16 @@ const HomeSocketProvider = ({ children }: { children: React.ReactNode }) => {
       if (homeSocket.connected) homeSocket.disconnect();
       router.replace('/login');
     });
+    homeSocket.on('directMessage', (msg: string) => {
+      const split_msg = msg.split(':');
+      toast(`${split_msg[0]}님의 메세지가 도착했습니다..`);
+    });
     return () => {
       homeSocket.off('connect');
       homeSocket.off('connection');
       homeSocket.off('multipleConnect');
       homeSocket.off('expired');
+      homeSocket.off('directMessage');
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
