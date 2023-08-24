@@ -21,15 +21,18 @@ const GameSocketProvider = ({ children }: { children: React.ReactNode }) => {
     gameSocket.on('disconnect', disconnectListener);
 
     //새로고침
-    window.addEventListener('beforeunload', event => {
+    const beforeunloadListener = (event: any) => {
       event.returnValue = ''; //한 번 더 물어본다. unload를 선택하면 소켓이 끊어지고, 다시 연결되기 전에 바로 홈으로 돌아간다.
-    });
+    };
+    window.addEventListener('beforeunload', beforeunloadListener);
 
     //TODO:뒤로가기
     window.addEventListener('popstate', event => {});
 
     return () => {
       gameSocket.off('disconnect', disconnectListener);
+      window.removeEventListener('beforeunload', beforeunloadListener);
+      // window.removeEventListener('popstate', popstateListener);
     };
   }, []);
 
