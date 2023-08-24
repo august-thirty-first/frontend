@@ -2,6 +2,7 @@ import '@/style/globals.css';
 
 import { Metadata } from 'next';
 import ShowModalProvider from './ShowModalContext';
+import { ToastContextProvider } from '@/components/toastContext';
 
 export const metadata: Metadata = {
   title: 'home',
@@ -18,7 +19,9 @@ export default function RootLayout({
         <link rel="stylesheet" href="https://unpkg.com/mvp.css"></link>
       </head>
       <body>
-        <ShowModalProvider>{children}</ShowModalProvider>
+        <ToastContextProvider>
+          <ShowModalProvider>{children}</ShowModalProvider>
+        </ToastContextProvider>
       </body>
     </html>
   );
