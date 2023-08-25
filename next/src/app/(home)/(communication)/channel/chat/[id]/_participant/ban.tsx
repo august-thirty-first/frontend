@@ -24,19 +24,6 @@ export default function Ban({
     url: `chat/participant/${ban}/${participant.user.id}/${roomId}`,
   });
 
-  useEffect(() => {
-    socket.on('ban', msg => {
-      toast(msg);
-      router.push('/channel');
-    });
-    socket.on('banReturnStatus', msg => {
-      toast(msg);
-    });
-    return () => {
-      socket.off('ban');
-    };
-  }, []);
-
   async function banParticipant() {
     await fetchData();
     if (statusCodeRef?.current === 200) {

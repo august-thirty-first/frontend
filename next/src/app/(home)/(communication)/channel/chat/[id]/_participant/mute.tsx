@@ -1,5 +1,5 @@
 import Btn from '@/components/btn';
-import { useContext, useEffect } from 'react';
+import { useContext } from 'react';
 import { useRouter } from 'next/navigation';
 import { HomeSocketContext } from '@/app/(home)/createHomeSocketContext';
 import ChatParticipant from '@/interfaces/chatParticipant.interface';
@@ -17,14 +17,6 @@ export default function Mute({
   const socket = useContext(HomeSocketContext);
   const toast = useToast();
 
-  useEffect(() => {
-    socket.on('mute', msg => {
-      toast(msg);
-    });
-    socket.on('muteReturnStatus', msg => {
-      toast(msg);
-    });
-  }, []);
   function muteParticipant() {
     socket.emit(
       'mute',

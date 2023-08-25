@@ -17,19 +17,6 @@ export default function Kick({
   const socket = useContext(HomeSocketContext);
   const toast = useToast();
 
-  useEffect(() => {
-    socket.on('kickReturnStatus', msg => {
-      toast(msg);
-    });
-    socket.on('kick', msg => {
-      toast(msg);
-      router.push('/channel');
-    });
-    return () => {
-      socket.off('kick');
-    };
-  }, []);
-
   function kickParticipant() {
     socket.emit(
       'kick',
