@@ -15,7 +15,7 @@ export default function RoomList({
   joinAPI: string;
   swrKey: string;
 }) {
-  const { isLoading, dataRef, fetchData } = useFetch<ChatRoom[]>({
+  const { dataRef, fetchData } = useFetch<ChatRoom[]>({
     autoFetch: true,
     method: 'GET',
     url: listAPI,
@@ -23,10 +23,6 @@ export default function RoomList({
   const [showDetails, setShowDetails] = useState<number | null>(null);
 
   useSWR(swrKey, fetchData);
-
-  if (isLoading) {
-    return <p>Loading..</p>;
-  }
 
   return (
     <div>
