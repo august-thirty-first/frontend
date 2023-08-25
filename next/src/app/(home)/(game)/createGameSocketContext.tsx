@@ -13,7 +13,7 @@ const gameSocket = isClient
 /*
 1. validate
     - option 0
-    - game: 미구현
+    - game 0
 2. 동일 유저
     - ladder 0
     - option 0
@@ -21,12 +21,18 @@ const gameSocket = isClient
 3. 새로고침
     - ladder ***
     잘 끊어지고 잘 재연결된다(큐에 중복되지 않음)!
-    다만 여러 번 시도하면 대부분 재연결, 가끔은 재연결되지 않고 profile로 간다.
+    문제:
+    새로고침 버튼으로 소켓이 끊어짐 -> 연결됨이 연쇄적으로 일어나면서,
+    소켓끊김이벤트리스너는 홈으로 가려고 함 vs 새로고침버튼은 새화면으로 가려고 함
+
+    1. 다른 얘들을 각각 처리해주고 disconnect 리스너는 안 만들면 된다.
+    (그러려면 자동끊어지는 validate, 동일유저도 소켓이벤트 받아서 프론트에서 끊어야 함)
+    2. 브라우저에게 맡긴다.
+
     - option 0
     한쪽이 끊어지면 서버에서 감지해서 다른 쪽도 알려주고
     끊긴 자신은 홈으로 간다
-    - game ***
-      : renderInfo 읽을 수 없음 에러 발생 (재연결하면서)
+    - game
 4. 뒤로가기
     - ladder 0
     - option 0
@@ -42,11 +48,7 @@ const GameSocketProvider = ({ children }: { children: React.ReactNode }) => {
     };
     gameSocket.on('disconnect', disconnectListener);
 
-    //새로고침
-    const beforeunloadListener = (event: any) => {};
-    window.addEventListener('beforeunload', beforeunloadListener);
-
-    //TODO:뒤로가기
+    //뒤로가기
     const popstateListener = () => {
       gameSocket.disconnect();
     };
@@ -54,7 +56,6 @@ const GameSocketProvider = ({ children }: { children: React.ReactNode }) => {
 
     return () => {
       gameSocket.off('disconnect', disconnectListener);
-      // window.removeEventListener('beforeunload', beforeunloadListener);
       window.removeEventListener('popstate', popstateListener);
       gameSocket.disconnect();
     };
