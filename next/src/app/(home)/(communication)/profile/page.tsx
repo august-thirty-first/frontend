@@ -47,7 +47,10 @@ const ProfilePage = () => {
           <FriendBtn id={profile.id} status={profile.friend_status} />
         )}
         <hr />
-        <MatchHistory />
+        <MatchHistory
+          gameData={profile?.game_data}
+          profileName={profile?.nickname}
+        />
         <hr />
         <Achievements achievements={profile?.achievements} />
       </div>
