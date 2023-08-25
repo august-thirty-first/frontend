@@ -1,30 +1,28 @@
 'use client';
 import { useFetch } from '@/lib/useFetch';
-import { useRouter } from 'next/navigation';
-import ChatRoom, { RoomStatus } from '@/interfaces/chatRoom.interface';
+import ChatRoom from '@/interfaces/chatRoom.interface';
 import Btn from '@/components/btn';
 import { useState } from 'react';
-import ChatParticipant from '@/interfaces/chatParticipant.interface';
 import RoomDetails from '@/app/(home)/(communication)/channel/_room/roomDetails';
+import useSWR from 'swr';
 
 export default function RoomList({
   listAPI,
   joinAPI,
+  swrKey,
 }: {
   listAPI: string;
   joinAPI: string;
+  swrKey: string;
 }) {
-  const router = useRouter();
-  const { isLoading, dataRef } = useFetch<ChatRoom[]>({
+  const { dataRef, fetchData } = useFetch<ChatRoom[]>({
     autoFetch: true,
     method: 'GET',
     url: listAPI,
   });
   const [showDetails, setShowDetails] = useState<number | null>(null);
 
-  if (isLoading) {
-    return <p>Loading..</p>;
-  }
+  useSWR(swrKey, fetchData);
 
   return (
     <div>

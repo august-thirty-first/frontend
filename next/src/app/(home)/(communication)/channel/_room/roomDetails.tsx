@@ -3,6 +3,8 @@ import { useRouter } from 'next/navigation';
 import { useFetch } from '@/lib/useFetch';
 import ChatParticipant from '@/interfaces/chatParticipant.interface';
 import Btn from '@/components/btn';
+import { mutate } from 'swr';
+import useToast from '@/components/toastContext';
 
 export default function RoomDetails({
   room,
@@ -19,6 +21,7 @@ export default function RoomDetails({
       contentType: 'application/json',
       url: joinAPI,
     });
+  const toast = useToast();
 
   async function joinRoom(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -32,10 +35,12 @@ export default function RoomDetails({
     await fetchData();
     // Todo: 실패 상황일 때 팝업
     if (statusCodeRef?.current !== undefined && statusCodeRef?.current >= 400) {
+      toast('방 입장에 실패했습니다.');
       router.push('/channel');
-    } else {
-      router.push(`/channel/chat/${room.id}`);
+      return null;
     }
+    await mutate('myRoomList');
+    router.push(`/channel/chat/${room.id}`);
   }
 
   const requirePassword = room.status === RoomStatus.protected;
