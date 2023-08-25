@@ -64,7 +64,7 @@ export default function Chat({ params }: { params: { id: string } }) {
   const socket = useContext(HomeSocketContext);
   const [myParticipantInfo] = useMyParticipantInfo();
   const roomId = parseInt(params.id);
-  const { isLoading, statusCodeRef, dataRef, bodyRef, fetchData } = useFetch<
+  const { statusCodeRef, dataRef, bodyRef, fetchData } = useFetch<
     ChatParticipant[]
   >({
     autoFetch: true,
