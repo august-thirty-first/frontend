@@ -5,8 +5,9 @@ export default function MyRoomList() {
     <div>
       <h2> 내 채팅방 목록 </h2>
       <RoomList
-        listAPI={'chat/participant'}
-        joinAPI={'chat/participant/permission'}
+        listAPI={'chat/participation'}
+        joinAPI={'chat/enter'}
+        swrKey={'myRoomList'}
       />
     </div>
   );
