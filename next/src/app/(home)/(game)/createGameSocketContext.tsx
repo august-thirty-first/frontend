@@ -20,11 +20,8 @@ const gameSocket = isClient
     - game 0
 3. 새로고침
     - ladder ***
-    문제:
-      끊어지고 재연결되면서 다시 큐에 들어가지만, 화면은 profile로 라우팅 되는 상황
-    해결:
-      재연결되는 것도 끊어주거나 (다른 곳에서는 validate로 끊어줌)
-      profile로 라우팅되지 않게 해야 함
+    잘 끊어지고 잘 재연결된다(큐에 중복되지 않음)!
+    다만 여러 번 시도하면 대부분 재연결, 가끔은 재연결되지 않고 profile로 간다.
     - option 0
     한쪽이 끊어지면 서버에서 감지해서 다른 쪽도 알려주고
     끊긴 자신은 홈으로 간다
@@ -47,8 +44,8 @@ const GameSocketProvider = ({ children }: { children: React.ReactNode }) => {
     gameSocket.on('disconnect', disconnectListener);
 
     //새로고침
-    // const beforeunloadListener = () => {};
-    // window.addEventListener('beforeunload', beforeunloadListener);
+    const beforeunloadListener = (event: any) => {};
+    window.addEventListener('beforeunload', beforeunloadListener);
 
     //TODO:뒤로가기
     const popstateListener = () => {
@@ -60,6 +57,7 @@ const GameSocketProvider = ({ children }: { children: React.ReactNode }) => {
       gameSocket.off('disconnect', disconnectListener);
       // window.removeEventListener('beforeunload', beforeunloadListener);
       window.removeEventListener('popstate', popstateListener);
+      gameSocket.disconnect();
     };
   }, []);
 
