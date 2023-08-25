@@ -6,6 +6,7 @@ import Kick from '@/app/(home)/(communication)/channel/chat/[id]/_participant/ki
 import Mute from '@/app/(home)/(communication)/channel/chat/[id]/_participant/mute';
 import SwitchAuthority from '@/app/(home)/(communication)/channel/chat/[id]/_participant/authority';
 import { useMyParticipantInfo } from '@/app/(home)/(communication)/channel/MyParticipantInfoContext';
+import BlackList from './blackList';
 
 export default function ParticipantDetails({
   participant,
@@ -25,6 +26,7 @@ export default function ParticipantDetails({
           <Kick roomId={roomId} participant={participant} />
           <Mute roomId={roomId} participant={participant} />
           <SwitchAuthority roomId={roomId} participant={participant} />
+          <BlackList roomId={roomId} participant={participant} />
         </>
       )}
     </>
