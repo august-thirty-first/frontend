@@ -5,6 +5,11 @@ import { useFetch } from '@/lib/useFetch';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import useSWR from 'swr';
 
+export interface GetAchievementDto {
+  title: string;
+  description: string;
+}
+
 export enum searchUserRequestStatus {
   Allow = 'allow',
   SendRequest = 'send',
@@ -16,6 +21,7 @@ export interface searchProfileResponse {
   nickname: string;
   avata_path: string;
   friend_status: searchUserRequestStatus;
+  achievements: GetAchievementDto[];
 }
 
 export interface searchBarProps {
@@ -69,6 +75,7 @@ const SearchBar = ({ myNickname, setProfile }: searchBarProps) => {
         type="text"
         value={nickname}
         onChange={e => setNickname(e.target.value)}
+        autoFocus={true}
       />
       <input type="submit" value="검색" />
     </form>

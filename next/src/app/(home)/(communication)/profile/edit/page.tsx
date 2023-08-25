@@ -6,6 +6,7 @@ import Otp from './otp';
 import Avata from '@/app/(login)/signup/avata';
 import EditNickname from './nickname';
 import { useFetch } from '@/lib/useFetch';
+import Btn from '@/components/btn';
 import { useShowModal } from '@/app/ShowModalContext';
 
 const Edit = () => {
@@ -46,24 +47,35 @@ const Edit = () => {
   };
 
   return (
-    <div>
-      <EditNickname
-        nickname={nickname}
-        setNickname={setNickname}
-        validate={validate}
-      />
+    <div className="m-7 p-7 border max-w-3xl">
+      <div className="mb-5">
+        <EditNickname
+          nickname={nickname}
+          setNickname={setNickname}
+          validate={validate}
+        />
+      </div>
       <Avata file={file} setFile={setFile} />
-      <div>
+      <div className="my-5">
         <label>OTP 설정</label>
         <Otp />
       </div>
-      <div>
-        <input
-          type="submit"
-          onClick={onSubmit}
-          value="제출"
+      <div className="flex">
+        <div className="mr-4">
+          <Btn
+            color="gray"
+            handler={() => {
+              router.back();
+            }}
+            title="뒤로 가기"
+          />
+        </div>
+        <Btn
+          color="cyan"
+          handler={onSubmit}
+          title="제출"
           disabled={isLoading}
-        ></input>
+        />
       </div>
     </div>
   );

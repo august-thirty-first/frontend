@@ -8,6 +8,8 @@ import { useSearchParams } from 'next/navigation';
 import Btn from '@/components/btn';
 import { useState } from 'react';
 import FriendBtn from './_friend/friendBtn';
+import Achievements from './achievements';
+import MatchHistory from './matchHistory';
 
 interface myInfoResponse {
   nickname: string;
@@ -29,12 +31,12 @@ const ProfilePage = () => {
   if (isLoading) return <p>Loading...</p>;
   if (errorRef?.current || errorDataRef?.current) return <p>error....</p>;
   return (
-    <div>
+    <div className="p-7 max-w-3xl">
       <SearchBar
         myNickname={nickname_params || dataRef?.current?.nickname}
         setProfile={setProfile}
       />
-      <div>
+      <div className="pt-5 border p-6">
         <Info profile={profile} />
         {isMyProfile && (
           <Link href="/profile/edit">
@@ -44,6 +46,10 @@ const ProfilePage = () => {
         {!isMyProfile && profile && (
           <FriendBtn id={profile.id} status={profile.friend_status} />
         )}
+        <hr />
+        <MatchHistory />
+        <hr />
+        <Achievements achievements={profile?.achievements} />
       </div>
     </div>
   );

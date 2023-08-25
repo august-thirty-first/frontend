@@ -32,7 +32,7 @@ const ShowModalProvider = ({ children }: { children: React.ReactNode }) => {
       }}
     >
       {showModal && (
-        <Modal closeModal={setShowModal}>
+        <Modal closeModal={setShowModal} zIndex={20}>
           <ModalHeader title="메세지" />
           <ModalContent>{message}</ModalContent>
         </Modal>

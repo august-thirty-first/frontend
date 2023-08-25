@@ -32,7 +32,7 @@ export default function Friends() {
   return (
     <div className="max-w-2xl border-4">
       친구 목록
-      <ul role="list" className="divide-y divide-gray-200 dark:divide-gray-700">
+      <ul role="list" className="divide-y divide-gray-200">
         {data &&
           data.map(friend => (
             <li className="py-3 sm:py-4" key={friend.nickname}>
@@ -51,14 +51,14 @@ export default function Friends() {
                   />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-gray-900 truncate dark:text-white">
+                  <p className="text-sm font-medium text-gray-900 truncate">
                     {friend.nickname}
                   </p>
-                  <p className="text-sm text-gray-500 truncate dark:text-gray-400">
+                  <p className="text-sm text-gray-500 truncate">
                     {friend.status}
                   </p>
                 </div>
-                <div className="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
+                <div className="inline-flex items-center text-base font-semibold text-gray-900">
                   <Btn title="DM" />
                   <Btn title="PLAY" />
                 </div>
