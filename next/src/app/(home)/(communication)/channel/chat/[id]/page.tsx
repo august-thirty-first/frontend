@@ -1,5 +1,5 @@
 'use client';
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { HomeSocketContext } from '@/app/(home)/createHomeSocketContext';
 import ChatBox from '@/app/(home)/(communication)/channel/chat/[id]/chatBox';
 import RoomDelete from '@/app/(home)/(communication)/channel/chat/[id]/delete';
@@ -18,20 +18,21 @@ export default function Chat() {
   const [myParticipantInfo] = useMyParticipantInfo();
   const params = useParams();
   const roomId = params.id;
-  const { isLoading, statusCodeRef, dataRef, bodyRef } = useFetch<
-    ChatParticipant[]
-  >({
+  const { statusCodeRef, dataRef } = useFetch<ChatParticipant[]>({
     autoFetch: true,
     method: 'GET',
     contentType: 'application/json',
     url: `chat/participant/${roomId}`,
   });
 
+  useEffect(() => {
+    socket.emit('enterRoom', JSON.stringify({ roomId: roomId }));
+  }, []);
+
   if (statusCodeRef?.current !== undefined && statusCodeRef?.current >= 400) {
     router.push('/channel');
     return;
   }
-  socket.emit('enterRoom', JSON.stringify({ roomId: roomId }));
 
   return (
     dataRef?.current && (
