@@ -10,7 +10,7 @@ export default function AllRoomList() {
   return (
     <div>
       <h2> 전체 채팅방 목록 </h2>
-      <RoomList listAPI={'chat'} joinAPI={'chat/participant'} />
+      <RoomList listAPI={'chat'} joinAPI={'chat/register'} />
     </div>
   );
 }

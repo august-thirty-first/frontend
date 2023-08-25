@@ -12,18 +12,18 @@ import RoomLeave from '@/app/(home)/(communication)/channel/chat/[id]/leave';
 import { useMyParticipantInfo } from '@/app/(home)/(communication)/channel/MyParticipantInfoContext';
 import ChatParticipantList from '@/app/(home)/(communication)/channel/chat/[id]/_participant/chatParticipant';
 
-export default function Chat({ params }: { params: { id: number } }) {
+export default function Chat({ params }: { params: { id: string } }) {
   const router = useRouter();
   const socket = useContext(HomeSocketContext);
   const [myParticipantInfo] = useMyParticipantInfo();
-  const roomId = params.id;
+  const roomId = parseInt(params.id);
   const { isLoading, statusCodeRef, dataRef, bodyRef } = useFetch<
     ChatParticipant[]
   >({
     autoFetch: true,
     method: 'GET',
     contentType: 'application/json',
-    url: `chat/participant/${roomId}`,
+    url: `chat/allParticipant/${roomId}`,
   });
 
   if (statusCodeRef?.current !== undefined && statusCodeRef?.current >= 400) {
@@ -41,13 +41,11 @@ export default function Chat({ params }: { params: { id: number } }) {
         <RoomLeave roomId={roomId} />
         {(myParticipantInfo?.authority === ParticipantAuthority.BOSS ||
           myParticipantInfo?.authority === ParticipantAuthority.ADMIN) && (
-          <>
-            <RoomBuilder
-              title={'방 수정'}
-              method={'PATCH'}
-              url={`chat/${roomId}`}
-            />
-          </>
+          <RoomBuilder
+            title={'방 수정'}
+            method={'PATCH'}
+            url={`chat/${roomId}`}
+          />
         )}
       </div>
     )
