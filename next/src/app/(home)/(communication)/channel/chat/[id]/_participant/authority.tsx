@@ -24,7 +24,8 @@ export default function SwitchAuthority({
   const { statusCodeRef, bodyRef, fetchData } = useFetch<ChatParticipant>({
     autoFetch: false,
     method: 'PATCH',
-    url: `chat/participant/authority/${targetUserId}`,
+    contentType: 'application/json',
+    url: `chat/participant/authority`,
   });
 
   async function switchAuthority() {
