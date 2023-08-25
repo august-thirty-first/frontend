@@ -5,7 +5,8 @@ import { useState } from 'react';
 import Modal from '@/components/modal/Modal';
 import ChatRoom from '@/interfaces/chatRoom.interface';
 import { useRouter } from 'next/navigation';
-import { useShowModal } from '@/app/ShowModalContext';
+import useToast from '@/components/toastContext';
+import { mutate } from 'swr';
 
 export default function RoomBuilder({
   title,
@@ -17,7 +18,7 @@ export default function RoomBuilder({
   url: string;
 }) {
   const router = useRouter();
-  const alertModal = useShowModal();
+  const toast = useToast();
   const [showModal, setShowModal] = useState(false);
   const [inputPassword, setInputPassword] = useState('');
   const [disablePassword, setDisablePassword] = useState(false);
@@ -67,10 +68,13 @@ export default function RoomBuilder({
     Todo: 성공했으면 반환된 채팅방에 redirect
      */
     if (statusCodeRef?.current === 200 || statusCodeRef?.current === 201) {
-      alertModal('성공!');
+      await mutate('allRoomList');
+      await mutate('myRoomList');
+      toast('방 생성 성공');
     } else {
-      alertModal('실패!');
+      toast('방 생성 실패');
     }
+    toggleModal();
   }
 
   return (

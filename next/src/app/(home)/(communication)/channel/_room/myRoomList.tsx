@@ -4,7 +4,11 @@ export default function MyRoomList() {
   return (
     <div>
       <h2> 내 채팅방 목록 </h2>
-      <RoomList listAPI={'chat/participation'} joinAPI={'chat/enter'} />
+      <RoomList
+        listAPI={'chat/participation'}
+        joinAPI={'chat/enter'}
+        swrKey={'myRoomList'}
+      />
     </div>
   );
 }
