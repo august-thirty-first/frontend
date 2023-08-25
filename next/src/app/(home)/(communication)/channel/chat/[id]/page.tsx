@@ -23,11 +23,9 @@ function ListenEvent() {
   useEffect(() => {
     socket.on('mute', msg => {
       toast(msg);
-      mutate('participant');
     });
     socket.on('muteReturnStatus', msg => {
       toast(msg);
-      mutate('participant');
     });
     socket.on('kick', msg => {
       toast(msg);
