@@ -1,13 +1,14 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import Otp from './otp';
 import Avata from '@/app/(login)/signup/avata';
 import EditNickname from './nickname';
 import { useFetch } from '@/lib/useFetch';
 import Btn from '@/components/btn';
 import { useShowModal } from '@/app/ShowModalContext';
+import { HomeSocketContext } from '@/app/(home)/createHomeSocketContext';
 
 const Edit = () => {
   const { isLoading, statusCodeRef, bodyRef, fetchData } = useFetch<void>({
@@ -20,6 +21,7 @@ const Edit = () => {
   const [file, setFile] = useState<File | null>(null);
   const router = useRouter();
   const alertModal = useShowModal();
+  const homeSocket = useContext(HomeSocketContext);
 
   const validate = (): boolean => {
     let trim_nickname = nickname.trim();
@@ -42,6 +44,8 @@ const Edit = () => {
     await fetchData();
     if (statusCodeRef?.current === 204) {
       alertModal('수정 완료.');
+      homeSocket.disconnect();
+      homeSocket.connect();
       router.replace('/profile');
     }
   };
