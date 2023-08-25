@@ -4,9 +4,9 @@ import ChatParticipant, {
   ParticipantAuthority,
 } from '@/interfaces/chatParticipant.interface';
 import Btn from '@/components/btn';
-import { useShowModal } from '@/app/ShowModalContext';
 import { useContext } from 'react';
 import { HomeSocketContext } from '@/app/(home)/createHomeSocketContext';
+import useToast from '@/components/toastContext';
 
 export default function SwitchAuthority({
   participant,
@@ -20,7 +20,7 @@ export default function SwitchAuthority({
   const isNormal = authority === ParticipantAuthority.NORMAL;
   const router = useRouter();
   const socket = useContext(HomeSocketContext);
-  const alertModal = useShowModal();
+  const toast = useToast();
   const { statusCodeRef, bodyRef, fetchData } = useFetch<ChatParticipant>({
     autoFetch: false,
     method: 'PATCH',
@@ -38,7 +38,7 @@ export default function SwitchAuthority({
     });
     await fetchData();
     if (statusCodeRef?.current === 200) {
-      // socket.emit('banRoom', JSON.stringify({ roomId: roomId }));
+      toast('권한 변경 성공');
     }
   }
   return (
