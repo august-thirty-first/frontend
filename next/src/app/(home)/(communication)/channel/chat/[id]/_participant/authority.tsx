@@ -4,6 +4,7 @@ import ChatParticipant, {
   ParticipantAuthority,
 } from '@/interfaces/chatParticipant.interface';
 import Btn from '@/components/btn';
+import { useShowModal } from '@/app/ShowModalContext';
 import { useContext } from 'react';
 import { HomeSocketContext } from '@/app/(home)/createHomeSocketContext';
 import useToast from '@/components/toastContext';
