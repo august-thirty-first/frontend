@@ -28,8 +28,7 @@ const gameSocket = isClient
     - game ***
       : renderInfo 읽을 수 없음 에러 발생 (재연결하면서)
 4. 뒤로가기
-    - ladder ***
-      : 소켓이 안 끊어짐
+    - ladder 0
     - option 0
     - game 0
 */
