@@ -59,7 +59,6 @@ export default function GameOptionSubmitForm() {
       router.push('/game/option');
     };
     const validateSuccessListener = () => {
-      socket.emit('joinQueue');
       socket.on('joinGame', joinGameListener);
     };
     socket.on('validateSuccess', validateSuccessListener);
