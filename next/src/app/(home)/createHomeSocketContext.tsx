@@ -8,7 +8,7 @@ import useToast from '@/components/toastContext';
 
 const isClient = typeof window !== 'undefined';
 const homeSocket = isClient
-  ? io('http://localhost:3000/home', {
+  ? io(`${process.env.NEXT_PUBLIC_BACKEND_URL}/home`, {
       transports: ['websocket'],
     })
   : io();

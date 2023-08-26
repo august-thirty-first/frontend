@@ -6,7 +6,7 @@ export default function Login() {
     <div>
       <RedirectBtn
         title="login"
-        redirectUrl="http://localhost:3000/api/auth/login"
+        redirectUrl={`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/login`}
       />
     </div>
   );
