@@ -16,8 +16,9 @@ const MatchHistory = ({ gameData, profileName }: matchHistoryProps) => {
       {gameData && (
         <>
           <h3>
-            총 전적 : {gameData.total_win}승 {gameData.total_lose}패 | 점수 : N
+            총 전적 : {gameData.total_win}승 {gameData.total_lose}패
           </h3>
+          <h3>점수 : {gameData.ladder ? gameData.ladder : '0'}</h3>
           <ul role="list" className="divide-y divide-gray-200">
             {gameData.game_history.map(history => (
               <li key={history.winner_avata} className="py-3 sm:py-4">

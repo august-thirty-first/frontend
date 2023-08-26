@@ -26,6 +26,7 @@ export interface GetAchievementDto {
 export interface GameDataDto {
   total_win: number;
   total_lose: number;
+  ladder: number;
   game_history: GetGameHistoryDto[];
 }
 
