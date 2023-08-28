@@ -20,8 +20,8 @@ const MatchHistory = ({ gameData, profileName }: matchHistoryProps) => {
           </h3>
           <h3>점수 : {gameData.ladder ? gameData.ladder : '0'}</h3>
           <ul role="list" className="divide-y divide-gray-200">
-            {gameData.game_history.map(history => (
-              <li key={history.winner_avata} className="py-3 sm:py-4">
+            {gameData.game_history.map((history, index) => (
+              <li key={index} className="py-3 sm:py-4">
                 <span
                   className={`inline-flex items-center text-xl font-semibold mb-3 ${
                     profileName === history.winner_nickname
