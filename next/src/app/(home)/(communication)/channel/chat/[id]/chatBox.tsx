@@ -31,7 +31,6 @@ export default function ChatBox({ roomId }: { roomId: number }) {
       socket.off('message');
       socket.off('directMessage', messageListener);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -50,6 +49,10 @@ export default function ChatBox({ roomId }: { roomId: number }) {
         inputMessage: inputMessage,
       };
       socket.emit('directMessage', JSON.stringify(directMsg));
+      setMessages(prevMessages => [
+        ...prevMessages,
+        `${nickname}에게: ${inputMessage}`,
+      ]);
     } else {
       setMessages(prevMessages => [
         ...prevMessages,
