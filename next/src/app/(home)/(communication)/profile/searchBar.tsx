@@ -2,6 +2,7 @@
 
 import { useShowModal } from '@/app/ShowModalContext';
 import { useFetch } from '@/lib/useFetch';
+import { useRouter } from 'next/navigation';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import useSWR from 'swr';
 
@@ -58,7 +59,8 @@ const SearchBar = ({ myNickname, setProfile }: searchBarProps) => {
       method: 'GET',
     });
   const alertModal = useShowModal();
-  const { data } = useSWR('/searchBar', fetchData);
+  const { data, mutate } = useSWR('/searchBar', fetchData);
+  const router = useRouter();
 
   const validate = (): boolean => {
     let trim_nickname = nickname.trim();
@@ -78,7 +80,14 @@ const SearchBar = ({ myNickname, setProfile }: searchBarProps) => {
       if (dataRef?.current) setProfile(dataRef.current);
       else alertModal('찾을 수 없는 사용자입니다.');
     }
+    router.push(`/profile?nickname=${nickname}`);
   };
+
+  useEffect(() => {
+    setNickname(myNickname || '');
+    if (urlRef?.current) urlRef.current = `profile/user?nickname=${myNickname}`;
+    mutate();
+  }, [myNickname, mutate, urlRef]);
 
   useEffect(() => {
     if (data) setProfile(data);

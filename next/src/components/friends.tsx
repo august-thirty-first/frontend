@@ -5,6 +5,7 @@ import Image from 'next/image';
 import defaultImg from '@/public/default.png';
 import Btn from './btn';
 import useSWR from 'swr';
+import ProfileBtn from './profileBtn';
 
 export enum FriendStatus {
   Online = 'online',
@@ -59,7 +60,7 @@ export default function Friends() {
                   </p>
                 </div>
                 <div className="inline-flex items-center text-base font-semibold text-gray-900">
-                  <Btn title="DM" />
+                  <ProfileBtn nickname={friend.nickname} />
                   <Btn title="PLAY" />
                 </div>
               </div>
