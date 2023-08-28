@@ -111,13 +111,9 @@ const GameScreen: React.FC = () => {
     //15ms에 한 번씩 서버에 현재 눌렸는지 값을 보내준다
     intervalID.current = setInterval(() => {
       if (keys.w.pressed) {
-        renderInfo.gamePlayers[socket.id].bar.position.y -=
-          renderInfo.gamePlayers[socket.id].bar.velocity.y;
         socket.emit('keyDown', 'keyW');
       }
       if (keys.s.pressed) {
-        renderInfo.gamePlayers[socket.id].bar.position.y +=
-          renderInfo.gamePlayers[socket.id].bar.velocity.y;
         socket.emit('keyDown', 'keyS');
       }
     }, 15);
