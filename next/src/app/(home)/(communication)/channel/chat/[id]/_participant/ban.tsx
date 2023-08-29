@@ -28,7 +28,7 @@ export default function Ban({
     await fetchData();
     if (statusCodeRef?.current === 200) {
       socket.emit(
-        'ban',
+        ban,
         JSON.stringify({ roomId: roomId, targetUserId: targetUserId }),
       );
     }

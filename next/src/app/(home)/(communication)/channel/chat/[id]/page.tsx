@@ -45,6 +45,10 @@ function ListenEvent() {
       toast(msg);
       mutate('participant');
     });
+    socket.on('unbanReturnStatus', msg => {
+      toast(msg);
+      mutate('participant');
+    });
     return () => {
       socket.off('mute');
       socket.off('muteReturnStatus');
@@ -53,6 +57,7 @@ function ListenEvent() {
       socket.off('kickReturnStatus');
       socket.off('ban');
       socket.off('banReturnStatus');
+      socket.off('unbanReturnStatus');
     };
   }, []);
 
