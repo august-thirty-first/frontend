@@ -2,6 +2,7 @@ import { useMyParticipantInfo } from '@/app/(home)/(communication)/channel/MyPar
 import { useFetch } from '@/lib/useFetch';
 import ChatParticipant from '@/interfaces/chatParticipant.interface';
 import { useEffect } from 'react';
+import useSWR from 'swr';
 
 export default function SetMyParticipantInfo({ roomId }: { roomId: number }) {
   const [, setMyParticipantInfo] = useMyParticipantInfo();
@@ -12,9 +13,11 @@ export default function SetMyParticipantInfo({ roomId }: { roomId: number }) {
       url: `chat/myParticipant/${roomId}`,
     });
 
+  const { data } = useSWR('myParticipantInfo', fetchData);
+
   useEffect(() => {
     fetchData().then(() => setMyParticipantInfo(dataRef?.current));
-  }, []);
+  }, [data]);
 
   return null;
 }

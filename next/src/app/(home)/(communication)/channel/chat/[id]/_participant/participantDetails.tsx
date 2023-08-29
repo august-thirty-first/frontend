@@ -1,4 +1,5 @@
 import ChatParticipant, {
+  ChatParticipantWithBlackList,
   ParticipantAuthority,
 } from '@/interfaces/chatParticipant.interface';
 import Ban from '@/app/(home)/(communication)/channel/chat/[id]/_participant/ban';
@@ -12,7 +13,7 @@ export default function ParticipantDetails({
   participant,
   roomId,
 }: {
-  participant: ChatParticipant;
+  participant: ChatParticipantWithBlackList;
   roomId: number;
 }) {
   const [myParticipantInfo] = useMyParticipantInfo();
@@ -26,9 +27,9 @@ export default function ParticipantDetails({
           <Kick roomId={roomId} participant={participant} />
           <Mute roomId={roomId} participant={participant} />
           <SwitchAuthority roomId={roomId} participant={participant} />
-          <BlackList roomId={roomId} participant={participant} />
         </>
       )}
+      <BlackList roomId={roomId} participant={participant} />
     </>
   );
 }
