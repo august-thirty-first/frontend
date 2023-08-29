@@ -2,23 +2,27 @@
 
 import { useContext, useEffect } from 'react';
 import { GameSocketContext } from '../../createGameSocketContext';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 export default function GeneralWaitingPage() {
-  const gameSocket = useContext(GameSocketContext);
+  const socket = useContext(GameSocketContext);
   const router = useRouter();
+  const searchParams = useSearchParams();
 
   useEffect(() => {
-    if (!gameSocket.connected) {
-      gameSocket.connect();
+    if (!socket.connected) {
+      socket.connect();
     }
 
-    gameSocket.emit('joinQueue');
+    const fromUserId = searchParams.get('fromUserId');
+    if (fromUserId) {
+      socket.emit('generalGameApprove', fromUserId);
+    }
 
-    gameSocket.on('joinGame', () => {
+    socket.on('joinGame', () => {
       router.push('/game/option');
     });
-  }, [gameSocket, router]);
+  }, [socket, router]);
 
   return (
     <div>
