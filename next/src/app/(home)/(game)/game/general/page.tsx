@@ -4,16 +4,22 @@ import { useContext, useEffect } from 'react';
 import { GameSocketContext } from '../../createGameSocketContext';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useModal } from '../../modalProvider';
+import { useShowModal } from '@/app/ShowModalContext';
 
 export default function GeneralWaitingPage() {
   const socket = useContext(GameSocketContext);
   const router = useRouter();
   const { openModal } = useModal();
   const searchParams = useSearchParams();
+  const alertModal = useShowModal();
 
   useEffect(() => {
-    const matchGameFailListener = () => {
+    const generalGameFailListener = () => {
       openModal('상대방이 떠났습니다..');
+    };
+
+    const validateFailListener = () => {
+      alertModal('상대방이 떠났습니다...');
     };
 
     const joinGameListener = () => {
@@ -21,12 +27,12 @@ export default function GeneralWaitingPage() {
     };
 
     const validateSuccessGeneralListener = () => {
-      const fromUserId = searchParams.get('fromUserId');
+      const fromUserId = searchParams.get('userId');
       if (fromUserId) {
-        socket.emit('generalGameApprove', fromUserId); //의도: 수락자만 동작
+        socket.emit('generalGameApprove', parseInt(fromUserId)); //의도: 수락자만 동작
       }
       socket.on('joinGame', joinGameListener);
-      socket.on('matchGameFail', matchGameFailListener);
+      socket.on('generalGameFail', generalGameFailListener);
     };
 
     if (!socket.connected) {
@@ -34,7 +40,7 @@ export default function GeneralWaitingPage() {
     }
     socket.emit('validateSocketGeneral');
     socket.on('validateSuccessGeneral', validateSuccessGeneralListener);
-
+    socket.on('validateFail', validateFailListener);
     //
     const timeoutId = setTimeout(() => {
       //의도: 요청자만 동작
@@ -43,7 +49,8 @@ export default function GeneralWaitingPage() {
 
     return () => {
       clearTimeout(timeoutId);
-      socket.off('matchGameFail', matchGameFailListener);
+      socket.off('validateFail');
+      socket.off('generalGameFail', generalGameFailListener);
       socket.off('joinGame', joinGameListener);
       socket.off('validateSuccessGeneral', validateSuccessGeneralListener);
     };
