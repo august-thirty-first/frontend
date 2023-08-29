@@ -16,6 +16,9 @@ export default function ToastBar({
         toasts.map((toast: ToastProps, index: number) => (
           <div key={index} className={'toast'}>
             <span>{toast.message}</span>
+            {toast.successHandler && (
+              <button onClick={toast.successHandler}>수락</button>
+            )}
             <button onClick={() => onClose(toast.id)}>X</button>
           </div>
         ))}
