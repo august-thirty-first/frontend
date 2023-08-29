@@ -12,34 +12,40 @@ export default function GeneralWaitingPage() {
   const searchParams = useSearchParams();
 
   useEffect(() => {
-    if (!socket.connected) {
-      socket.connect();
-    }
-
-    const timeoutId = setTimeout(() => {
-      openModal('상대방이 바쁜가봐요..');
-    }, 5000); // 5초
-
-    const fromUserId = searchParams.get('fromUserId');
-    if (fromUserId) {
-      socket.emit('generalGameApprove', fromUserId);
-    }
-
     const matchGameFailListener = () => {
       openModal('상대방이 떠났습니다..');
     };
-    socket.on('matchGameFail', matchGameFailListener);
 
     const joinGameListener = () => {
       router.push('/game/option');
     };
-    socket.on('joinGame', joinGameListener);
 
-    // 컴포넌트 언마운트 시 setTimeout 취소
+    const validateSuccessGeneralListener = () => {
+      const fromUserId = searchParams.get('fromUserId');
+      if (fromUserId) {
+        socket.emit('generalGameApprove', fromUserId); //의도: 수락자만 동작
+      }
+      socket.on('joinGame', joinGameListener);
+      socket.on('matchGameFail', matchGameFailListener);
+    };
+
+    if (!socket.connected) {
+      socket.connect();
+    }
+    socket.emit('validateSocketGeneral');
+    socket.on('validateSuccessGeneral', validateSuccessGeneralListener);
+
+    //
+    const timeoutId = setTimeout(() => {
+      //의도: 요청자만 동작
+      openModal('상대방이 바쁜가봐요..');
+    }, 5000); // 5초
+
     return () => {
       clearTimeout(timeoutId);
       socket.off('matchGameFail', matchGameFailListener);
       socket.off('joinGame', joinGameListener);
+      socket.off('validateSuccessGeneral', validateSuccessGeneralListener);
     };
   }, []);
 
@@ -67,7 +73,6 @@ export default function GeneralWaitingPage() {
           <span className="sr-only">Loading...</span>
         </div>
       </div>
-      {/* <CancleMatchBtn /> */}
     </div>
   );
 }
