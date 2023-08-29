@@ -3,10 +3,12 @@
 import { useContext, useEffect } from 'react';
 import { GameSocketContext } from '../../createGameSocketContext';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { useModal } from '../../modalProvider';
 
 export default function GeneralWaitingPage() {
   const socket = useContext(GameSocketContext);
   const router = useRouter();
+  const { openModal } = useModal();
   const searchParams = useSearchParams();
 
   useEffect(() => {
@@ -19,9 +21,15 @@ export default function GeneralWaitingPage() {
       socket.emit('generalGameApprove', fromUserId);
     }
 
-    socket.on('joinGame', () => {
+    const matchGameFailListener = () => {
+      openModal('상대방이 떠났습니다..');
+    };
+    socket.on('matchGameFail', matchGameFailListener);
+
+    const joinGameListener = () => {
       router.push('/game/option');
-    });
+    };
+    socket.on('joinGame', joinGameListener);
   }, [socket, router]);
 
   return (
