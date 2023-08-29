@@ -41,6 +41,9 @@ const gameSocket = isClient
 
 export const GameSocketContext = createContext(gameSocket);
 const GameSocketProvider = ({ children }: { children: React.ReactNode }) => {
+  const socket = io('http://localhost:3000/game', {
+    transports: ['websocket'],
+  });
   const router = useRouter();
   useEffect(() => {
     const disconnectListener = () => {
@@ -62,7 +65,7 @@ const GameSocketProvider = ({ children }: { children: React.ReactNode }) => {
   }, []);
 
   return (
-    <GameSocketContext.Provider value={gameSocket}>
+    <GameSocketContext.Provider value={socket}>
       {children}
     </GameSocketContext.Provider>
   );
