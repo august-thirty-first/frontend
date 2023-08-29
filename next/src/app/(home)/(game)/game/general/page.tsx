@@ -16,6 +16,10 @@ export default function GeneralWaitingPage() {
       socket.connect();
     }
 
+    const timeoutId = setTimeout(() => {
+      openModal('상대방이 바쁜가봐요..');
+    }, 5000); // 5초
+
     const fromUserId = searchParams.get('fromUserId');
     if (fromUserId) {
       socket.emit('generalGameApprove', fromUserId);
@@ -30,7 +34,14 @@ export default function GeneralWaitingPage() {
       router.push('/game/option');
     };
     socket.on('joinGame', joinGameListener);
-  }, [socket, router]);
+
+    // 컴포넌트 언마운트 시 setTimeout 취소
+    return () => {
+      clearTimeout(timeoutId);
+      socket.off('matchGameFail', matchGameFailListener);
+      socket.off('joinGame', joinGameListener);
+    };
+  }, []);
 
   return (
     <div>
