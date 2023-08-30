@@ -44,11 +44,13 @@ function ListenEvent({ roomId }: { roomId: number }) {
       mutate('participant');
     });
     socket.on('toAdmin', msg => {
-      toast(msg);
+      if (msg) toast(msg);
+      mutate('participant');
       mutate('myParticipantInfo');
     });
     socket.on('toNormal', msg => {
-      toast(msg);
+      if (msg) toast(msg);
+      mutate('participant');
       mutate('myParticipantInfo');
     });
     socket.on('toAdminReturnStatus', msg => {
