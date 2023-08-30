@@ -22,7 +22,6 @@ function ListenEvent({ roomId }: { roomId: number }) {
   const router = useRouter();
 
   useEffect(() => {
-    socket.emit('enterRoom', JSON.stringify({ roomId: roomId }));
     socket.on('mute', msg => {
       toast(msg);
     });
@@ -75,6 +74,9 @@ function ListenEvent({ roomId }: { roomId: number }) {
       toast(msg);
       mutate('participant');
     });
+    socket.on('enterRoom', msg => {
+      mutate('participant');
+    });
 
     return () => {
       socket.off('mute');
@@ -91,6 +93,7 @@ function ListenEvent({ roomId }: { roomId: number }) {
       socket.off('unbanReturnStatus');
       socket.off('setBlackList');
       socket.off('unSetBlackList');
+      socket.off('enterRoom');
     };
   }, []);
 
