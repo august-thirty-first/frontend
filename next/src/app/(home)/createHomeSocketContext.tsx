@@ -53,7 +53,24 @@ const HomeSocketProvider = ({ children }: { children: React.ReactNode }) => {
       const split_msg = msg.split(':');
       toast(`${split_msg[0]}님의 메세지가 도착했습니다..`);
     });
+    homeSocket.on('waitingPlayer', () => {
+      router.push('/game/general');
+    });
+    homeSocket.on('requestGeneralGameError', (msg: string) => {
+      toast(msg);
+    });
+    homeSocket.on(
+      'selectJoin',
+      (fromUserId: number, fromUserNickname: string) => {
+        toast(`${fromUserNickname}님이 게임 초대를 하셨습니다.`, () => {
+          router.push(`/game/general?userId=${fromUserId}`);
+        });
+      },
+    );
     return () => {
+      homeSocket.off('selectJoin');
+      homeSocket.off('requestGeneralGameError');
+      homeSocket.off('waitingPlayer');
       homeSocket.off('connect');
       homeSocket.off('connection');
       homeSocket.off('multipleConnect');

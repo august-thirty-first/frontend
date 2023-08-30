@@ -3,9 +3,9 @@
 import { useFetch } from '@/lib/useFetch';
 import Image from 'next/image';
 import defaultImg from '@/public/default.png';
-import Btn from './btn';
 import useSWR from 'swr';
 import ProfileBtn from './profileBtn';
+import PlayGameBtn from './playGameBtn';
 
 export enum FriendStatus {
   Online = 'online',
@@ -61,7 +61,9 @@ export default function Friends() {
                 </div>
                 <div className="inline-flex items-center text-base font-semibold text-gray-900">
                   <ProfileBtn nickname={friend.nickname} />
-                  <Btn title="PLAY" />
+                  {friend.status === FriendStatus.Online && (
+                    <PlayGameBtn nickname={friend.nickname} />
+                  )}
                 </div>
               </div>
             </li>
