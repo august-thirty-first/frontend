@@ -1,4 +1,5 @@
 import ChatParticipant, {
+  ChatParticipantWithBlackList,
   ParticipantAuthority,
 } from '@/interfaces/chatParticipant.interface';
 import Ban from '@/app/(home)/(communication)/channel/chat/[id]/_participant/ban';
@@ -7,12 +8,14 @@ import Mute from '@/app/(home)/(communication)/channel/chat/[id]/_participant/mu
 import SwitchAuthority from '@/app/(home)/(communication)/channel/chat/[id]/_participant/authority';
 import { useMyParticipantInfo } from '@/app/(home)/(communication)/channel/MyParticipantInfoContext';
 import BlackList from './blackList';
+import ProfileBtn from '@/components/profileBtn';
+import PlayGameBtn from '@/components/playGameBtn';
 
 export default function ParticipantDetails({
   participant,
   roomId,
 }: {
-  participant: ChatParticipant;
+  participant: ChatParticipantWithBlackList;
   roomId: number;
 }) {
   const [myParticipantInfo] = useMyParticipantInfo();
@@ -26,9 +29,11 @@ export default function ParticipantDetails({
           <Kick roomId={roomId} participant={participant} />
           <Mute roomId={roomId} participant={participant} />
           <SwitchAuthority roomId={roomId} participant={participant} />
-          <BlackList roomId={roomId} participant={participant} />
         </>
       )}
+      <BlackList roomId={roomId} participant={participant} />
+      <ProfileBtn nickname={participant.user.nickname} />
+      <PlayGameBtn nickname={participant.user.nickname} />
     </>
   );
 }

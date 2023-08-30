@@ -6,6 +6,7 @@ import RoomBuilder from '@/app/(home)/(communication)/channel/_room/roomBuilder'
 import { useRouter } from 'next/navigation';
 import { useFetch } from '@/lib/useFetch';
 import ChatParticipant, {
+  ChatParticipantWithBlackList,
   ParticipantAuthority,
 } from '@/interfaces/chatParticipant.interface';
 import RoomLeave from '@/app/(home)/(communication)/channel/chat/[id]/leave';
@@ -42,10 +43,42 @@ function ListenEvent({ roomId }: { roomId: number }) {
       router.push('/channel');
       mutate('participant');
     });
+    socket.on('toAdmin', msg => {
+      toast(msg);
+      mutate('myParticipantInfo');
+    });
+    socket.on('toNormal', msg => {
+      toast(msg);
+      mutate('myParticipantInfo');
+    });
+    socket.on('toAdminReturnStatus', msg => {
+      toast(msg);
+      mutate('participant');
+    });
+    socket.on('toNormalReturnStatus', msg => {
+      toast(msg);
+      mutate('participant');
+    });
     socket.on('banReturnStatus', msg => {
       toast(msg);
       mutate('participant');
     });
+    socket.on('unbanReturnStatus', msg => {
+      toast(msg);
+      mutate('participant');
+    });
+    socket.on('setBlackList', msg => {
+      toast(msg);
+      mutate('participant');
+    });
+    socket.on('unSetBlackList', msg => {
+      toast(msg);
+      mutate('participant');
+    });
+    socket.on('enterRoom', msg => {
+      mutate('participant');
+    });
+
     return () => {
       socket.off('mute');
       socket.off('muteReturnStatus');
@@ -53,7 +86,15 @@ function ListenEvent({ roomId }: { roomId: number }) {
       socket.off('kick');
       socket.off('kickReturnStatus');
       socket.off('ban');
+      socket.off('toAdmin');
+      socket.off('toNormal');
+      socket.off('toAdminReturnStatus');
+      socket.off('toNormalReturnStatus');
       socket.off('banReturnStatus');
+      socket.off('unbanReturnStatus');
+      socket.off('setBlackList');
+      socket.off('unSetBlackList');
+      socket.off('enterRoom');
     };
   }, []);
 
@@ -66,7 +107,7 @@ export default function Chat({ params }: { params: { id: string } }) {
   const [myParticipantInfo] = useMyParticipantInfo();
   const roomId = parseInt(params.id);
   const { statusCodeRef, dataRef, bodyRef, fetchData } = useFetch<
-    ChatParticipant[]
+    ChatParticipantWithBlackList[]
   >({
     autoFetch: true,
     method: 'GET',
