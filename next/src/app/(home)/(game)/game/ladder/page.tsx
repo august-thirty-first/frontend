@@ -22,13 +22,13 @@ export default function LadderWaitingPage() {
   }, [gameSocket, router]);
 
   return (
-    <div>
-      <p>게임 상대를 기다리는 중입니다...</p>
-      <div className="text-center">
-        <div role="status">
+    <div className="flex flex-col items-center justify-center h-screen">
+      <p className="text-center">게임 상대를 기다리는 중입니다...</p>
+      <div className="text-center mt-4">
+        <div className="animate-spin">
           <svg
             aria-hidden="true"
-            className="w-20 h-20 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
+            className="w-24 h-24 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
             viewBox="0 0 100 101"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
@@ -45,7 +45,9 @@ export default function LadderWaitingPage() {
           <span className="sr-only">Loading...</span>
         </div>
       </div>
-      <CancleMatchBtn />
+      <div className="text-center mt-4">
+        <CancleMatchBtn />
+      </div>
     </div>
   );
 }
