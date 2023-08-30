@@ -6,6 +6,7 @@ import useSWR from 'swr';
 import Image from 'next/image';
 import { searchUserRequestStatus } from '@/app/(home)/(communication)/profile/searchBar';
 import FriendBtn from '@/app/(home)/(communication)/profile/_friend/friendBtn';
+import ProfileBtn from './profileBtn';
 
 export interface FriendRequestingAlarmsResponse {
   id: number;
@@ -51,6 +52,7 @@ export default function Alarms() {
                   </p>
                 </div>
                 <div className="inline-flex items-center text-base font-semibold text-gray-900">
+                  <ProfileBtn nickname={friend.nickname} />
                   <FriendBtn id={friend.id} status={friend.status} />
                 </div>
               </div>

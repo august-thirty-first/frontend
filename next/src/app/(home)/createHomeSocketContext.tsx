@@ -1,6 +1,6 @@
 'use client';
 import io from 'socket.io-client';
-import { createContext, useEffect } from 'react';
+import { createContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useFetch } from '@/lib/useFetch';
 import { useShowModal } from '../ShowModalContext';
@@ -23,13 +23,21 @@ const HomeSocketProvider = ({ children }: { children: React.ReactNode }) => {
     url: 'auth/logout',
     method: 'GET',
   });
+  const [connected, setConnected] = useState<boolean>(true);
 
   useEffect(() => {
+    setConnected(homeSocket.connected);
+
     homeSocket.on('connect', () => {
+      setConnected(true);
       console.log('hello ');
     });
     homeSocket.on('connection', msg => {
+      setConnected(true);
       console.log(msg);
+    });
+    homeSocket.on('disconnect', msg => {
+      setConnected(false);
     });
     homeSocket.on('multipleConnect', () => {
       alertModal('다중 로그인 상태.');
@@ -45,7 +53,24 @@ const HomeSocketProvider = ({ children }: { children: React.ReactNode }) => {
       const split_msg = msg.split(':');
       toast(`${split_msg[0]}님의 메세지가 도착했습니다..`);
     });
+    homeSocket.on('waitingPlayer', () => {
+      router.push('/game/general');
+    });
+    homeSocket.on('requestGeneralGameError', (msg: string) => {
+      toast(msg);
+    });
+    homeSocket.on(
+      'selectJoin',
+      (fromUserId: number, fromUserNickname: string) => {
+        toast(`${fromUserNickname}님이 게임 초대를 하셨습니다.`, () => {
+          router.push(`/game/general?userId=${fromUserId}`);
+        });
+      },
+    );
     return () => {
+      homeSocket.off('selectJoin');
+      homeSocket.off('requestGeneralGameError');
+      homeSocket.off('waitingPlayer');
       homeSocket.off('connect');
       homeSocket.off('connection');
       homeSocket.off('multipleConnect');
@@ -56,6 +81,11 @@ const HomeSocketProvider = ({ children }: { children: React.ReactNode }) => {
   }, []);
   return (
     <HomeSocketContext.Provider value={homeSocket}>
+      {!connected && (
+        <div className="flex justify-center bg-slate-300">
+          서버와의 연결이 끊어졌습니다.. <a href="/">재접속..</a>
+        </div>
+      )}
       {children}
     </HomeSocketContext.Provider>
   );

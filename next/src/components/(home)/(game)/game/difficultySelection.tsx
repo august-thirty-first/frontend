@@ -39,7 +39,7 @@ export default function DifficultySelection({
 
   return (
     <div>
-      <h3>Select Map</h3>
+      <h3>Select Difficulty</h3>
       <CheckBox
         id="mapDifficulty_1"
         name="mapDifficulty"
