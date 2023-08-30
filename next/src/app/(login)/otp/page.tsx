@@ -1,9 +1,10 @@
 'use client';
 
+import { HomeSocketContext } from '@/app/(home)/createHomeSocketContext';
 import { useShowModal } from '@/app/ShowModalContext';
 import { useFetch } from '@/lib/useFetch';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 
 const OtpLogin = () => {
   const [token, setToken] = useState<string>('');
@@ -16,6 +17,7 @@ const OtpLogin = () => {
     body: JSON.stringify({ token }),
     contentType: 'application/json',
   });
+  const socket = useContext(HomeSocketContext);
 
   const validate = (): boolean => {
     const token_trim = token.trim();
@@ -32,7 +34,10 @@ const OtpLogin = () => {
     if (!validate()) return;
     bodyRef.current = JSON.stringify({ token });
     await fetchData();
-    if (statusCodeRef?.current === 200) router.replace('/');
+    if (statusCodeRef?.current === 200) {
+      socket.connect();
+      router.replace('/');
+    }
   };
 
   return (
