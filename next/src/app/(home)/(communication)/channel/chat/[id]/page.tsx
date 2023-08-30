@@ -16,7 +16,7 @@ import useToast from '@/components/toastContext';
 import SetMyParticipantInfo from '@/app/(home)/(communication)/channel/chat/[id]/_participant/SetMyParticipantInfo';
 import useSWR, { mutate } from 'swr';
 
-function ListenEvent() {
+function ListenEvent({ roomId }: { roomId: number }) {
   const socket = useContext(HomeSocketContext);
   const toast = useToast();
   const router = useRouter();
@@ -74,6 +74,9 @@ function ListenEvent() {
       toast(msg);
       mutate('participant');
     });
+    socket.on('enterRoom', msg => {
+      mutate('participant');
+    });
 
     return () => {
       socket.off('mute');
@@ -90,6 +93,7 @@ function ListenEvent() {
       socket.off('unbanReturnStatus');
       socket.off('setBlackList');
       socket.off('unSetBlackList');
+      socket.off('enterRoom');
     };
   }, []);
 
@@ -116,13 +120,12 @@ export default function Chat({ params }: { params: { id: string } }) {
     router.push('/channel');
     return;
   }
-  socket.emit('enterRoom', JSON.stringify({ roomId: roomId }));
 
   return (
     dataRef?.current && (
       <div>
         <SetMyParticipantInfo roomId={roomId} />
-        <ListenEvent />
+        <ListenEvent roomId={roomId} />
         <ChatParticipantList roomId={roomId} participants={dataRef.current} />
         <ChatBox roomId={roomId} />
         <RoomLeave roomId={roomId} />
