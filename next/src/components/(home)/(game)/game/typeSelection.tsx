@@ -38,18 +38,18 @@ export default function TypeSelection({
   };
   return (
     <div>
-      <h3>Select Map</h3>
+      <h3>맵</h3>
       <CheckBox
         id="mapType_1"
         name="mapType"
-        title="default"
+        title="기본"
         value={MapType.Default}
         onChangeHandler={onChangeHandler}
       />
       <CheckBox
         id="mapType_2"
         name="mapType"
-        title="crazy"
+        title="CRAZY"
         value={MapType.Crazy}
         onChangeHandler={onChangeHandler}
       />

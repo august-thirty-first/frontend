@@ -3,7 +3,7 @@ import GameOptionSubmitForm from '@/components/(home)/(game)/game/gameOptionSubm
 export default function GameOptionPage() {
   return (
     <div>
-      <h2>Select Game Option</h2>
+      <h2>내가 하고 싶은 게임은..</h2>
       <GameOptionSubmitForm />
     </div>
   );

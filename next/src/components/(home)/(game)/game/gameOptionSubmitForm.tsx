@@ -19,7 +19,7 @@ export default function GameOptionSubmitForm() {
   const [isDifficultySelected, setIsDifficultySelected] =
     useState<boolean>(false);
   const [isSending, setIsSending] = useState<boolean>(false);
-  const [buttonTitle, setButtonTitle] = useState<string>('Ready?');
+  const [buttonTitle, setButtonTitle] = useState<string>('준비됐나요?');
 
   const submitHandler = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -36,7 +36,7 @@ export default function GameOptionSubmitForm() {
     });
     const stringedJson = JSON.stringify(obj);
     socket.emit('ready', stringedJson);
-    setButtonTitle('Ready!');
+    setButtonTitle('준비 완료!');
   };
 
   const typeValidateHandler = (isSelected: boolean): void => {

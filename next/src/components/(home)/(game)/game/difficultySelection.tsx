@@ -39,18 +39,18 @@ export default function DifficultySelection({
 
   return (
     <div>
-      <h3>Select Difficulty</h3>
+      <h3>난이도</h3>
       <CheckBox
         id="mapDifficulty_1"
         name="mapDifficulty"
-        title="easy"
+        title="쉽게"
         value={Difficulty.Easy}
         onChangeHandler={onChangeHandler}
       />
       <CheckBox
         id="mapDifficulty_2"
         name="mapDifficulty"
-        title="hard"
+        title="어렵게"
         value={Difficulty.Hard}
         onChangeHandler={onChangeHandler}
       />
