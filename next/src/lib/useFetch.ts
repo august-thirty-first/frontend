@@ -46,7 +46,7 @@ export function useFetch<T>({
   const errorRef = useRef<string>();
   const bodyRef = useRef<any>(body);
   const dataRef = useRef<T>();
-  const backend_url = 'http://localhost:3000/api/';
+  const backend_url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/`;
   const router = useRouter();
   const alertModal = useShowModal();
 

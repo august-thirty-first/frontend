@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 
 const isClient = typeof window !== 'undefined';
 const gameSocket = isClient
-  ? io('http://localhost:3000/game', {
+  ? io(`${process.env.NEXT_PUBLIC_BACKEND_URL}/game`, {
       transports: ['websocket'],
     })
   : io();
