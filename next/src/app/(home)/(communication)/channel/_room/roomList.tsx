@@ -62,7 +62,7 @@ export default function RoomList({
           dataRef?.current.map((room: ChatRoom, index: number) => (
             <div key={index} className={index >= 0 ? 'mb-0.25' : ''}>
               <button
-                className={`bg-cyan-500 text-white px-3 py-1 rounded ${
+                className={`bg-cyan-500 text-white px-3 py-1 rounded text-xs ${
                   selectedRoom === room ? 'opacity-50' : ''
                 }`}
                 onClick={event => {

@@ -8,6 +8,7 @@ import { useShowModal } from '@/app/ShowModalContext';
 import { useContext } from 'react';
 import { HomeSocketContext } from '@/app/(home)/createHomeSocketContext';
 import useToast from '@/components/toastContext';
+import SmallBtn from '@/components/smallBtn';
 
 export default function SwitchAuthority({
   participant,
@@ -46,7 +47,7 @@ export default function SwitchAuthority({
     }
   }
   return (
-    <Btn
+    <SmallBtn
       title={isNormal ? '관리자로 승격' : '관리자 자격 박탈'}
       handler={switchAuthority}
     />

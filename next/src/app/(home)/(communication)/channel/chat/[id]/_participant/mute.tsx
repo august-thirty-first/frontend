@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import { HomeSocketContext } from '@/app/(home)/createHomeSocketContext';
 import ChatParticipant from '@/interfaces/chatParticipant.interface';
 import useToast from '@/components/toastContext';
+import SmallBtn from '@/components/smallBtn';
 
 export default function Mute({
   participant,
@@ -27,5 +28,5 @@ export default function Mute({
     );
   }
 
-  return <Btn title={'mute'} handler={muteParticipant} />;
+  return <SmallBtn title={'mute'} handler={muteParticipant} />;
 }

@@ -30,7 +30,7 @@ export default function SmallBtn({
   }
   return (
     <button
-      className={`lg:px-3 lg:py-1.5 px-1.5 py-0.5 ${colorClassName} `}
+      className={`lg:px-3 lg:py-1.5 px-1.5 py-0.5 ${colorClassName} text-xs`}
       type={type}
       onClick={handler}
       disabled={disabled}
