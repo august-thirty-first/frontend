@@ -6,5 +6,5 @@ export const metadata: Metadata = {
 };
 
 export default function ProfileLayout({ children }: childrenProps) {
-  return <div>{children}</div>;
+  return <>{children}</>;
 }

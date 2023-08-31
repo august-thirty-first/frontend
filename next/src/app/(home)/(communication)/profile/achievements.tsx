@@ -6,7 +6,7 @@ interface AchievementsProps {
 
 const Achievements = ({ achievements }: AchievementsProps) => {
   return (
-    <div>
+    <div className="row-start-3 row-end-3 col-start-1 col-end-3">
       <h2 className="text-3xl font-bold tracking-tight sm:text-3xl mb-5">
         Achievements
       </h2>
