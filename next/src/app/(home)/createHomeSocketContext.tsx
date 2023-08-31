@@ -46,7 +46,7 @@ const HomeSocketProvider = ({ children }: { children: React.ReactNode }) => {
       toast(`${split_msg[0]}님의 메세지가 도착했습니다..`);
     });
     homeSocket.on('waitingPlayer', () => {
-      router.push('/game/general');
+      router.replace('/game/general');
     });
     homeSocket.on('requestGeneralGameError', (msg: string) => {
       toast(msg);
@@ -55,7 +55,7 @@ const HomeSocketProvider = ({ children }: { children: React.ReactNode }) => {
       'selectJoin',
       (fromUserId: number, fromUserNickname: string) => {
         toast(`${fromUserNickname}님이 게임 초대를 하셨습니다.`, () => {
-          router.push(`/game/general?userId=${fromUserId}`);
+          router.replace(`/game/general?userId=${fromUserId}`);
         });
       },
     );

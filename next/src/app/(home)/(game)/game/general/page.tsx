@@ -23,7 +23,7 @@ export default function GeneralWaitingPage() {
     };
 
     const joinGameListener = () => {
-      router.push('/game/option');
+      router.replace('/game/option');
     };
 
     const validateSuccessGeneralListener = () => {

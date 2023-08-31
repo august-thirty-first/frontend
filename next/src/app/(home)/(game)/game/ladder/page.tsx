@@ -16,7 +16,7 @@ export default function LadderWaitingPage() {
     gameSocket.emit('joinQueue');
 
     gameSocket.on('joinGame', () => {
-      router.push('/game/option');
+      router.replace('/game/option');
     });
   }, [gameSocket, router]);
 

@@ -49,7 +49,7 @@ export default function GameOptionSubmitForm() {
 
   useEffect(() => {
     const gameStartListener = () => {
-      router.push('/game');
+      router.replace('/game');
     };
 
     //중간에 상대방 소켓이 끊어졌을 때 모달창을 띄운다
@@ -59,7 +59,7 @@ export default function GameOptionSubmitForm() {
 
     //유효한 소켓일 때 join Queue -> join Game
     const joinGameListener = () => {
-      router.push('/game/option');
+      router.replace('/game/option');
     };
     const validateSuccessListener = () => {
       socket.on('joinGame', joinGameListener);
