@@ -37,7 +37,7 @@ export default function Friends() {
         {data &&
           data.map(friend => (
             <li className="py-3 sm:py-4" key={friend.nickname}>
-              <div className="flex items-center space-x-4">
+              <div className="flex items-center">
                 <div className="flex-shrink-0">
                   <Image
                     width="200"
@@ -51,15 +51,15 @@ export default function Friends() {
                     alt="avatar"
                   />
                 </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-gray-900 truncate">
+                <div className="flex-1 min-w-0 items-center">
+                  <p className="text-sm font-medium text-gray-900 truncate mt-1 mb-1 ml-1">
                     {friend.nickname}
                   </p>
-                  <p className="text-sm text-gray-500 truncate">
+                  <p className="text-sm text-gray-500 truncate mt-1 mb-1 ml-1">
                     {friend.status}
                   </p>
                 </div>
-                <div className="inline-flex items-center text-base font-semibold text-gray-900">
+                <div className="inline-flex items-center text-base font-semibold text-gray-900 m-0">
                   <ProfileBtn nickname={friend.nickname} />
                   {friend.status === FriendStatus.Online && (
                     <PlayGameBtn nickname={friend.nickname} />
