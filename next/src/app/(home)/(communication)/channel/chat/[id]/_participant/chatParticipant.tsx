@@ -4,6 +4,7 @@ import ChatParticipant, {
 import Btn from '@/components/btn';
 import { useState } from 'react';
 import ParticipantDetails from '@/app/(home)/(communication)/channel/chat/[id]/_participant/participantDetails';
+import ChatBtn from '@/components/chatButton';
 
 export default function ChatParticipantList({
   participants,
@@ -16,13 +17,13 @@ export default function ChatParticipantList({
     useState<ChatParticipantWithBlackList | null>(null);
 
   return (
-    <div>
+    <div className="max-h-64 overflow-y-auto">
       <label>참여자 목록</label>
       {participants &&
         participants.map(
           (participant: ChatParticipantWithBlackList, index: number) => (
             <div key={index}>
-              <Btn
+              <ChatBtn
                 title={`${participant.user.nickname}`}
                 type={'button'}
                 handler={() => {

@@ -3,7 +3,7 @@ import { useRef, useContext, useEffect, useState } from 'react';
 import { HomeSocketContext } from '@/app/(home)/createHomeSocketContext';
 import { useFetch } from '@/lib/useFetch';
 import { searchProfileResponse } from '@/app/(home)/(communication)/profile/searchBar';
-import SubmitForm from '@/components/submitForm';
+import ChatSubmitForm from '@/components/chatSubmitForm';
 
 export default function Channel() {
   const socket = useContext(HomeSocketContext);
@@ -88,7 +88,7 @@ export default function Channel() {
   }
 
   return (
-    <div>
+    <div className="border border-gray-300 rounded p-2">
       <div
         ref={messageContainerRef}
         style={{ width: '100%', height: '200px', overflow: 'auto' }}
@@ -99,8 +99,8 @@ export default function Channel() {
           </div>
         ))}
       </div>
-      <SubmitForm
-        title="send"
+      <ChatSubmitForm
+        title="전송"
         handleOnSubmit={handleOnSubmit}
         value={inputMessage}
         handleOnChange={handleOnChange}
