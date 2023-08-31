@@ -1,12 +1,13 @@
 'use client';
 
 import WelcomeMessage from '@/components/welcome';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Nickname from './nickname';
 import Avata from './avata';
 import { useFetch } from '@/lib/useFetch';
 import { useShowModal } from '@/app/ShowModalContext';
+import { HomeSocketContext } from '@/app/(home)/createHomeSocketContext';
 
 export default function SignUp() {
   const { isLoading, statusCodeRef, bodyRef, fetchData } = useFetch<void>({
@@ -19,6 +20,7 @@ export default function SignUp() {
   const [file, setFile] = useState<File | null>(null);
   const router = useRouter();
   const alertModal = useShowModal();
+  const socket = useContext(HomeSocketContext);
 
   const validate = (): boolean => {
     let trim_nickname = nickname.trim();
@@ -41,6 +43,7 @@ export default function SignUp() {
     await fetchData();
     if (statusCodeRef?.current === 200) {
       alertModal('회원가입 성공');
+      socket.connect();
       router.replace('/');
     }
   };
