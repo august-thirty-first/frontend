@@ -26,8 +26,8 @@ export default function Alarms() {
     compare: (a, b) => JSON.stringify(a) === JSON.stringify(b),
   });
   return (
-    <div className="max-w-2xl border-4">
-      알람 목록
+    <div className="w-60 h-96 border-4 mt-4 mr-2">
+      <p className="inline text-center text-xl border-4 m-0 p-0">알람 목록</p>
       <ul role="list" className="divide-y divide-gray-200">
         {data &&
           data.map(friend => (
