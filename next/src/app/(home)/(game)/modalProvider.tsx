@@ -41,7 +41,7 @@ export const ModalProvider = ({ children }: { children: React.ReactNode }) => {
           <ModalHeader title="이제 그만" />
           <ModalContent>
             <p>{message}</p>
-            <div>
+            <div className="mt-10">
               <Btn type="button" title="홈으로" handler={closeModal} />
             </div>
           </ModalContent>

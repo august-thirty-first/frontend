@@ -2,9 +2,11 @@ import GameOptionSubmitForm from '@/components/(home)/(game)/game/gameOptionSubm
 
 export default function GameOptionPage() {
   return (
-    <div>
-      <h2>Select Game Option</h2>
-      <GameOptionSubmitForm />
+    <div className="h-screen bg-blue-500 flex items-center justify-center">
+      <div className="border-4 rounded-lg p-10 bg-white border-blue-600 w-200">
+        <h2 className="py-10 text-center text-3xl font-bold">게임 옵션</h2>
+        <GameOptionSubmitForm />
+      </div>
     </div>
   );
 }

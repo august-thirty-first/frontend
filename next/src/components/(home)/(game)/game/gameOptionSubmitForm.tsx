@@ -19,7 +19,7 @@ export default function GameOptionSubmitForm() {
   const [isDifficultySelected, setIsDifficultySelected] =
     useState<boolean>(false);
   const [isSending, setIsSending] = useState<boolean>(false);
-  const [buttonTitle, setButtonTitle] = useState<string>('Ready?');
+  const [buttonTitle, setButtonTitle] = useState<string>('준비됐나요?');
 
   const submitHandler = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -36,7 +36,7 @@ export default function GameOptionSubmitForm() {
     });
     const stringedJson = JSON.stringify(obj);
     socket.emit('ready', stringedJson);
-    setButtonTitle('Ready!');
+    setButtonTitle('준비 완료!');
   };
 
   const typeValidateHandler = (isSelected: boolean): void => {
@@ -49,7 +49,7 @@ export default function GameOptionSubmitForm() {
 
   useEffect(() => {
     const gameStartListener = () => {
-      router.push('/game');
+      router.replace('/game');
     };
 
     //중간에 상대방 소켓이 끊어졌을 때 모달창을 띄운다
@@ -59,7 +59,7 @@ export default function GameOptionSubmitForm() {
 
     //유효한 소켓일 때 join Queue -> join Game
     const joinGameListener = () => {
-      router.push('/game/option');
+      router.replace('/game/option');
     };
     const validateSuccessListener = () => {
       socket.on('joinGame', joinGameListener);
@@ -80,11 +80,15 @@ export default function GameOptionSubmitForm() {
   }, []);
 
   return (
-    <div>
+    <div className="flex justify-center items-center">
       <form onSubmit={submitHandler}>
         <TypeSelection validate={typeValidateHandler} />
+        <div className="py-5"></div>
         <DifficultySelection validate={difficultyValidateHandler} />
-        <Btn type="submit" title={buttonTitle} disabled={isSending} />
+        <div className="py-10"></div>
+        <div className="flex justify-center mt-5">
+          <Btn type="submit" title={buttonTitle} disabled={isSending} />
+        </div>
       </form>
     </div>
   );

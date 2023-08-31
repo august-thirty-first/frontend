@@ -11,24 +11,25 @@ export default function LadderWaitingPage() {
 
   useEffect(() => {
     if (!gameSocket.connected) {
-      console.log('here');
       gameSocket.connect();
     }
     gameSocket.emit('joinQueue');
 
     gameSocket.on('joinGame', () => {
-      router.push('/game/option');
+      router.replace('/game/option');
     });
   }, [gameSocket, router]);
 
   return (
-    <div>
-      <p>게임 상대를 기다리는 중입니다...</p>
-      <div className="text-center">
-        <div role="status">
+    <div className="flex flex-col items-center justify-center h-screen">
+      <p className="text-5xl text-center">
+        래더게임 상대를 기다리는 중입니다...
+      </p>
+      <div className="mt-8">
+        <div className="animate-spin">
           <svg
             aria-hidden="true"
-            className="w-20 h-20 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
+            className="w-24 h-24 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
             viewBox="0 0 100 101"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
@@ -45,7 +46,9 @@ export default function LadderWaitingPage() {
           <span className="sr-only">Loading...</span>
         </div>
       </div>
-      <CancleMatchBtn />
+      <div className="mt-20">
+        <CancleMatchBtn />
+      </div>
     </div>
   );
 }

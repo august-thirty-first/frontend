@@ -23,7 +23,7 @@ export default function GeneralWaitingPage() {
     };
 
     const joinGameListener = () => {
-      router.push('/game/option');
+      router.replace('/game/option');
     };
 
     const validateSuccessGeneralListener = () => {
@@ -57,9 +57,9 @@ export default function GeneralWaitingPage() {
   }, []);
 
   return (
-    <div>
-      <p>게임 상대를 기다리는 중입니다...</p>
-      <div className="text-center">
+    <div className="flex flex-col items-center justify-center h-screen">
+      <p className="text-5xl">상대방 요청 수락을 기다리는 중입니다...</p>
+      <div className="mt-8">
         <div role="status">
           <svg
             aria-hidden="true"
