@@ -46,6 +46,7 @@ export default function TypeSelection({
 
   return (
     <div className="flex flex-row w-100 p-5 rounded cursor-pointer bg-gray-200">
+      {/*mvp 사용 시 bg 제거하기*/}
       <fieldset className="w-40">
         <legend className="flex items-center justify-center h-full text-center text-2xl font-bold">
           맵
