@@ -12,25 +12,29 @@ export const metadata: Metadata = {
 
 export default function ChannelLayout({ children }: childrenProps) {
   return (
-    <MyParticipantInfoProvider>
-      <div className="flex">
-        <div className="w-1/3 pr-4 pl-10 flex flex-col">
-          <div className="flex">
-            <div className="w-1/2 pr-2">
-              <AllRoomList />
+    <div className="w-4/5">
+      <MyParticipantInfoProvider>
+        <div className="flex">
+          <div className="w-1/3 pr-4 pl-10 flex flex-col">
+            <div className="flex">
+              <div className="w-1/2 pr-2">
+                <AllRoomList />
+              </div>
+              <div className="w-1/2 pl-2">
+                <MyRoomList />
+              </div>
             </div>
-            <div className="w-1/2 pl-2">
-              <MyRoomList />
+            <div className="flex justify-evenly">
+              <RoomBuilder title={'방 생성'} method={'POST'} url={'chat'} />
+            </div>
+          </div>
+          <div className="w-2/3">
+            <div className="mt-14 border border-gray-300 rounded p-2">
+              {children}
             </div>
           </div>
         </div>
-        <div className="w-2/3">
-          <RoomBuilder title={'방 생성'} method={'POST'} url={'chat'} />
-          <div className="mt-14 border border-gray-300 rounded p-2">
-            {children}
-          </div>
-        </div>
-      </div>
-    </MyParticipantInfoProvider>
+      </MyParticipantInfoProvider>
+    </div>
   );
 }

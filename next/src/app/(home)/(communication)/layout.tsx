@@ -9,7 +9,7 @@ export default function CommunicationLayout({ children }: childrenProps) {
       <Navigation />
       <div className="flex justify-between">
         {children}
-        <div className="flex flex-col">
+        <div className="flex flex-col w-1/5">
           <Friends />
           <Alarms />
         </div>
