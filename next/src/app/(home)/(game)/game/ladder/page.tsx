@@ -11,7 +11,6 @@ export default function LadderWaitingPage() {
 
   useEffect(() => {
     if (!gameSocket.connected) {
-      console.log('here');
       gameSocket.connect();
     }
     gameSocket.emit('joinQueue');
