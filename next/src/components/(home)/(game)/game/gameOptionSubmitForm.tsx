@@ -80,11 +80,15 @@ export default function GameOptionSubmitForm() {
   }, []);
 
   return (
-    <div>
+    <div className="flex justify-center items-center">
       <form onSubmit={submitHandler}>
         <TypeSelection validate={typeValidateHandler} />
+        <div className="py-5"></div>
         <DifficultySelection validate={difficultyValidateHandler} />
-        <Btn type="submit" title={buttonTitle} disabled={isSending} />
+        <div className="py-10"></div>
+        <div className="flex justify-center mt-5">
+          <Btn type="submit" title={buttonTitle} disabled={isSending} />
+        </div>
       </form>
     </div>
   );

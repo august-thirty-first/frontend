@@ -1,6 +1,6 @@
 'use client';
 
-import { ChangeEventHandler, useState } from 'react';
+import { ChangeEventHandler } from 'react';
 
 export default function CheckBox({
   id,
@@ -24,7 +24,7 @@ export default function CheckBox({
           name={name}
           value={value}
           onChange={onChangeHandler}
-          // style={{ display: 'none' }}
+          style={{ display: 'none' }}
         />{' '}
         {title}
       </label>

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import CheckBox from './checkBox';
 
 export enum MapType {
@@ -17,32 +17,45 @@ export default function TypeSelection({
 }: {
   validate: ValidateFunction;
 }) {
-  const onChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const checkBoxes: NodeListOf<HTMLInputElement> = document.querySelectorAll(
-      'input[name="mapType"]',
-    );
-    let trueCount = 0;
-    checkBoxes.forEach(checkBox => {
-      if (checkBox !== event.target) {
-        checkBox.checked = false;
-      }
-      if (checkBox.checked == true) {
-        trueCount++;
-      }
-    });
-    if (trueCount === 1) {
+  const [selectedIndex, setSelectedIndex] = useState<number>(-1);
+
+  useEffect(() => {
+    if (selectedIndex !== -1) {
       validate(true);
     } else {
       validate(false);
     }
+  }, [selectedIndex]);
+
+  const onChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const checkBoxes: NodeListOf<HTMLInputElement> = document.querySelectorAll(
+      'input[name="mapType"]',
+    );
+
+    checkBoxes.forEach((checkBox, index) => {
+      if (checkBox === event.target && checkBox.checked == true) {
+        setSelectedIndex(index);
+      } else {
+        checkBox.checked = false;
+      }
+      if (checkBox === event.target && checkBox.checked == false) {
+        setSelectedIndex(-1);
+      }
+    });
   };
 
   return (
-    <div className={`p-5 rounded cursor-pointer bg-blue-50`}>
-      <h3 className="text-center text-2xl font-bold pt-5 pb-5">맵</h3>
-      <div className="flex items-center justify-center">
+    <div className="flex flex-row w-100 p-5 rounded cursor-pointer bg-gray-200">
+      <fieldset className="w-40">
+        <legend className="flex items-center justify-center h-full text-center text-2xl font-bold">
+          맵
+        </legend>
+      </fieldset>
+      <div className="flex flex-raw items-center justify-center">
         <div
-          className={`p-3 mx-5 rounded cursor-pointer transition-colors bg-blue-600 text-white`}
+          className={`p-3 mr-2 rounded cursor-pointer transition-colors ${
+            selectedIndex === 0 ? `bg-blue-600` : `bg-gray-300`
+          } text-white`}
         >
           <CheckBox
             id="mapType_1"
@@ -53,7 +66,9 @@ export default function TypeSelection({
           />
         </div>
         <div
-          className={`p-3 mx-5 rounded cursor-pointer transition-colors bg-blue-600 text-white`}
+          className={`p-3 rounded cursor-pointer transition-colors ${
+            selectedIndex === 1 ? `bg-blue-600` : `bg-gray-300`
+          } text-white`}
         >
           <CheckBox
             id="mapType_2"
