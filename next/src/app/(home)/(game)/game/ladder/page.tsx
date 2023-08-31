@@ -22,7 +22,9 @@ export default function LadderWaitingPage() {
 
   return (
     <div className="flex flex-col items-center justify-center h-screen">
-      <p className="text-5xl">래더게임 상대를 기다리는 중입니다...</p>
+      <p className="text-5xl text-center">
+        래더게임 상대를 기다리는 중입니다...
+      </p>
       <div className="mt-8">
         <div className="animate-spin">
           <svg
