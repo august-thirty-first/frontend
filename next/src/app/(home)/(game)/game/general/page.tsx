@@ -58,8 +58,8 @@ export default function GeneralWaitingPage() {
 
   return (
     <div className="flex flex-col items-center justify-center h-screen">
-      <p>게임 상대를 기다리는 중입니다...</p>
-      <div className="text-center mt-4">
+      <p className="text-5xl">상대방 요청 수락을 기다리는 중입니다...</p>
+      <div className="mt-8">
         <div role="status">
           <svg
             aria-hidden="true"

@@ -22,8 +22,8 @@ export default function LadderWaitingPage() {
 
   return (
     <div className="flex flex-col items-center justify-center h-screen">
-      <p className="text-center">게임 상대를 기다리는 중입니다...</p>
-      <div className="text-center mt-4">
+      <p className="text-5xl">래더게임 상대를 기다리는 중입니다...</p>
+      <div className="mt-8">
         <div className="animate-spin">
           <svg
             aria-hidden="true"
@@ -44,7 +44,7 @@ export default function LadderWaitingPage() {
           <span className="sr-only">Loading...</span>
         </div>
       </div>
-      <div className="text-center mt-4">
+      <div className="mt-20">
         <CancleMatchBtn />
       </div>
     </div>
