@@ -1,5 +1,7 @@
 import Link from 'next/link';
 import Logout from './logout';
+import Image from 'next/image';
+import defaultImg from '@/public/logo.png';
 
 interface NavLinkProps {
   href: string;
@@ -17,11 +19,7 @@ const NavLink = ({ href, children }: NavLinkProps) => {
 export default function Navigation() {
   return (
     <header>
-      <div>
-        <h1 className="lg:text-6xl sm:text-4xl text-2xl mt-5">
-          핑퐁언틸어거스트서티퍼스트
-        </h1>
-      </div>
+      <Image src={defaultImg} alt="Logo" width={100} height={100} />
       <nav className="flex justify-around mt-3 lg:mt-5 mb-3">
         <NavLink href="/channel">채팅 채널 보기</NavLink>
         <NavLink href="/profile">프로필 보기</NavLink>
