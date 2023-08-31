@@ -28,14 +28,17 @@ export default function Friends() {
   });
   const { data } = useSWR('/friend', fetchData, {
     refreshInterval: 5000,
-    compare: (a, b) => JSON.stringify(a) === JSON.stringify(b),
+    compare: (a: any, b: any) => JSON.stringify(a) === JSON.stringify(b),
   });
   return (
-    <div className="w-60 h-96 border-4 mr-2">
+    <div className="h-96 border-4 mr-2">
       <p className="inline text-center text-xl border-4 m-0 p-0">친구 목록</p>
-      <ul role="list" className="divide-y divide-gray-200">
+      <ul
+        role="list"
+        className="divide-y divide-gray-200 max-h-80 overflow-y-auto"
+      >
         {data &&
-          data.map(friend => (
+          data.map((friend: any) => (
             <li className="py-3 sm:py-4" key={friend.nickname}>
               <div className="flex items-center">
                 <div className="flex-shrink-0">

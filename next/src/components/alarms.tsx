@@ -23,16 +23,19 @@ export default function Alarms() {
   });
   const { data } = useSWR('/alarms', fetchData, {
     refreshInterval: 5000,
-    compare: (a, b) => JSON.stringify(a) === JSON.stringify(b),
+    compare: (a: any, b: any) => JSON.stringify(a) === JSON.stringify(b),
   });
   return (
-    <div className="w-60 h-96 border-4 mt-4 mr-2">
+    <div className="h-96 border-4 mt-4 mr-2">
       <p className="inline text-center text-xl border-4 m-0 p-0">알람 목록</p>
-      <ul role="list" className="divide-y divide-gray-200">
+      <ul
+        role="list"
+        className="divide-y divide-gray-200 max-h-80 overflow-y-auto"
+      >
         {data &&
-          data.map(friend => (
+          data.map((friend: any) => (
             <li className="py-3 sm:py-4" key={friend.nickname}>
-              <div className="flex items-center space-x-4">
+              <div className="flex items-center">
                 <div className="flex-shrink-0">
                   <Image
                     width="200"
@@ -46,12 +49,12 @@ export default function Alarms() {
                     alt="avatar"
                   />
                 </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-gray-900 truncate">
+                <div className="flex-1 min-w-1 items-center">
+                  <p className="text-sm font-medium text-gray-900 truncate mt-1 mb-1 ml-1">
                     {friend.nickname}
                   </p>
                 </div>
-                <div className="inline-flex items-center text-base font-semibold text-gray-900">
+                <div className="inline-flex items-center text-base font-semibold text-gray-900 m-0">
                   <ProfileBtn nickname={friend.nickname} />
                   <FriendBtn id={friend.id} status={friend.status} />
                 </div>
