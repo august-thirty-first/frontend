@@ -1,6 +1,6 @@
 'use client';
 
-import { ChangeEventHandler } from 'react';
+import { ChangeEventHandler, useState } from 'react';
 
 export default function CheckBox({
   id,
@@ -16,15 +16,18 @@ export default function CheckBox({
   onChangeHandler: ChangeEventHandler;
 }) {
   return (
-    <label htmlFor={id}>
-      <input
-        id={id}
-        type="checkbox"
-        name={name}
-        value={value}
-        onChange={onChangeHandler}
-      />{' '}
-      {title}
-    </label>
+    <div>
+      <label htmlFor={id} className={`flex justify-center`}>
+        <input
+          id={id}
+          type="checkbox"
+          name={name}
+          value={value}
+          onChange={onChangeHandler}
+          // style={{ display: 'none' }}
+        />{' '}
+        {title}
+      </label>
+    </div>
   );
 }
