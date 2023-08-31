@@ -43,7 +43,8 @@ export default function RoomDetails({
     router.push(`/channel/chat/${room.id}`);
   }
 
-  const requirePassword = room.status === RoomStatus.protected;
+  const requirePassword =
+    room.status === RoomStatus.protected || room.status === RoomStatus.private;
   return (
     <form onSubmit={joinRoom}>
       {requirePassword && (
