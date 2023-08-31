@@ -1,3 +1,4 @@
+import React, { useRef, useEffect } from 'react';
 import ChatRoom, { RoomStatus } from '@/interfaces/chatRoom.interface';
 import { useRouter } from 'next/navigation';
 import { useFetch } from '@/lib/useFetch';
@@ -9,9 +10,11 @@ import useToast from '@/components/toastContext';
 export default function RoomDetails({
   room,
   joinAPI,
+  onClose,
 }: {
   room: ChatRoom;
   joinAPI: string;
+  onClose: () => void;
 }) {
   const router = useRouter();
   const { isLoading, statusCodeRef, dataRef, bodyRef, fetchData } =
@@ -45,15 +48,37 @@ export default function RoomDetails({
 
   const requirePassword =
     room.status === RoomStatus.protected || room.status === RoomStatus.private;
+
+  const dropdownRef = useRef<HTMLDivElement | null>(null);
+
+  // 클릭 이벤트 핸들러를 document에 등록하여 클릭 이벤트를 처리합니다.
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const targetNode = event.target as Node; // event.target의 타입을 명시적으로 지정
+      if (dropdownRef.current && !dropdownRef.current.contains(targetNode)) {
+        onClose(); // 드롭다운 메뉴를 닫습니다.
+      }
+    };
+
+    document.addEventListener('click', handleClickOutside);
+    return () => {
+      document.removeEventListener('click', handleClickOutside);
+    };
+  }, []);
+
   return (
-    <form onSubmit={joinRoom}>
-      {requirePassword && (
-        <>
-          <label htmlFor={'password'}>비밀번호 입력</label>
-          <input name={'password'} />
-        </>
-      )}
-      <Btn title={'입장'} type={'submit'} />
-    </form>
+    <div ref={dropdownRef} className="bg-white p-2 rounded-md shadow">
+      <div className="flex justify-center mt-2">
+        <form onSubmit={joinRoom} className={requirePassword ? 'w-36' : 'w-24'}>
+          {requirePassword && (
+            <>
+              <label htmlFor={'password'}>비밀번호 입력</label>
+              <input name={'password'} />
+            </>
+          )}
+          <Btn title={'입장'} type={'submit'} />
+        </form>
+      </div>
+    </div>
   );
 }
