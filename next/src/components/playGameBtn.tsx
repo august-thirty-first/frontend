@@ -2,8 +2,8 @@ import { searchProfileResponse } from '@/app/(home)/(communication)/profile/sear
 import { HomeSocketContext } from '@/app/(home)/createHomeSocketContext';
 import { useFetch } from '@/lib/useFetch';
 import { useContext } from 'react';
-import Btn from './btn';
 import useToast from './toastContext';
+import SmallBtn from './smallBtn';
 
 export interface playGameBtnProps {
   nickname: string;
@@ -28,7 +28,7 @@ const PlayGameBtn = ({ nickname }: playGameBtnProps) => {
     }
   };
 
-  return <Btn title="PLAY" handler={onClick} />;
+  return <SmallBtn title="PLAY" handler={onClick} />;
 };
 
 export default PlayGameBtn;
