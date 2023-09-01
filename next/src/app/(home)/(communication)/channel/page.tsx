@@ -30,7 +30,7 @@ export default function Channel() {
   useEffect(() => {
     const messageListener = (msg: string) => {
       setMessages(prevMessage => [...prevMessage, msg]);
-      console.log(`'message' : ${msg}`);
+      // console.log(`'message' : ${msg}`);
     };
     socket.on('directMessage', messageListener);
     return () => {

@@ -30,7 +30,7 @@ export default function ChatBox({ roomId }: { roomId: number }) {
   useEffect(() => {
     const messageListener = (msg: string) => {
       setMessages(prevMessage => [...prevMessage, msg]);
-      console.log(`'message' : ${msg}`);
+      // console.log(`'message' : ${msg}`);
     };
     socket.on('message', messageListener);
     socket.on('directMessage', messageListener);
