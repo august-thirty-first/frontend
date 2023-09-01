@@ -1,5 +1,6 @@
 import { HomeSocketContext } from '@/app/(home)/createHomeSocketContext';
 import Btn from '@/components/btn';
+import SmallBtn from '@/components/smallBtn';
 import useToast from '@/components/toastContext';
 import ChatParticipant, {
   ChatParticipantWithBlackList,
@@ -39,6 +40,6 @@ export default function BlackList({
     ? unSetBlackListParticipant
     : setBlackListParticipant;
   return (
-    <Btn title={isBlackList ? '차단해제' : '차단하기'} handler={handler} />
+    <SmallBtn title={isBlackList ? '차단해제' : '차단하기'} handler={handler} />
   );
 }

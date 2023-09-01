@@ -1,5 +1,5 @@
 import { useShowModal } from '@/app/ShowModalContext';
-import Btn from '@/components/btn';
+import SmallBtn from '@/components/smallBtn';
 import { useFetch } from '@/lib/useFetch';
 import { useEffect } from 'react';
 
@@ -40,7 +40,7 @@ const FriendActionBtn = ({
     refreshBtn();
   };
 
-  return <Btn title={title} handler={onClick} disabled={isLoading} />;
+  return <SmallBtn title={title} handler={onClick} disabled={isLoading} />;
 };
 
 export default FriendActionBtn;

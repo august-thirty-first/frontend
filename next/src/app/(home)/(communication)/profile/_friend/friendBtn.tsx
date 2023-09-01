@@ -15,7 +15,7 @@ const FriendBtn = ({ id, status }: FriendBtnProps) => {
   };
 
   return (
-    <div>
+    <div className="flex justify-evenly m-0 p-0">
       {status === null && (
         <FriendActionBtn
           title="친구 요청"

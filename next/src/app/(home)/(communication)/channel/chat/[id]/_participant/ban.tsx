@@ -5,6 +5,7 @@ import Btn from '@/components/btn';
 import { useContext, useEffect } from 'react';
 import { HomeSocketContext } from '@/app/(home)/createHomeSocketContext';
 import useToast from '@/components/toastContext';
+import SmallBtn from '@/components/smallBtn';
 
 export default function Ban({
   participant,
@@ -33,5 +34,5 @@ export default function Ban({
       );
     }
   }
-  return <Btn title={ban} handler={banParticipant} />;
+  return <SmallBtn title={ban} handler={banParticipant} />;
 }

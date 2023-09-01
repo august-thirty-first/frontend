@@ -4,6 +4,7 @@ import Btn from '@/components/btn';
 import { HomeSocketContext } from '@/app/(home)/createHomeSocketContext';
 import { useContext, useEffect } from 'react';
 import useToast from '@/components/toastContext';
+import SmallBtn from '@/components/smallBtn';
 
 export default function Kick({
   participant,
@@ -24,5 +25,5 @@ export default function Kick({
     );
   }
   //
-  return <Btn title={'kick'} type={'button'} handler={kickParticipant} />;
+  return <SmallBtn title={'kick'} type={'button'} handler={kickParticipant} />;
 }
