@@ -38,6 +38,7 @@ export default function ChatBox({ roomId }: { roomId: number }) {
       socket.off('message');
       socket.off('directMessage', messageListener);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {

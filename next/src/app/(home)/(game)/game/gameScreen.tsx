@@ -140,6 +140,7 @@ const GameScreen: React.FC = () => {
       socket.off('gameOver', gameOverListener);
       socket.off('gameOverInPlaying', gameOverInPlayingListener);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

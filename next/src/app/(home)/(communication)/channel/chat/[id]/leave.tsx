@@ -27,6 +27,7 @@ export default function RoomLeave({ roomId }: { roomId: number }) {
     return () => {
       socket.off('deleteRoom');
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   async function leaveRoom() {

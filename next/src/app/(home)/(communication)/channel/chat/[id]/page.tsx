@@ -98,6 +98,7 @@ function ListenEvent({ roomId }: { roomId: number }) {
       socket.off('unSetBlackList');
       socket.off('enterRoom');
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return null;

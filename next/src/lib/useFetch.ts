@@ -93,7 +93,7 @@ export function useFetch<T>({
     } finally {
       setIsLoading(false);
     }
-  }, [urlRef, contentType, method, bodyRef, router, socket, alertModal]);
+  }, [urlRef, contentType, method, bodyRef, router, socket, alertModal, backend_url]);
 
   useEffect(() => {
     if (autoFetch) fetchData();

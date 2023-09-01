@@ -61,6 +61,7 @@ const useToast = () => {
 
   return useCallback((message: string, successHandler?: () => void) => {
     context.addToast(message, successHandler);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 };
 
