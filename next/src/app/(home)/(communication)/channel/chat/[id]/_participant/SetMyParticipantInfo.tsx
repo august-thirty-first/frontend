@@ -17,6 +17,7 @@ export default function SetMyParticipantInfo({ roomId }: { roomId: number }) {
 
   useEffect(() => {
     fetchData().then(() => setMyParticipantInfo(dataRef?.current));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
 
   return null;

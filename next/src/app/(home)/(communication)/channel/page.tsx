@@ -24,6 +24,7 @@ export default function Channel() {
     return () => {
       socket.off('roomChange');
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -35,6 +36,7 @@ export default function Channel() {
     return () => {
       socket.off('directMessage', messageListener);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {

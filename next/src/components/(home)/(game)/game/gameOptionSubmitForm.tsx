@@ -77,6 +77,7 @@ export default function GameOptionSubmitForm() {
       socket.off('joinGame', joinGameListener);
       socket.off('validateSuccess', validateSuccessListener);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

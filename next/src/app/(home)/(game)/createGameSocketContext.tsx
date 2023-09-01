@@ -59,6 +59,7 @@ const GameSocketProvider = ({ children }: { children: React.ReactNode }) => {
       window.removeEventListener('popstate', popstateListener);
       gameSocket.disconnect();
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
