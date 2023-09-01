@@ -30,11 +30,11 @@ const HomeSocketProvider = ({ children }: { children: React.ReactNode }) => {
 
     homeSocket.on('connect', () => {
       setConnected(true);
-      console.log('hello ');
+      // console.log('hello ');
     });
     homeSocket.on('connection', msg => {
       setConnected(true);
-      console.log(msg);
+      // console.log(msg);
     });
     homeSocket.on('disconnect', msg => {
       setConnected(false);
