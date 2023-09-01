@@ -15,3 +15,13 @@ export default interface ChatParticipant {
   ban: Date;
   authority_time: Date;
 }
+
+export interface ChatParticipantWithBlackList {
+  id: number;
+  chat_room: ChatRoom;
+  user: User;
+  authority: ParticipantAuthority;
+  ban: Date;
+  authority_time: Date;
+  blackList: boolean;
+}

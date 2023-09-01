@@ -21,7 +21,6 @@ export default function RoomBuilder({
   const toast = useToast();
   const [showModal, setShowModal] = useState(false);
   const [inputPassword, setInputPassword] = useState('');
-  const [disablePassword, setDisablePassword] = useState(false);
   const { isLoading, bodyRef, statusCodeRef, dataRef, fetchData } =
     useFetch<ChatRoom>({
       autoFetch: false,
@@ -86,24 +85,14 @@ export default function RoomBuilder({
             <label htmlFor="room_name">방 이름</label>
             <input name={'room_name'} />
 
-            {/* Todo: 패스워드는 공백이 들어갈 수 없습니다. */}
             <label htmlFor="password">비밀번호</label>
             <input
               name={'password'}
               value={inputPassword}
               onChange={event => setInputPassword(event.target.value)}
-              disabled={disablePassword}
             />
-
             <label htmlFor="is_private">비밀방</label>
-            <input
-              type={'checkbox'}
-              name={'is_private'}
-              onClick={() => {
-                setDisablePassword(!disablePassword);
-                setInputPassword('');
-              }}
-            />
+            <input type={'checkbox'} name={'is_private'} />
             <Btn title={'전송'} type={'submit'} />
           </form>
         </Modal>

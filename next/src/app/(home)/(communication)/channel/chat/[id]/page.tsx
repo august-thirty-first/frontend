@@ -6,6 +6,7 @@ import RoomBuilder from '@/app/(home)/(communication)/channel/_room/roomBuilder'
 import { useRouter } from 'next/navigation';
 import { useFetch } from '@/lib/useFetch';
 import ChatParticipant, {
+  ChatParticipantWithBlackList,
   ParticipantAuthority,
 } from '@/interfaces/chatParticipant.interface';
 import RoomLeave from '@/app/(home)/(communication)/channel/chat/[id]/leave';
@@ -15,12 +16,13 @@ import useToast from '@/components/toastContext';
 import SetMyParticipantInfo from '@/app/(home)/(communication)/channel/chat/[id]/_participant/SetMyParticipantInfo';
 import useSWR, { mutate } from 'swr';
 
-function ListenEvent() {
+function ListenEvent({ roomId }: { roomId: number }) {
   const socket = useContext(HomeSocketContext);
   const toast = useToast();
   const router = useRouter();
 
   useEffect(() => {
+    socket.emit('enterRoom', JSON.stringify({ roomId: roomId }));
     socket.on('mute', msg => {
       toast(msg);
     });
@@ -41,10 +43,44 @@ function ListenEvent() {
       router.push('/channel');
       mutate('participant');
     });
+    socket.on('toAdmin', msg => {
+      if (msg) toast(msg);
+      mutate('participant');
+      mutate('myParticipantInfo');
+    });
+    socket.on('toNormal', msg => {
+      if (msg) toast(msg);
+      mutate('participant');
+      mutate('myParticipantInfo');
+    });
+    socket.on('toAdminReturnStatus', msg => {
+      toast(msg);
+      mutate('participant');
+    });
+    socket.on('toNormalReturnStatus', msg => {
+      toast(msg);
+      mutate('participant');
+    });
     socket.on('banReturnStatus', msg => {
       toast(msg);
       mutate('participant');
     });
+    socket.on('unbanReturnStatus', msg => {
+      toast(msg);
+      mutate('participant');
+    });
+    socket.on('setBlackList', msg => {
+      toast(msg);
+      mutate('participant');
+    });
+    socket.on('unSetBlackList', msg => {
+      toast(msg);
+      mutate('participant');
+    });
+    socket.on('enterRoom', msg => {
+      mutate('participant');
+    });
+
     return () => {
       socket.off('mute');
       socket.off('muteReturnStatus');
@@ -52,7 +88,15 @@ function ListenEvent() {
       socket.off('kick');
       socket.off('kickReturnStatus');
       socket.off('ban');
+      socket.off('toAdmin');
+      socket.off('toNormal');
+      socket.off('toAdminReturnStatus');
+      socket.off('toNormalReturnStatus');
       socket.off('banReturnStatus');
+      socket.off('unbanReturnStatus');
+      socket.off('setBlackList');
+      socket.off('unSetBlackList');
+      socket.off('enterRoom');
     };
   }, []);
 
@@ -65,7 +109,7 @@ export default function Chat({ params }: { params: { id: string } }) {
   const [myParticipantInfo] = useMyParticipantInfo();
   const roomId = parseInt(params.id);
   const { statusCodeRef, dataRef, bodyRef, fetchData } = useFetch<
-    ChatParticipant[]
+    ChatParticipantWithBlackList[]
   >({
     autoFetch: true,
     method: 'GET',
@@ -79,13 +123,12 @@ export default function Chat({ params }: { params: { id: string } }) {
     router.push('/channel');
     return;
   }
-  socket.emit('enterRoom', JSON.stringify({ roomId: roomId }));
 
   return (
     dataRef?.current && (
       <div>
         <SetMyParticipantInfo roomId={roomId} />
-        <ListenEvent />
+        <ListenEvent roomId={roomId} />
         <ChatParticipantList roomId={roomId} participants={dataRef.current} />
         <ChatBox roomId={roomId} />
         <RoomLeave roomId={roomId} />

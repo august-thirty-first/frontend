@@ -4,6 +4,7 @@ import { useContext, useEffect, useRef, useState } from 'react';
 import { HomeSocketContext } from '@/app/(home)/createHomeSocketContext';
 import { useFetch } from '@/lib/useFetch';
 import { searchProfileResponse } from '../../../profile/searchBar';
+import ChatRoom from '@/interfaces/chatRoom.interface';
 
 export default function ChatBox({ roomId }: { roomId: number }) {
   const socket = useContext(HomeSocketContext);
@@ -13,6 +14,12 @@ export default function ChatBox({ roomId }: { roomId: number }) {
   const { fetchData, dataRef, urlRef } = useFetch<searchProfileResponse>({
     autoFetch: false,
     url: `profile/user?nickname=$nickname`,
+    method: 'GET',
+  });
+
+  const roomNameData = useFetch<ChatRoom>({
+    autoFetch: true,
+    url: `chat/name/${roomId}`,
     method: 'GET',
   });
 
@@ -31,7 +38,6 @@ export default function ChatBox({ roomId }: { roomId: number }) {
       socket.off('message');
       socket.off('directMessage', messageListener);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -50,6 +56,10 @@ export default function ChatBox({ roomId }: { roomId: number }) {
         inputMessage: inputMessage,
       };
       socket.emit('directMessage', JSON.stringify(directMsg));
+      setMessages(prevMessages => [
+        ...prevMessages,
+        `${nickname}에게: ${inputMessage}`,
+      ]);
     } else {
       setMessages(prevMessages => [
         ...prevMessages,
@@ -83,10 +93,11 @@ export default function ChatBox({ roomId }: { roomId: number }) {
   function handleOnChange(event: any) {
     setInputMessage(event.target.value);
   }
-
   return (
     <div>
-      <h1>{roomId}</h1>
+      <h1>
+        {roomNameData.dataRef?.current?.room_name || '채팅방 이름 정보 없음'}
+      </h1>
       <div
         ref={messageContainerRef}
         style={{ width: '100%', height: '200px', overflow: 'auto' }}

@@ -39,7 +39,10 @@ export default function SwitchAuthority({
     });
     await fetchData();
     if (statusCodeRef?.current === 200) {
-      toast('권한 변경 성공');
+      socket.emit(
+        isNormal ? 'toAdmin' : 'toNormal',
+        JSON.stringify({ roomId: roomId, targetUserId: targetUserId }),
+      );
     }
   }
   return (

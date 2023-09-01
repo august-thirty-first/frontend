@@ -12,6 +12,8 @@ services:
       - /root/next/node_modules
     networks:
       - docker_gaepo
+    env_file:
+      - ./env/.env
 
 networks:
   docker_gaepo:

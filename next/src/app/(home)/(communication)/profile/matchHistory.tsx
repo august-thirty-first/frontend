@@ -9,18 +9,19 @@ interface matchHistoryProps {
 
 const MatchHistory = ({ gameData, profileName }: matchHistoryProps) => {
   return (
-    <div>
+    <div className="row-start-1 row-end-2 col-start-2 col-end-2 h-3/4">
       <h2 className="text-3xl font-bold tracking-tight sm:text-3xl mb-5">
         Match History
       </h2>
       {gameData && (
         <>
           <h3>
-            총 전적 : {gameData.total_win}승 {gameData.total_lose}패 | 점수 : N
+            총 전적 : {gameData.total_win}승 {gameData.total_lose}패
           </h3>
-          <ul role="list" className="divide-y divide-gray-200">
-            {gameData.game_history.map(history => (
-              <li key={history.winner_avata} className="py-3 sm:py-4">
+          <h3>점수 : {gameData.ladder ? gameData.ladder : '0'}</h3>
+          <ul role="list" className="divide-y divide-gray-200 max-h-2">
+            {gameData.game_history.map((history, index) => (
+              <li key={index} className="py-3 sm:py-4">
                 <span
                   className={`inline-flex items-center text-xl font-semibold mb-3 ${
                     profileName === history.winner_nickname

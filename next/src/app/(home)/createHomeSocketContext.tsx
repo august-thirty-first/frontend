@@ -1,6 +1,6 @@
 'use client';
 import io from 'socket.io-client';
-import { createContext, useEffect } from 'react';
+import { createContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useFetch } from '@/lib/useFetch';
 import { useShowModal } from '../ShowModalContext';
@@ -8,7 +8,7 @@ import useToast from '@/components/toastContext';
 
 const isClient = typeof window !== 'undefined';
 const homeSocket = isClient
-  ? io('http://localhost:3000/home', {
+  ? io(`${process.env.NEXT_PUBLIC_BACKEND_URL}/home`, {
       transports: ['websocket'],
     })
   : io();
@@ -23,13 +23,21 @@ const HomeSocketProvider = ({ children }: { children: React.ReactNode }) => {
     url: 'auth/logout',
     method: 'GET',
   });
+  const [connected, setConnected] = useState<boolean>(true);
 
   useEffect(() => {
+    setConnected(homeSocket.connected);
+
     homeSocket.on('connect', () => {
+      setConnected(true);
       console.log('hello ');
     });
     homeSocket.on('connection', msg => {
+      setConnected(true);
       console.log(msg);
+    });
+    homeSocket.on('disconnect', msg => {
+      setConnected(false);
     });
     homeSocket.on('multipleConnect', () => {
       alertModal('다중 로그인 상태.');
@@ -73,6 +81,11 @@ const HomeSocketProvider = ({ children }: { children: React.ReactNode }) => {
   }, []);
   return (
     <HomeSocketContext.Provider value={homeSocket}>
+      {!connected && (
+        <div className="flex justify-center bg-slate-300">
+          서버와의 연결이 끊어졌습니다.. <a href="/">재접속..</a>
+        </div>
+      )}
       {children}
     </HomeSocketContext.Provider>
   );

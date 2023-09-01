@@ -34,6 +34,7 @@ const Info = ({ profile }: InfoProps) => {
           />
         </>
       )}
+      {!profile && '찾을 수 없는 사용자입니다..'}
     </>
   );
 };
