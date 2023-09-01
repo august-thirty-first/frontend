@@ -69,9 +69,9 @@ export default function RoomBuilder({
     if (statusCodeRef?.current === 200 || statusCodeRef?.current === 201) {
       await mutate('allRoomList');
       await mutate('myRoomList');
-      toast('방 생성 성공');
+      toast('요청 성공');
     } else {
-      toast('방 생성 실패');
+      toast('요청 실패');
     }
     toggleModal();
   }
