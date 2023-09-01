@@ -129,8 +129,17 @@ export default function Chat({ params }: { params: { id: string } }) {
       <div>
         <SetMyParticipantInfo roomId={roomId} />
         <ListenEvent roomId={roomId} />
-        <ChatParticipantList roomId={roomId} participants={dataRef.current} />
-        <ChatBox roomId={roomId} />
+        <div className="flex">
+          <div className="w-3/4 pr-4">
+            <ChatBox roomId={roomId} />
+          </div>
+          <div className="w-1/4">
+            <ChatParticipantList
+              roomId={roomId}
+              participants={dataRef.current}
+            />
+          </div>
+        </div>
         <RoomLeave roomId={roomId} />
         {(myParticipantInfo?.authority === ParticipantAuthority.BOSS ||
           myParticipantInfo?.authority === ParticipantAuthority.ADMIN) && (

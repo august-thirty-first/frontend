@@ -5,11 +5,15 @@ import Alarms from '@/components/alarms';
 
 export default function CommunicationLayout({ children }: childrenProps) {
   return (
-    <div>
+    <>
       <Navigation />
-      {children}
-      <Friends />
-      <Alarms />
-    </div>
+      <div className="flex justify-between">
+        {children}
+        <div className="flex flex-col w-1/5">
+          <Friends />
+          <Alarms />
+        </div>
+      </div>
+    </>
   );
 }

@@ -16,7 +16,7 @@ const NavLink = ({ href, children }: NavLinkProps) => {
 
 export default function Navigation() {
   return (
-    <header>
+    <header className="m-0 p-0">
       <div>
         <h1 className="lg:text-6xl sm:text-4xl text-2xl mt-5">
           핑퐁언틸어거스트서티퍼스트
