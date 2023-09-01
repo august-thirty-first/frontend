@@ -17,9 +17,13 @@ const NavLink = ({ href, children }: NavLinkProps) => {
 };
 
 export default function Navigation() {
+  const logoStyle = {
+    display: 'block',
+    margin: '10 auto',
+  };
   return (
     <header>
-      <Image src={defaultImg} alt="Logo" width={100} height={100} />
+      <Image src={defaultImg} alt="Logo" style={logoStyle} />
       <nav className="flex justify-around mt-3 lg:mt-5 mb-3">
         <NavLink href="/game/ladder">래더 게임 참여</NavLink>
         <NavLink href="/channel">채팅 채널 보기</NavLink>
