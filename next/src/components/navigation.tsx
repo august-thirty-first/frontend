@@ -19,7 +19,7 @@ const NavLink = ({ href, children }: NavLinkProps) => {
 export default function Navigation() {
   const logoStyle = {
     display: 'block',
-    margin: '10 auto',
+    margin: 'auto',
   };
   return (
     <header>

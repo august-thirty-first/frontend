@@ -18,7 +18,7 @@ export default function RootLayout({
       <head>
         <link rel="stylesheet" href="https://unpkg.com/mvp.css"></link>
       </head>
-      <body>
+      <body className="m-0 p-0">
         <ToastContextProvider>
           <ShowModalProvider>{children}</ShowModalProvider>
         </ToastContextProvider>
