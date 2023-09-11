@@ -9,3 +9,12 @@ services:
       - 4000:3000
     volumes:
       - ./next:/root/next
+      - /root/next/node_modules
+    networks:
+      - docker_gaepo
+    env_file:
+      - ./env/.env
+
+networks:
+  docker_gaepo:
+    external: true
